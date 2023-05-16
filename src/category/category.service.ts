@@ -23,19 +23,54 @@ export class CategoryService {
   async findAll() {
     const data = await prisma.categories.findMany({
       include: { products: true },
+      where: { deletedAt: null },
     });
     return data;
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} category`;
+    return prisma.categories.findFirst({
+      where: { id: id, deletedAt: null },
+      include: { products: true },
+    });
   }
 
   update(id: number, updateCategoryDto) {
-    return `This action updates a #${id} category`;
+    return prisma.categories.update({
+      where: { id: id },
+      ...updateCategoryDto,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} category`;
+    return prisma.categories.update({
+      where: { id: id },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+  }
+
+  trash() {
+    try {
+      return prisma.categories.findMany({
+        where: { NOT: [{ deletedAt: null }] },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  restore(id: number) {
+    try {
+      return prisma.categories.update({
+        where: { id: id },
+        data: {
+          deletedAt: null,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

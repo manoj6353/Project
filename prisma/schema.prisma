@@ -24,13 +24,57 @@ model categories {
 model products{
   id    Int     @id @default(autoincrement())
   productName String
-  quantity Int
-  price Int
+  quantity String
+  price String
+  productdetails String @db.Text
   categories categories @relation(fields: [categoryId], references: [id],onDelete: Cascade)
   categoryId  Int
   createdAt  DateTime @default(now())
   updatedAt DateTime @default(now())
   deletedAt DateTime?
 
+  orders orders[]
+  addtocarts addtocarts[]
+
   @@map("products")
+}
+
+model users {
+  id Int @id @default(autoincrement())
+
+  orders orders[]
+  addtocarts addtocarts[]
+
+  @@map("users")
+}
+
+model orders {
+  id Int @id @default(autoincrement())
+
+  users users @relation(fields: [userId], references: [id])
+  userId Int
+  products products @relation(fields: [productId], references: [id])
+  productId Int
+  createdAt  DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
+
+  @@map("orders")
+}
+
+model addtocarts {
+  id Int @id @default(autoincrement())
+
+  users users @relation(fields: [userId], references: [id])
+  userId Int
+
+  products products @relation(fields: [productId], references: [id])
+  productId Int
+  
+  createdAt  DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
+
+  @@map("addtocarts")
+
 }
