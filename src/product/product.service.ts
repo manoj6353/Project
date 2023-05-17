@@ -7,12 +7,14 @@ export class ProductService {
   async create(createProductDto) {
     try {
       const id = parseInt(createProductDto.categoryId);
+      const subId = parseInt(createProductDto.subCategoryId);
       const data = await prisma.products.create({
         data: {
           productName: createProductDto.productName,
           price: createProductDto.price,
           quantity: createProductDto.quantity,
           productdetails: createProductDto.productdetails,
+          subCategoryId: subId,
           categoryId: id,
         },
       });
@@ -35,6 +37,20 @@ export class ProductService {
     }
   }
 
+  fetchsubcategory(id) {
+    try {
+      return prisma.subcategories.findMany({
+        where: { categoryId: id },
+        select: {
+          id: true,
+          subCategoryName: true,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   findAll() {
     try {
       return prisma.products.findMany({
@@ -48,6 +64,11 @@ export class ProductService {
           categories: {
             select: {
               categoryName: true,
+            },
+          },
+          subcategories: {
+            select: {
+              subCategoryName: true,
             },
           },
         },

@@ -24,6 +24,7 @@
           <th>Quantity</th>
           <th>Price</th>
           <th>Category Name</th>
+          <th>Sub-Category Name</th>
           <th>Product Details</th>
           <th>Created Date</th>
         </tr>
@@ -36,6 +37,7 @@
           <td><%= d.quantity %></td>
           <td><%= d.price %></td>
           <td><%= d.categories.categoryName %></td>
+          <td><%= d.subcategories.subCategoryName %></td>
           <td><%= d.productdetails %></td>
           <td><%= (new Date(d.createdAt).toLocaleDateString()) %></td>
         </tr>

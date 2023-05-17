@@ -5,4 +5,5 @@ export class CreateProductDto {
   price: string;
   productdetails: string;
   categoryId: number;
+  subCategoryId: number;
 }

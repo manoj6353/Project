@@ -18,7 +18,23 @@ model categories {
   deletedAt DateTime?
   products products[]
 
+  subcategories subcategories[]
+
   @@map("categories")
+}
+
+model subcategories {
+  id Int @id @default(autoincrement())
+
+  subCategoryName String
+  categories categories @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  createdAt  DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
+  products products[]
+
+  @@map("subcategories")
 }
 
 model products{
@@ -27,6 +43,8 @@ model products{
   quantity String
   price String
   productdetails String @db.Text
+  subcategories subcategories @relation(fields: [subCategoryId], references: [id])
+  subCategoryId Int
   categories categories @relation(fields: [categoryId], references: [id],onDelete: Cascade)
   categoryId  Int
   createdAt  DateTime @default(now())
@@ -39,13 +57,130 @@ model products{
   @@map("products")
 }
 
+enum Role {
+  user
+  admin
+}
+
+model roles {
+  id Int @id @default(autoincrement())
+  role Role @default(user)
+
+  users users[]
+
+  @@map("roles")
+}
+
+model countries {
+  id Int @id @default(autoincrement())
+  name String
+  iso3 Int
+  numeric_code String
+  iso2 String
+  phonecode String
+  capital String
+  currency String
+  currency_name String
+  currency_symbol String
+  tld String
+  native String
+  region String
+  subregion String
+  timezones String @db.Text
+  translations String @db.Text
+  latitude Decimal @db.Decimal(9,2)
+  longitude Decimal @db.Decimal(9,2)
+  emoji String
+  emojiU String
+  created_at  DateTime @default(now())
+  updated_at DateTime @default(now())
+  flag Int
+  wikiDataId String
+
+  states states[]
+  cities cities[]
+  addresses addresses[]
+}
+
+model states{
+  id Int @id @default(autoincrement())
+  name String
+  countries countries @relation(fields: [country_id], references: [id])
+  country_id Int
+  country_code String @db.Char(3)
+  fips_code String
+  iso2 String
+  type String
+  latitude Decimal @db.Decimal(9,2)
+  longitude Decimal @db.Decimal(9,2)
+  created_at  DateTime @default(now())
+  updated_at DateTime @default(now())
+  flag Int
+  wikiDataId String
+
+  cities cities[]
+  addresses addresses[]
+
+}
+
+model cities {
+  id Int @id @default(autoincrement())
+  name String
+  states states @relation(fields: [state_id], references: [id])
+  state_id Int
+  state_code String
+  countries countries @relation(fields: [country_id], references: [id])
+  country_id Int
+  country_code String @db.Char(3)
+  latitude Decimal @db.Decimal(9,2)
+  longitude Decimal @db.Decimal(9,2)
+  created_at  DateTime @default(now())
+  updated_at DateTime @default(now())
+  flag Int
+  wikiDataId String
+
+  addresses addresses[]
+}
+
+
 model users {
   id Int @id @default(autoincrement())
-
+  firstName String
+  lastName String
+  contact String
+  age Int
+  email String
+  password String
+  gender String
+  roles roles @relation(fields: [roleId],references: [id])
+  roleId Int
+  createdAt  DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
+ 
   orders orders[]
   addtocarts addtocarts[]
+  addresses addresses[]
 
   @@map("users")
+}
+
+model addresses {
+  id Int @id @default(autoincrement())
+  address1 String
+  address2 String
+  pinCode String
+  users users @relation(fields: [userId], references: [id])
+  userId Int
+  countries countries @relation(fields: [countryId], references: [id])
+  countryId Int
+  states states @relation(fields: [stateId], references: [id])
+  stateId Int
+  cities cities @relation(fields: [cityId], references: [id])
+  cityId Int
+  createdAt  DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
 }
 
 model orders {

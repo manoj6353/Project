@@ -20,8 +20,14 @@ export class ProductController {
   @Get('/add')
   @Render('products')
   async addproducts() {
-    const data = await this.productService.fetchcategory();
-    return { data };
+    const category = await this.productService.fetchcategory();
+    return { category };
+  }
+
+  @Get('/subcategory/:id')
+  async fetchcategory(@Param('id') id: string) {
+    const category = await this.productService.fetchsubcategory(+id);
+    return category;
   }
 
   @Post()
@@ -42,10 +48,10 @@ export class ProductController {
     return this.productService.findsearch(productName);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.productService.findOne(+id);
+  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {

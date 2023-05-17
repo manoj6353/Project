@@ -39,13 +39,43 @@
                           id="categoryName"
                           name="categoryId"
                           required
+                          onchange="subCategory()"
                         >
-                          <% data.forEach(d => { %>
+                          <% category.forEach(d => { %>
                           <option id="<%=d.id%>" value="<%=d.id%>">
                             <%=d.categoryName%>
                           </option>
                           <% }); %>
                         </select>
+                        <script>
+                          async function subCategory() {
+                            const id =
+                              document.querySelector('#categoryName').value;
+                            const result = await fetch(
+                              '/product/subcategory/' + id,
+                            );
+                            const data = await result.json();
+                            let opt = '';
+                            let subcategory =
+                              document.getElementById('subCategoryName');
+                            data.forEach((d) => {
+                              opt += `<option value='${d.id}'>${d.subCategoryName}</option>`;
+                              subcategory.innerHTML = opt;
+                            });
+                            console.log(data);
+                          }
+                        </script>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="subCategoryName"
+                          >Sub-Category Name</label
+                        >
+                        <select
+                          class="form-select"
+                          id="subCategoryName"
+                          name="subCategoryId"
+                          required
+                        ></select>
                       </div>
                       <div class="form-outline mb-4">
                         <label class="form-label" for="ProductsName"
