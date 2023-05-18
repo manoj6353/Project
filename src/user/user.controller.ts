@@ -13,9 +13,8 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { User } from './entities/user.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @Controller('user')
 @ApiTags('user')
 export class UserController {
@@ -23,8 +22,6 @@ export class UserController {
 
   @Get('/index')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOkResponse({ type: User, isArray: true })
   @Render('registration')
   async fetchCountry() {
     const data = await this.userService.fetchCountry();
