@@ -6,9 +6,17 @@ import { ProductModule } from './product/product.module';
 import { AddtocartModule } from './addtocart/addtocart.module';
 import { SubcategoryModule } from './subcategory/subcategory.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [CategoryModule, ProductModule, AddtocartModule, SubcategoryModule, UserModule],
+  imports: [
+    CategoryModule,
+    ProductModule,
+    AddtocartModule,
+    SubcategoryModule,
+    UserModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -4,6 +4,6 @@ import { AddtocartController } from './addtocart.controller';
 
 @Module({
   controllers: [AddtocartController],
-  providers: [AddtocartService]
+  providers: [AddtocartService],
 })
 export class AddtocartModule {}

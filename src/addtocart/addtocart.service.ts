@@ -23,8 +23,8 @@ export class AddtocartService {
     });
   }
 
-  findOne(id: number) {
-    return prisma.addtocarts.findFirst({
+  async findOne(id: number) {
+    return await prisma.addtocarts.findFirst({
       where: { userId: id },
       select: {
         id: true,

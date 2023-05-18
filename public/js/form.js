@@ -1,6 +1,3 @@
-var currentTab = 0;
-showTab(currentTab);
-
 let firstname = document.getElementById('firstName');
 let lastname = document.getElementById('lastName');
 let contact = document.getElementById('contact');
@@ -129,30 +126,12 @@ function toupper() {
   }
 }
 
-function showTab(n) {
-  try {
-    var x = document.getElementsByClassName('tab');
-    // console.log('--------------', x);
-    x[n].style.display = 'block';
-    if (n == 0) {
-      document.getElementById('prevBtn').style.display = 'none';
-    } else {
-      document.getElementById('prevBtn').style.display = 'block';
-    }
-    if (n == x.length - 1) {
-      document.getElementById('nextBtn').innerHTML = 'Submit';
-    } else {
-      document.getElementById('nextBtn').innerHTML = 'Next';
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 let CommonError = document.getElementById('fullError');
 
 function nextPrev(n) {
   try {
+    let n = 1;
+    let currentTab = 1;
     var x = document.getElementsByClassName('tab');
     if (n == 1 && !basicvalidation()) {
       CommonError.classList.add('error');
@@ -161,13 +140,11 @@ function nextPrev(n) {
     } else {
       CommonError.classList.remove('error');
       CommonError.innerHTML = '';
-      x[currentTab].style.display = 'none';
       currentTab = currentTab + n;
       if (currentTab >= x.length) {
         document.getElementById('regForm').submit();
         return false;
       }
-      showTab(currentTab);
       return true;
     }
   } catch (err) {

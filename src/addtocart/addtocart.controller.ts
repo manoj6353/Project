@@ -29,8 +29,10 @@ export class AddtocartController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.addtocartService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const data = await this.addtocartService.findOne(+id);
+    console.log('---------', data);
+    return data;
   }
 
   @Patch(':id')

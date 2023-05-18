@@ -4,6 +4,7 @@ import { SubcategoryController } from './subcategory.controller';
 
 @Module({
   controllers: [SubcategoryController],
-  providers: [SubcategoryService]
+  providers: [SubcategoryService],
+  exports: [SubcategoryService],
 })
 export class SubcategoryModule {}

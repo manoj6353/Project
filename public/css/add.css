@@ -43,3 +43,7 @@ a {
 .error {
   color: red !important;
 }
+
+.login {
+  margin-top: 30px;
+}

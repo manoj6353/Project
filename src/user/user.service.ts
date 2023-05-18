@@ -62,8 +62,32 @@ export class UserService {
     return `This action returns all user`;
   }
 
+  async login(createUserDto) {
+    const { email, password } = createUserDto;
+    const data = await prisma.users.findFirst({
+      where: { email: email },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+      },
+    });
+    let pwd;
+    if (data != null) {
+      pwd = await bcrypt.compare(password, data.password);
+    }
+
+    if (data == null) {
+      return { error: 'Please check your email and password' };
+    } else if (data != null && pwd == false) {
+      return { error: 'Please check your email and password' };
+    } else {
+      return { success: data };
+    }
+  }
+
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return prisma.users.findFirst({ where: { id: id } });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
