@@ -1,23 +1,25 @@
 async function addtocart(id) {
   const productId = id;
   const userId = 1;
-  const result = await fetch(`/addtocart`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ productId, userId }),
-  });
-  const data = await result.json();
-  if (data) {
-    alert('product added successfully');
+  const fetchCart = await fetch(
+    `/addtocart/getcart?userId=${userId}&productId=${productId}`,
+  );
+  const { data } = await fetchCart.json();
+  if (data.length > 0) {
+    alert('product already exists');
+  } else {
+    const result = await fetch(`/addtocart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ productId, userId }),
+    });
+    const data = await result.json();
+    if (data) {
+      alert('product added successfully');
+    }
   }
-}
-async function cart() {
-  const id = 1;
-  const result = await fetch(`/addtocart/` + id);
-  const data = await result.json();
-  console.log(data);
 }
 
 async function search(search) {
@@ -76,12 +78,38 @@ async function login() {
       body: JSON.stringify({ email, password }),
     });
     const data = await results.json();
-    console.log(data);
     if (data.message && data.statusCode == 404) {
       error.innerHTML = data.message;
     } else if (data.accessToken) {
       localStorage.setItem('id', data.accessToken);
-      window.location.href = '/';
     }
+  }
+}
+
+async function remove(id) {
+  if (confirm('Are you sure you want to delete')) {
+    const results = await fetch(`/addtocart/` + id, {
+      method: 'DELETE',
+    });
+    const data = await results.json();
+    window.location.reload();
+  }
+}
+
+function total(tot) {
+  if (tot.value <= 0) {
+    alert('Quantity must be 1 or more');
+    tot.value = 1;
+  } else {
+    const Quantity = document.querySelectorAll('.quantity');
+    const Price = document.querySelectorAll('.price');
+    const checkout = document.getElementById('checkout');
+    checkout.innerHTML = '';
+    let s = 0;
+    for (let i = 0; i < Quantity.length; i++) {
+      let total = Quantity[i].value * Price[i].innerHTML;
+      s += total;
+    }
+    checkout.innerHTML += s;
   }
 }

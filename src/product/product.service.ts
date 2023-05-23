@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class ProductService {
-  async create(createProductDto) {
+  async create(createProductDto, file) {
     try {
       const id = parseInt(createProductDto.categoryId);
       const subId = parseInt(createProductDto.subCategoryId);
@@ -14,8 +14,9 @@ export class ProductService {
           price: createProductDto.price,
           quantity: createProductDto.quantity,
           productdetails: createProductDto.productdetails,
-          subCategoryId: subId,
           categoryId: id,
+          subCategoryId: subId,
+          image: file.filename,
         },
       });
       return data;

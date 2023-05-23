@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient } from '@prisma/client';
-import { AuthEntity } from './entities/auth.entity';
 import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
@@ -13,7 +12,7 @@ const prisma = new PrismaClient();
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
-  async login(email: string, password: string): Promise<AuthEntity> {
+  async login(email: string, password: string): Promise<any> {
     const user = await prisma.users.findFirst({ where: { email: email } });
 
     if (!user) {
@@ -25,9 +24,8 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new UnauthorizedException('Please check your email and password');
     }
-
     return {
-      accessToken: this.jwtService.sign({ userId: user.id }),
+      accessToken: await this.jwtService.sign({ id: user.id }),
     };
   }
 }

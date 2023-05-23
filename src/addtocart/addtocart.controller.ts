@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  Render,
+  Query,
 } from '@nestjs/common';
 import { AddtocartService } from './addtocart.service';
 import { CreateAddtocartDto } from './dto/create-addtocart.dto';
@@ -20,19 +22,26 @@ export class AddtocartController {
     return this.addtocartService.create(createAddtocartDto);
   }
 
+  @Get('/getcart')
+  async getcarts(
+    @Query('userId') userId: string,
+    @Query('productId') productId: string,
+  ) {
+    const data = await this.addtocartService.getcart(+userId, +productId);
+    return { data };
+  }
+
   @Get()
   findAll() {
     const data = this.addtocartService.findAll();
-    console.log(data);
-
     return data;
   }
 
   @Get(':id')
+  @Render('addtocart')
   async findOne(@Param('id') id: string) {
     const data = await this.addtocartService.findOne(+id);
-    console.log('---------', data);
-    return data;
+    return { data };
   }
 
   @Patch(':id')
@@ -44,7 +53,8 @@ export class AddtocartController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.addtocartService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const data = await this.addtocartService.remove(+id);
+    return { data };
   }
 }

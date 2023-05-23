@@ -22,7 +22,11 @@
               <div class="card" style="border-radius: 15px">
                 <div class="card-body p-5">
                   <legend class="text-center">Products Details</legend>
-                  <form action="/product" method="post">
+                  <form
+                    action="/product"
+                    method="post"
+                    enctype="multipart/form-data"
+                  >
                     <hr />
                     <div class="tab">
                       <div class="form-outline mb-4">
@@ -89,6 +93,16 @@
                           type="text"
                           id="quantity"
                           name="quantity"
+                          class="form-control form-control"
+                          required
+                        />
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="image">Image</label
+                        ><input
+                          type="file"
+                          id="image"
+                          name="image"
                           class="form-control form-control"
                           required
                         />

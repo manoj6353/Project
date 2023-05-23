@@ -40,6 +40,7 @@ model subcategories {
 model products{
   id    Int     @id @default(autoincrement())
   productName String
+  image String @db.Text
   quantity String
   price String
   productdetails String @db.Text

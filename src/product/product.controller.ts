@@ -9,10 +9,18 @@ import {
   Render,
   Redirect,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  editFileName,
+  imageFileFilter,
+} from './middleware/filefilter.middleware';
+import { diskStorage } from 'multer';
 
 @Controller('product')
 export class ProductController {
@@ -33,8 +41,20 @@ export class ProductController {
 
   @Post()
   @Redirect('/product')
-  async create(@Body() createProductDto: CreateProductDto) {
-    return await this.productService.create(createProductDto);
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './images',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  async create(
+    @Body() createProductDto: CreateProductDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return await this.productService.create(createProductDto, file);
   }
 
   @Get()

@@ -9,16 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import {
-  ApiBearerAuth,
-  ApiCreatedResponse,
-  ApiOkResponse,
-  ApiTags,
-} from '@nestjs/swagger';
 import { ProductService } from './product/product.service';
-
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @Controller()
-@ApiTags()
 export class AppController {
   constructor(
     private readonly appService: AppService,
@@ -30,6 +23,7 @@ export class AppController {
   }
 
   @Get()
+  // @UseGuards(JwtAuthGuard)
   @Render('index')
   async findAll() {
     const data = await this.productService.findAll();

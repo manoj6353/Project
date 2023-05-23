@@ -1,17 +1,41 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Header,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Request,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { JwtAuthGuard } from './jwt-auth.guard';
 import { AuthService } from './auth.service';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { AuthEntity } from './entities/auth.entity';
 import { LoginDto } from './dto/create-auth.dto';
-
+import { HttpServiceInterceptor } from './headerset';
+import { LocalStorage } from 'node-localstorage';
+import { AuthGuard } from '@nestjs/passport';
+global.localStorage = new LocalStorage('./scratch');
 @Controller('auth')
-@ApiTags('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
+  @HttpCode(HttpStatus.OK)
   @Post('login')
-  @ApiOkResponse({ type: AuthEntity })
-  login(@Body() { email, password }: LoginDto) {
-    return this.authService.login(email, password);
+  async login(@Body() { email, password }: LoginDto) {
+    const token = await this.authService.login(email, password);
+    localStorage.setItem('id', token.accessToken);
+    return token;
+  }
+
+  @Header('authorization', localStorage.getItem('id'))
+  @UseGuards(JwtAuthGuard)
+  // @UseInterceptors(HttpServiceInterceptor)
+  @Get('profile')
+  getProfile(@Request() req) {
+    console.log('---------------------');
+
+    return req.user;
   }
 }
