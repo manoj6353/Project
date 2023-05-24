@@ -78,10 +78,12 @@ async function login() {
       body: JSON.stringify({ email, password }),
     });
     const data = await results.json();
-    if (data.message && data.statusCode == 404) {
+    console.log(data);
+    if (data.message) {
       error.innerHTML = data.message;
     } else if (data.accessToken) {
       localStorage.setItem('id', data.accessToken);
+      window.location.href = '/';
     }
   }
 }
@@ -93,13 +95,18 @@ async function remove(id) {
     });
     const data = await results.json();
     window.location.reload();
+  } else {
+    return false;
   }
 }
 
-function total(tot) {
+async function total(tot, id) {
   if (tot.value <= 0) {
-    alert('Quantity must be 1 or more');
-    tot.value = 1;
+    const data = await remove(id);
+    if (data == false) {
+      alert('Quantity must be 1 or more');
+      tot.value = 1;
+    }
   } else {
     const Quantity = document.querySelectorAll('.quantity');
     const Price = document.querySelectorAll('.price');
@@ -111,5 +118,27 @@ function total(tot) {
       s += total;
     }
     checkout.innerHTML += s;
+    const quantity = tot.value;
+    const result = await fetch(`/addtocart/` + id, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ quantity }),
+    });
+    const data = await result.json();
   }
+}
+
+function tap() {
+  const Quantity = document.querySelectorAll('.quantity');
+  const Price = document.querySelectorAll('.price');
+  const checkout = document.getElementById('checkout');
+  checkout.innerHTML = '';
+  let s = 0;
+  for (let i = 0; i < Quantity.length; i++) {
+    let total = Quantity[i].value * Price[i].innerHTML;
+    s += total;
+  }
+  checkout.innerHTML += s;
 }

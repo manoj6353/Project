@@ -191,6 +191,8 @@ model orders {
   userId Int
   products products @relation(fields: [productId], references: [id])
   productId Int
+  quantity String
+  price String
   createdAt  DateTime @default(now())
   updatedAt DateTime @default(now())
   deletedAt DateTime?
@@ -206,7 +208,7 @@ model addtocarts {
 
   products products @relation(fields: [productId], references: [id])
   productId Int
-  
+  quantity String
   createdAt  DateTime @default(now())
   updatedAt DateTime @default(now())
   deletedAt DateTime?

@@ -18,6 +18,7 @@ export class AddtocartService {
       data: {
         productId: productId,
         userId: UserId,
+        quantity: '1',
       },
     });
   }
@@ -35,6 +36,7 @@ export class AddtocartService {
         id: true,
         userId: true,
         productId: true,
+        quantity: true,
         products: {
           select: {
             productName: true,
@@ -56,8 +58,13 @@ export class AddtocartService {
     });
   }
 
-  update(id: number, updateAddtocartDto: UpdateAddtocartDto) {
-    return `This action updates a #${id} addtocart`;
+  async update(id: number, updateAddtocartDto) {
+    return await prisma.addtocarts.update({
+      where: { id: id },
+      data: {
+        quantity: updateAddtocartDto.quantity,
+      },
+    });
   }
 
   async remove(id: number) {

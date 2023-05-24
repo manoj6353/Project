@@ -14,7 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
   </head>
-  <body>
+  <body onload="tap()">
     <%- include('header'); -%>
     <table id="myTable" class="display">
       <thead>
@@ -37,10 +37,13 @@
             <input
               type="number"
               style="width: 4rem"
-              value="1"
+              value="<%=d.quantity%>"
               class="quantity"
               minlength="1"
-              onchange="total(this)"
+              name="quantity"
+              id="quantity"
+              onchange="total(this,'<%=d.id%>')"
+              onblur="total(this,'<%=d.id%>')"
             />
           </td>
           <td class="price"><%= d.products.price %></td>
@@ -51,7 +54,7 @@
     </table>
     <div class="Checkout">
       <p>Total price is</p>
-      <span class="Checkout" id="checkout"></span>
+      <span class="Checkout" id="checkout">0</span>
     </div>
   </body>
   <script>

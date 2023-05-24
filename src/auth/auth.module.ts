@@ -5,9 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module';
 import { JwtStrategy } from './jwt.strategy';
-import { HttpModule } from '@nestjs/axios';
-
-export const jwtSecret = 'ecommercejwt';
+export const jwtSecret = 'zjP9h6ZI5LoSKCRj';
 
 @Module({
   imports: [
@@ -17,7 +15,6 @@ export const jwtSecret = 'ecommercejwt';
       signOptions: { expiresIn: '5m' },
     }),
     UserModule,
-    HttpModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
