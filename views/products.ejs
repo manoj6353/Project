@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleafe.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Products</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/add.css" />
+  </head>
+  <body onload="token()">
+    <%- include('header') %>
+    <section class="bg-image mt-5">
+      <div class="d-flex align-items-center">
+        <div class="container">
+          <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+              <div class="card" style="border-radius: 15px">
+                <div class="card-body p-5">
+                  <legend class="text-center">Products Details</legend>
+                  <form
+                    action="/product"
+                    method="post"
+                    enctype="multipart/form-data"
+                  >
+                    <hr />
+                    <div class="tab">
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="categoryName"
+                          >Category Name</label
+                        >
+                        <select
+                          class="form-select"
+                          id="categoryName"
+                          name="categoryId"
+                          required
+                          onchange="subCategory()"
+                        >
+                          <% category.forEach(d => { %>
+                          <option id="<%=d.id%>" value="<%=d.id%>">
+                            <%=d.categoryName%>
+                          </option>
+                          <% }); %>
+                        </select>
+                        <script>
+                          async function subCategory() {
+                            const id =
+                              document.querySelector('#categoryName').value;
+                            const result = await fetch(
+                              '/product/subcategory/' + id,
+                            );
+                            const data = await result.json();
+                            let opt = '';
+                            let subcategory =
+                              document.getElementById('subCategoryName');
+                            data.forEach((d) => {
+                              opt += `<option value='${d.id}'>${d.subCategoryName}</option>`;
+                              subcategory.innerHTML = opt;
+                            });
+                            console.log(data);
+                          }
+                        </script>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="subCategoryName"
+                          >Sub-Category Name</label
+                        >
+                        <select
+                          class="form-select"
+                          id="subCategoryName"
+                          name="subCategoryId"
+                          required
+                        ></select>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="ProductsName"
+                          >Product Name</label
+                        ><input
+                          type="text"
+                          id="productName"
+                          name="productName"
+                          class="form-control form-control"
+                          required
+                        />
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="quantity">Quantity</label
+                        ><input
+                          type="text"
+                          id="quantity"
+                          name="quantity"
+                          class="form-control form-control"
+                          required
+                        />
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="image">Image</label
+                        ><input
+                          type="file"
+                          id="image"
+                          name="image"
+                          class="form-control form-control"
+                          required
+                        />
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="price"
+                          >Price(Per Quantity)</label
+                        ><input
+                          type="text"
+                          id="price"
+                          name="price"
+                          class="form-control form-control"
+                          required
+                        />
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="productdetails"
+                          >Product Details</label
+                        >
+                        <textarea
+                          rows="3"
+                          id="productdetails"
+                          name="productdetails"
+                          class="form-control form-control"
+                          required
+                        ></textarea>
+                      </div>
+                      <div class="">
+                        <input
+                          type="submit"
+                          class="btn btn-light"
+                          value="SUBMIT"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/js/index.js"></script>
+  </body>
+</html>

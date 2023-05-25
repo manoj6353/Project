@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/add.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  </head>
+  <body onload="token()">
+    <%- include('header'); -%>
+    <table id="myTable" class="display">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Product Name</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Category Name</th>
+          <th>Sub-Category Name</th>
+          <th>Product Details</th>
+          <th>Created Date</th>
+        </tr>
+      </thead>
+      <tbody id="data">
+        <% data.forEach(d=> { %>
+        <tr>
+          <td><%= d.id %></td>
+          <td><%= d.productName %></td>
+          <td><%= d.quantity %></td>
+          <td><%= d.price %></td>
+          <td><%= d.categories.categoryName %></td>
+          <td><%= d.subcategories.subCategoryName %></td>
+          <td><%= d.productdetails %></td>
+          <td><%= (new Date(d.createdAt).toLocaleDateString()) %></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </body>
+  <script>
+    let response;
+    $(document).ready(function () {
+      $('#myTable').DataTable();
+    });
+  </script>
+  <script src="/js/index.js"></script>
+</html>

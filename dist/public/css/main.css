@@ -1,0 +1,16 @@
+body {
+  text-align: center;
+}
+td,
+th {
+  border: 1px solid #777;
+  padding: 0.5rem;
+  text-align: center;
+}
+table {
+  border-collapse: collapse;
+  width: 40rem;
+}
+tbody tr:nth-child(odd) {
+  background: rgb(234, 229, 229);
+}
