@@ -19,7 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:run": "npx prisma migrate dev --name init",
-    "role:seed": "ts-node prisma/role-seed.ts"
+    "role:seed": "ts-node prisma/role-seed.ts",
+    "superadmin:seed": "ts-node prisma/superAdmin-seed.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^2.0.0",
@@ -55,8 +56,8 @@
     "typeorm": "^0.3.16"
   },
   "devDependencies": {
-    "@nestjs/cli": "^9.0.0",
-    "@nestjs/schematics": "^9.0.0",
+    "@nestjs/cli": "^8.2.6",
+    "@nestjs/schematics": "^9.2.0",
     "@nestjs/testing": "^9.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",

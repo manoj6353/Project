@@ -9,7 +9,6 @@ import {
   Render,
   Redirect,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
@@ -22,7 +21,6 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/index')
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Render('registration')
   async fetchCountry(@Req() req) {
@@ -52,7 +50,6 @@ export class UserController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   findAll() {
     return this.userService.findAll();

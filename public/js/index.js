@@ -84,36 +84,35 @@ async function login() {
     } else if (data.accessToken) {
       localStorage.setItem('id', data.accessToken);
       console.log('in login page');
-      const tokens = await token();
-      // window.location.href = '/';
+      window.location.href = '/';
     }
   }
 }
 
-async function token() {
-  let accessToken = localStorage.getItem('id');
-  console.log(accessToken);
-  const path = window.location.href;
-  let urls = document.createElement('a');
-  urls.href = path;
-  const url = urls.pathname;
+// async function token() {
+//   let accessToken = localStorage.getItem('id');
+//   console.log(accessToken);
+//   const path = window.location.href;
+//   let urls = document.createElement('a');
+//   urls.href = path;
+//   const url = urls.pathname;
 
-  console.log(url);
-  if (accessToken) {
-    const results = await fetch(`/auth/authenticate`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ accessToken, url }),
-    });
-    const data = await results.json();
-    console.log('in fetch accessToken', data);
-    return accessToken;
-  } else {
-    window.location.replace('/login');
-  }
-}
+//   console.log(url);
+//   if (accessToken) {
+//     const results = await fetch(`/auth/authenticate`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ accessToken, url }),
+//     });
+//     const data = await results.json();
+//     console.log('in fetch accessToken', data);
+//     return accessToken;
+//   } else {
+//     window.location.replace('/login');
+//   }
+// }
 
 async function remove(id) {
   if (confirm('Are you sure you want to delete')) {
@@ -168,4 +167,18 @@ function tap() {
     s += total;
   }
   checkout.innerHTML += s;
+  token();
+}
+
+async function token() {
+  let token = localStorage.getItem('id');
+  if (token) {
+    return true;
+  } else {
+    window.location.replace('/login');
+  }
+}
+
+async function order() {
+  const address = await fetch('/order');
 }

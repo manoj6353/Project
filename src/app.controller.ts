@@ -6,7 +6,6 @@ import {
   Post,
   Redirect,
   Render,
-  UseGuards,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ProductService } from './product/product.service';

@@ -8,7 +8,6 @@ import {
   Delete,
   Render,
   Redirect,
-  UseGuards,
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
@@ -30,7 +29,6 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get('/add')
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Render('products')
   async addproducts() {
@@ -45,7 +43,6 @@ export class ProductController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Redirect('/product')
   @UseInterceptors(
@@ -65,7 +62,6 @@ export class ProductController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Render('productshow')
   async findAll() {
