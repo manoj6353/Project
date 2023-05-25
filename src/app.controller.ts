@@ -23,7 +23,6 @@ export class AppController {
   }
 
   @Get()
-  // @UseGuards(JwtAuthGuard)
   @Render('index')
   async findAll() {
     const data = await this.productService.findAll();

@@ -30,4 +30,25 @@ export class AuthService {
       accessToken: await this.jwtService.sign({ id: user.id }),
     };
   }
+  async verifytoken(accessToken: string, url: string): Promise<any> {
+    const isAdmin = url.includes('admin');
+    const { id } = await this.jwtService.verify(accessToken);
+    const user = await prisma.users.findUnique({ where: { id: id } });
+    console.log(user);
+
+    if (!user) {
+      throw new NotFoundException(`Please check your email and password`);
+    } else {
+      if (isAdmin && user.roleId == 1) {
+        return true;
+      } else {
+        if (!isAdmin && user.roleId == 2) {
+          return true;
+        }
+        return false;
+      }
+    }
+
+    return false;
+  }
 }

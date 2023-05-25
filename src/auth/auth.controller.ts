@@ -11,8 +11,9 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/create-auth.dto';
 import { LocalStorage } from 'node-localstorage';
-global.localStorage = new LocalStorage('./scratch');
 import { AuthEntity } from './entities/auth.entity';
+import { Auth } from './dto/auth.dto';
+global.localStorage = new LocalStorage('./scratch');
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
@@ -26,11 +27,9 @@ export class AuthController {
     return token;
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    console.log('---------------------');
-
-    return req.user;
+  @Post('/authenticate')
+  async getProfile(@Body() { accessToken, url }: Auth) {
+    const token = await this.authService.verifytoken(accessToken, url);
+    return 'manoj';
   }
 }
