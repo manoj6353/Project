@@ -22,11 +22,7 @@
               <div class="card" style="border-radius: 15px">
                 <div class="card-body p-5">
                   <legend class="text-center">Address</legend>
-                  <form
-                    action="/addresses"
-                    method="post"
-                    enctype="multipart/form-data"
-                  >
+                  <form action="/addresses" method="POST">
                     <hr />
                     <div class="tab">
                       <div class="form-outline mb-4">
@@ -91,7 +87,7 @@
                         ><input
                           type="text"
                           id="pincode"
-                          name="pincode"
+                          name="pinCode"
                           class="form-control form-control"
                           required
                         />

@@ -8,16 +8,13 @@ import {
   Delete,
   Render,
   Redirect,
-  UseGuards,
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   editFileName,
   imageFileFilter,
@@ -25,13 +22,10 @@ import {
 import { diskStorage } from 'multer';
 
 @Controller('product')
-@ApiTags('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get('/add')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @Render('products')
   async addproducts() {
     const category = await this.productService.fetchcategory();
@@ -45,8 +39,6 @@ export class ProductController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @Redirect('/product')
   @UseInterceptors(
     FileInterceptor('image', {
@@ -65,8 +57,6 @@ export class ProductController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @Render('productshow')
   async findAll() {
     const data = await this.productService.findAll();

@@ -1,7 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAddressDto } from './dto/create-address.dto';
-import { UpdateAddressDto } from './dto/update-address.dto';
-import { PrismaClient } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { UpdateAddressDto } from "./dto/update-address.dto";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 @Injectable()
@@ -39,15 +38,19 @@ export class AddressesService {
   }
 
   async create(createAddressDto) {
-    console.log('----', createAddressDto);
-    return;
-
-    // return await prisma.addresses.create({
-    //   data: {
-    //     ...createAddressDto,
-    //     userId: 1,
-    //   },
-    // });
+    const { countryId, stateId, cityId, ...address } = await createAddressDto;
+    const countryid = parseInt(countryId);
+    const stateid = parseInt(stateId);
+    const cityid = parseInt(cityId);
+    return await prisma.addresses.create({
+      data: {
+        ...address,
+        countryId: countryid,
+        stateId: stateid,
+        cityId: cityid,
+        userId: 1,
+      },
+    });
   }
 
   findAll() {
@@ -55,7 +58,31 @@ export class AddressesService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} address`;
+    return prisma.addresses.findMany({
+      where: { userId: id },
+      select: {
+        id: true,
+        address1: true,
+        address2: true,
+        userId: true,
+        pinCode: true,
+        countries: {
+          select: {
+            name: true,
+          },
+        },
+        states: {
+          select: {
+            name: true,
+          },
+        },
+        cities: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
   }
 
   update(id: number, updateAddressDto: UpdateAddressDto) {

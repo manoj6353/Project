@@ -17,7 +17,7 @@ export class UserService {
           ...users,
           age: userage,
           password: bcrypt.hashSync(password, 11),
-          roleId: 2,
+          roles: 'user',
         },
       });
       return data;

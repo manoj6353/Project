@@ -1,38 +1,39 @@
+/* eslint-disable prettier/prettier */
 async function addtocart(id) {
   const productId = id;
   const userId = 1;
   const fetchCart = await fetch(
-    `/addtocart/getcart?userId=${userId}&productId=${productId}`,
+    `/addtocart/getcart?userId=${userId}&productId=${productId}`
   );
   const { data } = await fetchCart.json();
   if (data.length > 0) {
-    alert('product already exists');
+    alert("product already exists");
   } else {
     const result = await fetch(`/addtocart`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ productId, userId }),
     });
     const data = await result.json();
     if (data) {
-      alert('product added successfully');
+      alert("product added successfully");
     }
   }
 }
 
 async function search(search) {
   const productName = search;
-  let rows = document.getElementById('rows');
-  let searchrow = document.getElementById('search');
-  searchrow.innerHTML = '';
+  let rows = document.getElementById("rows");
+  let searchrow = document.getElementById("search");
+  searchrow.innerHTML = "";
   const result = await fetch(`/product/search/` + productName);
   const data = await result.json();
 
   if (data.length > 0) {
-    rows.classList.add('active');
-    searchrow.classList.remove('active');
+    rows.classList.add("active");
+    searchrow.classList.remove("active");
     for (let d of data) {
       searchrow.innerHTML += `<div class="col-6 h-100">
         <div class="card h-100">
@@ -56,24 +57,24 @@ async function search(search) {
       </div>`;
     }
   } else {
-    rows.classList.remove('active');
-    searchrow.classList.add('active');
+    rows.classList.remove("active");
+    searchrow.classList.add("active");
   }
 }
 
 async function login() {
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const form = document.getElementById('loginForm');
-  let error = document.getElementById('fullError');
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const form = document.getElementById("loginForm");
+  let error = document.getElementById("fullError");
 
-  if (email == '' && password == '') {
-    error.innerHTML = 'Please fill the Form';
+  if (email == "" && password == "") {
+    error.innerHTML = "Please fill the Form";
   } else {
     const results = await fetch(`/auth/login`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
@@ -82,9 +83,9 @@ async function login() {
     if (data.message) {
       error.innerHTML = data.message;
     } else if (data.accessToken) {
-      localStorage.setItem('id', data.accessToken);
-      console.log('in login page');
-      window.location.href = '/';
+      localStorage.setItem("id", data.accessToken);
+      console.log("in login page");
+      window.location.href = "/";
     }
   }
 }
@@ -115,9 +116,9 @@ async function login() {
 // }
 
 async function remove(id) {
-  if (confirm('Are you sure you want to delete')) {
+  if (confirm("Are you sure you want to delete")) {
     const results = await fetch(`/addtocart/` + id, {
-      method: 'DELETE',
+      method: "DELETE",
     });
     const data = await results.json();
     window.location.reload();
@@ -130,14 +131,14 @@ async function total(tot, id) {
   if (tot.value <= 0) {
     const data = await remove(id);
     if (data == false) {
-      alert('Quantity must be 1 or more');
+      alert("Quantity must be 1 or more");
       tot.value = 1;
     }
   } else {
-    const Quantity = document.querySelectorAll('.quantity');
-    const Price = document.querySelectorAll('.price');
-    const checkout = document.getElementById('checkout');
-    checkout.innerHTML = '';
+    const Quantity = document.querySelectorAll(".quantity");
+    const Price = document.querySelectorAll(".price");
+    const checkout = document.getElementById("checkout");
+    checkout.innerHTML = "";
     let s = 0;
     for (let i = 0; i < Quantity.length; i++) {
       let total = Quantity[i].value * Price[i].innerHTML;
@@ -146,9 +147,9 @@ async function total(tot, id) {
     checkout.innerHTML += s;
     const quantity = tot.value;
     const result = await fetch(`/addtocart/` + id, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ quantity }),
     });
@@ -157,10 +158,10 @@ async function total(tot, id) {
 }
 
 function tap() {
-  const Quantity = document.querySelectorAll('.quantity');
-  const Price = document.querySelectorAll('.price');
-  const checkout = document.getElementById('checkout');
-  checkout.innerHTML = '';
+  const Quantity = document.querySelectorAll(".quantity");
+  const Price = document.querySelectorAll(".price");
+  const checkout = document.getElementById("checkout");
+  checkout.innerHTML = "";
   let s = 0;
   for (let i = 0; i < Quantity.length; i++) {
     let total = Quantity[i].value * Price[i].innerHTML;
@@ -171,15 +172,36 @@ function tap() {
 }
 
 async function token() {
-  let token = localStorage.getItem('id');
+  let token = localStorage.getItem("id");
   if (token) {
     return true;
   } else {
-    window.location.replace('/login');
+    window.location.replace("/login");
   }
 }
 
 async function order() {
-  window.location.href = '/addresses/add';
-  // const address = await fetch('/addresses/add');
+  const id = 1;
+  const results = await fetch(`/addresses/${id}`);
+  const data = await results.json();
+  if (data.length != 0) {
+    let address = document.getElementById("address");
+    let addresses = "";
+    data.forEach((d) => {
+      addresses += `<span>${d.address1} ${d.address2},${d.cities.name},${d.states.name},${d.countries.name},${d.pinCode} <a onclick="addressedit(${d.id})">Edit</a></span>`;
+    });
+    address.innerHTML = addresses;
+  } else {
+    window.location.href = "/addresses/add";
+  }
+}
+
+async function addressedit(id) {
+  const result = await fetch(`/addresses/${id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(),
+  });
 }

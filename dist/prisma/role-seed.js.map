@@ -1,1 +1,0 @@
-{"version":3,"file":"role-seed.js","sourceRoot":"","sources":["../../prisma/role-seed.ts"],"names":[],"mappings":";;AAAA,2CAA8C;AAC9C,MAAM,MAAM,GAAG,IAAI,qBAAY,EAAE,CAAC;AAClC,KAAK,UAAU,IAAI;IACjB,MAAM,IAAI,GAAG,MAAM,MAAM,CAAC,KAAK,CAAC,MAAM,CAAC;QACrC,IAAI,EAAE;YACJ,IAAI,EAAE,MAAM;SACb;KACF,CAAC,CAAC;AACL,CAAC;AAED,IAAI,EAAE,CAAC"}

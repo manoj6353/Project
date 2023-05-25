@@ -27,6 +27,8 @@ export class AddtocartController {
     @Query('userId') userId: string,
     @Query('productId') productId: string,
   ) {
+    console.log('mnsdgsdg', userId, productId);
+
     const data = await this.addtocartService.getcart(+userId, +productId);
     return { data };
   }
