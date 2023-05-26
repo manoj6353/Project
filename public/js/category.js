@@ -8,7 +8,7 @@ async function editCategory(id) {
     const ans = await result.json();
     if (ans) {
       let dialogue = document.querySelector(".dialogue");
-      let text = document.getElementById("text");
+      let text = document.getElementById("categoryName");
       let id = document.getElementById("id");
       id.value = ans.id;
       text.value = ans.categoryName;
