@@ -9,6 +9,7 @@ import {
   Delete,
   Req,
   Render,
+  Redirect,
 } from "@nestjs/common";
 import { AddressesService } from "./addresses.service";
 import { CreateAddressDto } from "./dto/create-address.dto";
@@ -18,6 +19,7 @@ export class AddressesController {
   constructor(private readonly addressesService: AddressesService) {}
 
   @Post()
+  @Redirect("/addtocart")
   create(@Body() createAddressDto: CreateAddressDto) {
     return this.addressesService.create(createAddressDto);
   }

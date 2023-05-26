@@ -20,23 +20,23 @@ const create_auth_dto_1 = require("./dto/create-auth.dto");
 const node_localstorage_1 = require("node-localstorage");
 const auth_entity_1 = require("./entities/auth.entity");
 const auth_dto_1 = require("./dto/auth.dto");
-global.localStorage = new node_localstorage_1.LocalStorage('./scratch');
+global.localStorage = new node_localstorage_1.LocalStorage("./scratch");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
     async login({ email, password }) {
         const token = await this.authService.login(email, password);
-        localStorage.setItem('id', token.accessToken);
+        localStorage.setItem("id", token.accessToken);
         return token;
     }
     async getProfile({ accessToken, url }) {
         const token = await this.authService.verifytoken(accessToken, url);
-        return 'manoj';
+        return "manoj";
     }
 };
 __decorate([
-    (0, common_1.Post)('/login'),
+    (0, common_1.Post)("/login"),
     (0, swagger_1.ApiOkResponse)({ type: auth_entity_1.AuthEntity }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -44,15 +44,15 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, common_1.Post)('/authenticate'),
+    (0, common_1.Post)("/authenticate"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [auth_dto_1.Auth]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getProfile", null);
 AuthController = __decorate([
-    (0, common_1.Controller)('auth'),
-    (0, swagger_1.ApiTags)('auth'),
+    (0, common_1.Controller)("auth"),
+    (0, swagger_1.ApiTags)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 exports.AuthController = AuthController;

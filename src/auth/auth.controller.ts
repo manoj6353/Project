@@ -1,27 +1,27 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { AuthService } from './auth.service';
-import { LoginDto } from './dto/create-auth.dto';
-import { LocalStorage } from 'node-localstorage';
-import { AuthEntity } from './entities/auth.entity';
-import { Auth } from './dto/auth.dto';
-global.localStorage = new LocalStorage('./scratch');
-@Controller('auth')
-@ApiTags('auth')
+import { Body, Controller, Post } from "@nestjs/common";
+import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
+import { AuthService } from "./auth.service";
+import { LoginDto } from "./dto/create-auth.dto";
+import { LocalStorage } from "node-localstorage";
+import { AuthEntity } from "./entities/auth.entity";
+import { Auth } from "./dto/auth.dto";
+global.localStorage = new LocalStorage("./scratch");
+@Controller("auth")
+@ApiTags("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('/login')
+  @Post("/login")
   @ApiOkResponse({ type: AuthEntity })
   async login(@Body() { email, password }: LoginDto) {
     const token = await this.authService.login(email, password);
-    localStorage.setItem('id', token.accessToken);
+    localStorage.setItem("id", token.accessToken);
     return token;
   }
 
-  @Post('/authenticate')
+  @Post("/authenticate")
   async getProfile(@Body() { accessToken, url }: Auth) {
     const token = await this.authService.verifytoken(accessToken, url);
-    return 'manoj';
+    return "manoj";
   }
 }

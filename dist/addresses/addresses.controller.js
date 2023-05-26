@@ -57,6 +57,7 @@ let AddressesController = class AddressesController {
 };
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.Redirect)("/addtocart"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_address_dto_1.CreateAddressDto]),

@@ -1,4 +1,3 @@
-import { UpdateSubcategoryDto } from "./dto/update-subcategory.dto";
 export declare class SubcategoryService {
     create(createSubcategoryDto: any): import(".prisma/client").Prisma.Prisma__subcategoriesClient<import(".prisma/client").subcategories, never>;
     fetchcategory(): import(".prisma/client").Prisma.PrismaPromise<{
@@ -13,7 +12,11 @@ export declare class SubcategoryService {
         };
         id: number;
     }[]>;
-    findOne(id: number): string;
-    update(id: number, updateSubcategoryDto: UpdateSubcategoryDto): string;
+    findOne(id: number): Promise<{
+        subCategoryName: string;
+        id: number;
+        categoryId: number;
+    }>;
+    update(updateSubcategoryDto: any): import(".prisma/client").Prisma.Prisma__subcategoriesClient<import(".prisma/client").subcategories, never>;
     remove(id: number): Promise<import(".prisma/client").subcategories>;
 }

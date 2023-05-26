@@ -85,11 +85,18 @@
       </form>
     </div>
     <div class="dialogue">
-      <form action="/subcategory/add" method="POST">
+      <form action="/subcategory/update" method="POST">
         <p>Category Name</p>
+        <input
+          class="text"
+          id="subcategoryid"
+          type="hidden"
+          name="id"
+          value=""
+        />
         <select
           class="form-select"
-          id="categoryName"
+          id="subcategoryName"
           name="categoryId"
           required
         ></select
@@ -97,13 +104,13 @@
         <p>SubCategory Name</p>
         <input
           class="text"
-          id="text"
+          id="subCategoryName"
           type="text"
           name="subCategoryName"
           required
         />
         <br />
-        <input type="submit" class="yes input" value="Add" />
+        <input type="submit" class="yes input" value="Update" />
         <botton class="no input">Cancel</botton>
       </form>
     </div>

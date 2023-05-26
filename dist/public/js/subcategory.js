@@ -50,14 +50,29 @@ dialogue.style.display = "none";
 async function editsubCategory(id) {
   try {
     document.getElementById("overlay").style.display = "block";
-    const result = await fetch(`/category/${id}`);
+    const result = await fetch(`/subcategory/${id}`);
     const ans = await result.json();
     if (ans) {
       let dialogue = document.querySelector(".dialogue");
-      let text = document.getElementById("text");
-      let id = document.getElementById("id");
+      let text = document.getElementById("subCategoryName");
+      let id = document.getElementById("subcategoryid");
       id.value = ans.id;
-      text.value = ans.categoryName;
+      text.value = ans.subCategoryName;
+      const result = await fetch("/subcategory/add");
+      const { data } = await result.json();
+      let category = document.getElementById("subcategoryName");
+      let add = "";
+      data.forEach((d) => {
+        if (d.id == ans.categoryId) {
+          add += `<option id="${d.id}" value="${d.id}" selected>
+                ${d.categoryName}</option>`;
+        } else {
+          add += `<option id="${d.id}" value="${d.id}">
+                ${d.categoryName}</option>`;
+        }
+      });
+      category.innerHTML = add;
+
       let yesButton = dialogue.querySelector(".yes");
       let noButton = dialogue.querySelector(".no");
       yesButton.addEventListener("click", async function () {

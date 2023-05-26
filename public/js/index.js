@@ -219,5 +219,3 @@ async function addressdelete(id) {
 async function add() {
   window.location.href = "/addresses/add";
 }
-
-

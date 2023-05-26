@@ -41,12 +41,10 @@ export class SubcategoryController {
     return this.subcategoryService.findOne(+id);
   }
 
-  @Patch(":id")
-  update(
-    @Param("id") id: string,
-    @Body() updateSubcategoryDto: UpdateSubcategoryDto
-  ) {
-    return this.subcategoryService.update(+id, updateSubcategoryDto);
+  @Post("/update")
+  @Redirect("/subcategory")
+  update(@Body() updateSubcategoryDto: UpdateSubcategoryDto) {
+    return this.subcategoryService.update(updateSubcategoryDto);
   }
 
   @Delete(":id")

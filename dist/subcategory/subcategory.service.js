@@ -48,11 +48,28 @@ let SubcategoryService = class SubcategoryService {
             },
         });
     }
-    findOne(id) {
-        return `This action returns a #${id} subcategory`;
+    async findOne(id) {
+        return await prisma.subcategories.findFirst({
+            where: { id: id, deletedAt: null },
+            select: {
+                id: true,
+                categoryId: true,
+                subCategoryName: true,
+            },
+        });
     }
-    update(id, updateSubcategoryDto) {
-        return `This action updates a #${id} subcategory`;
+    update(updateSubcategoryDto) {
+        console.log("===========", updateSubcategoryDto);
+        const { id, categoryId, subCategoryName } = updateSubcategoryDto;
+        const ids = parseInt(id);
+        const categoryid = parseInt(categoryId);
+        return prisma.subcategories.update({
+            where: { id: ids },
+            data: {
+                subCategoryName: subCategoryName,
+                categoryId: categoryid,
+            },
+        });
     }
     async remove(id) {
         return await prisma.subcategories.update({

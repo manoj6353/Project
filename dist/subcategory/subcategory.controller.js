@@ -35,8 +35,8 @@ let SubcategoryController = class SubcategoryController {
     findOne(id) {
         return this.subcategoryService.findOne(+id);
     }
-    update(id, updateSubcategoryDto) {
-        return this.subcategoryService.update(+id, updateSubcategoryDto);
+    update(updateSubcategoryDto) {
+        return this.subcategoryService.update(updateSubcategoryDto);
     }
     async remove(id) {
         return await this.subcategoryService.remove(+id);
@@ -71,11 +71,11 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], SubcategoryController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(":id"),
-    __param(0, (0, common_1.Param)("id")),
-    __param(1, (0, common_1.Body)()),
+    (0, common_1.Post)("/update"),
+    (0, common_1.Redirect)("/subcategory"),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_subcategory_dto_1.UpdateSubcategoryDto]),
+    __metadata("design:paramtypes", [update_subcategory_dto_1.UpdateSubcategoryDto]),
     __metadata("design:returntype", void 0)
 ], SubcategoryController.prototype, "update", null);
 __decorate([
