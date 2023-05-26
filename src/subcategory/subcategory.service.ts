@@ -31,6 +31,7 @@ export class SubcategoryService {
 
   async findAll() {
     return await prisma.subcategories.findMany({
+      where: { deletedAt: null },
       select: {
         id: true,
         subCategoryName: true,
@@ -52,7 +53,12 @@ export class SubcategoryService {
     return `This action updates a #${id} subcategory`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} subcategory`;
+  async remove(id: number) {
+    return await prisma.subcategories.update({
+      where: { id: id },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
   }
 }

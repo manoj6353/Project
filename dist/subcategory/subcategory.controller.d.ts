@@ -23,5 +23,5 @@ export declare class SubcategoryController {
     }>;
     findOne(id: string): string;
     update(id: string, updateSubcategoryDto: UpdateSubcategoryDto): string;
-    remove(id: string): string;
+    remove(id: string): Promise<import(".prisma/client").subcategories>;
 }

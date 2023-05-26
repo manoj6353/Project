@@ -76,7 +76,30 @@
           class="text"
           id="text"
           type="text"
-          name="categoryName"
+          name="subCategoryName"
+          required
+        />
+        <br />
+        <input type="submit" class="yes input" value="Add" />
+        <botton class="no input">Cancel</botton>
+      </form>
+    </div>
+    <div class="dialogue">
+      <form action="/subcategory/add" method="POST">
+        <p>Category Name</p>
+        <select
+          class="form-select"
+          id="categoryName"
+          name="categoryId"
+          required
+        ></select
+        ><br />
+        <p>SubCategory Name</p>
+        <input
+          class="text"
+          id="text"
+          type="text"
+          name="subCategoryName"
           required
         />
         <br />
@@ -90,13 +113,6 @@
     $(document).ready(function () {
       $("#myTable").DataTable();
     });
-    async function categorydelete(categoryId) {
-      const id = categoryId;
-      const result = await fetch(`/category/  ` + id, {
-        method: "DELETE",
-      });
-      const data = await result.json();
-    }
   </script>
   <script src="/js/index.js"></script>
   <script src="/js/subcategory.js"></script>

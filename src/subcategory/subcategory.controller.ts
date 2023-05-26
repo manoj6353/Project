@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Render,
+  Redirect,
 } from "@nestjs/common";
 import { SubcategoryService } from "./subcategory.service";
 import { CreateSubcategoryDto } from "./dto/create-subcategory.dto";
@@ -23,6 +24,7 @@ export class SubcategoryController {
   }
 
   @Post()
+  @Redirect("/subcategory")
   create(@Body() createSubcategoryDto: CreateSubcategoryDto) {
     return this.subcategoryService.create(createSubcategoryDto);
   }
@@ -48,7 +50,7 @@ export class SubcategoryController {
   }
 
   @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.subcategoryService.remove(+id);
+  async remove(@Param("id") id: string) {
+    return await this.subcategoryService.remove(+id);
   }
 }

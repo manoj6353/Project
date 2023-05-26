@@ -38,8 +38,8 @@ let SubcategoryController = class SubcategoryController {
     update(id, updateSubcategoryDto) {
         return this.subcategoryService.update(+id, updateSubcategoryDto);
     }
-    remove(id) {
-        return this.subcategoryService.remove(+id);
+    async remove(id) {
+        return await this.subcategoryService.remove(+id);
     }
 };
 __decorate([
@@ -50,6 +50,7 @@ __decorate([
 ], SubcategoryController.prototype, "addproducts", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.Redirect)("/subcategory"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_subcategory_dto_1.CreateSubcategoryDto]),
@@ -82,7 +83,7 @@ __decorate([
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], SubcategoryController.prototype, "remove", null);
 SubcategoryController = __decorate([
     (0, common_1.Controller)("subcategory"),
