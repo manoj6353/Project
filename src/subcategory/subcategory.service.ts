@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { CreateSubcategoryDto } from './dto/create-subcategory.dto';
-import { UpdateSubcategoryDto } from './dto/update-subcategory.dto';
+import { Injectable } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
+import { CreateSubcategoryDto } from "./dto/create-subcategory.dto";
+import { UpdateSubcategoryDto } from "./dto/update-subcategory.dto";
 const prisma = new PrismaClient();
 
 @Injectable()
@@ -29,8 +29,19 @@ export class SubcategoryService {
     }
   }
 
-  findAll() {
-    return `This action returns all subcategory`;
+  async findAll() {
+    return await prisma.subcategories.findMany({
+      select: {
+        id: true,
+        subCategoryName: true,
+        createdAt: true,
+        categories: {
+          select: {
+            categoryName: true,
+          },
+        },
+      },
+    });
   }
 
   findOne(id: number) {

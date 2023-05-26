@@ -40,14 +40,19 @@ let AddressesController = class AddressesController {
         return this.addressesService.findAll();
     }
     async findOne(id) {
-        const data = await this.addressesService.findOne(+id);
+        const data = await this.addressesService.findOne(id);
         return data;
     }
-    update(id, updateAddressDto) {
-        return this.addressesService.update(+id, updateAddressDto);
+    async addressid(id) {
+        const address = await this.addressesService.addressid(+id);
+        const data = await this.addressesService.fetchCountry();
+        return { address, data };
     }
-    remove(id) {
-        return this.addressesService.remove(+id);
+    update(updateAddressDto) {
+        return this.addressesService.update(updateAddressDto);
+    }
+    async remove(id) {
+        return await this.addressesService.remove(+id);
     }
 };
 __decorate([
@@ -92,11 +97,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AddressesController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(":id"),
+    (0, common_1.Get)("/address/:id"),
+    (0, common_1.Render)("editaddress"),
     __param(0, (0, common_1.Param)("id")),
-    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_address_dto_1.UpdateAddressDto]),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AddressesController.prototype, "addressid", null);
+__decorate([
+    (0, common_1.Post)("/update"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [update_address_dto_1.UpdateAddressDto]),
     __metadata("design:returntype", void 0)
 ], AddressesController.prototype, "update", null);
 __decorate([
@@ -104,7 +116,7 @@ __decorate([
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AddressesController.prototype, "remove", null);
 AddressesController = __decorate([
     (0, common_1.Controller)("addresses"),

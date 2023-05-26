@@ -14,19 +14,21 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddtocartController = void 0;
 const common_1 = require("@nestjs/common");
+const jwt_1 = require("@nestjs/jwt");
 const addtocart_service_1 = require("./addtocart.service");
-const create_addtocart_dto_1 = require("./dto/create-addtocart.dto");
 const update_addtocart_dto_1 = require("./dto/update-addtocart.dto");
 let AddtocartController = class AddtocartController {
-    constructor(addtocartService) {
+    constructor(addtocartService, jwtService) {
         this.addtocartService = addtocartService;
+        this.jwtService = jwtService;
     }
-    create(createAddtocartDto) {
-        return this.addtocartService.create(createAddtocartDto);
+    async create(userId, productId) {
+        const { id } = await this.jwtService.verify(userId);
+        return this.addtocartService.create(+id, +productId);
     }
     async getcarts(userId, productId) {
-        console.log('mnsdgsdg', userId, productId);
-        const data = await this.addtocartService.getcart(+userId, +productId);
+        const { id } = await this.jwtService.verify(userId);
+        const data = await this.addtocartService.getcart(+id, +productId);
         return { data };
     }
     findAll() {
@@ -34,7 +36,8 @@ let AddtocartController = class AddtocartController {
         return data;
     }
     async findOne(id) {
-        const data = await this.addtocartService.findOne(+id);
+        const user = await this.jwtService.verify(id);
+        const data = await this.addtocartService.findOne(+user.id);
         return { data };
     }
     update(id, updateAddtocartDto) {
@@ -47,15 +50,16 @@ let AddtocartController = class AddtocartController {
 };
 __decorate([
     (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Query)("userId")),
+    __param(1, (0, common_1.Query)("productId")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_addtocart_dto_1.CreateAddtocartDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
 ], AddtocartController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)('/getcart'),
-    __param(0, (0, common_1.Query)('userId')),
-    __param(1, (0, common_1.Query)('productId')),
+    (0, common_1.Get)("/getcart"),
+    __param(0, (0, common_1.Query)("userId")),
+    __param(1, (0, common_1.Query)("productId")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
@@ -67,31 +71,32 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AddtocartController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    (0, common_1.Render)('addtocart'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)(":id"),
+    (0, common_1.Render)("addtocart"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], AddtocartController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Patch)(":id"),
+    __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, update_addtocart_dto_1.UpdateAddtocartDto]),
     __metadata("design:returntype", void 0)
 ], AddtocartController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Delete)(":id"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], AddtocartController.prototype, "remove", null);
 AddtocartController = __decorate([
-    (0, common_1.Controller)('addtocart'),
-    __metadata("design:paramtypes", [addtocart_service_1.AddtocartService])
+    (0, common_1.Controller)("addtocart"),
+    __metadata("design:paramtypes", [addtocart_service_1.AddtocartService,
+        jwt_1.JwtService])
 ], AddtocartController);
 exports.AddtocartController = AddtocartController;
 //# sourceMappingURL=addtocart.controller.js.map

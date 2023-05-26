@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 async function addtocart(id) {
   const productId = id;
-  const userId = 1;
+  const userId = localStorage.getItem("id");
   const fetchCart = await fetch(
     `/addtocart/getcart?userId=${userId}&productId=${productId}`
   );
@@ -9,13 +9,12 @@ async function addtocart(id) {
   if (data.length > 0) {
     alert("product already exists");
   } else {
-    const result = await fetch(`/addtocart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ productId, userId }),
-    });
+    const result = await fetch(
+      `/addtocart?userId=${userId}&productId=${productId}`,
+      {
+        method: "POST",
+      }
+    );
     const data = await result.json();
     if (data) {
       alert("product added successfully");
@@ -79,12 +78,10 @@ async function login() {
       body: JSON.stringify({ email, password }),
     });
     const data = await results.json();
-    console.log(data);
     if (data.message) {
       error.innerHTML = data.message;
     } else if (data.accessToken) {
       localStorage.setItem("id", data.accessToken);
-      console.log("in login page");
       window.location.href = "/";
     }
   }
@@ -181,27 +178,46 @@ async function token() {
 }
 
 async function order() {
-  const id = 1;
+  const id = localStorage.getItem("id");
   const results = await fetch(`/addresses/${id}`);
   const data = await results.json();
   if (data.length != 0) {
     let address = document.getElementById("address");
     let addresses = "";
+    addresses += `<br><span>
+    Delivered on which address<br><hr>`;
     data.forEach((d) => {
-      addresses += `<span>${d.address1} ${d.address2},${d.cities.name},${d.states.name},${d.countries.name},${d.pinCode} <a onclick="addressedit(${d.id})">Edit</a></span>`;
+      addresses += `<input type="radio" name="address" value="${d.id}" checked>
+      ${d.address1} ${d.address2},${d.cities.name},${d.states.name},${d.countries.name},${d.pinCode} <a class="btn btn-info" href="/addresses/address/${d.id}">Edit</a>&nbsp
+      <a class="btn btn-danger" onclick="addressdelete(${d.id})">Delete</a>
+      <a class="btn btn-secondary " onclick="add()">Add new address</a>
+      </span><br><br>`;
     });
+    addresses += `<hr>`;
     address.innerHTML = addresses;
+    document.getElementById("payment").innerHTML = "Place the Order";
+    document
+      .getElementById("payment")
+      .setAttribute("onclick", `placeorder(${id})`);
   } else {
     window.location.href = "/addresses/add";
   }
 }
 
-async function addressedit(id) {
-  const result = await fetch(`/addresses/${id}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(),
-  });
+async function placeorder(id) {
+  console.log("in order", id);
 }
+
+async function addressdelete(id) {
+  const result = await fetch(`/addresses/${id}`, {
+    method: "DELETE",
+  });
+  const data = await result.json();
+  window.location.reload();
+}
+
+async function add() {
+  window.location.href = "/addresses/add";
+}
+
+

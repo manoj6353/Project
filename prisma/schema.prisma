@@ -63,15 +63,6 @@ enum Role {
   admin
 }
 
-model roles {
-  id   Int  @id @default(autoincrement())
-  role Role @default(user)
-
-  users users[]
-
-  @@map("roles")
-}
-
 model countries {
   id              Int      @id @default(autoincrement())
   name            String
@@ -151,7 +142,7 @@ model users {
   email     String
   password  String
   gender    String
-  roles     Role @default(user)
+  roles     Role      @default(user)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
   deletedAt DateTime?
@@ -190,6 +181,7 @@ model orders {
   productId Int
   quantity  String
   price     String
+  address   String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
   deletedAt DateTime?

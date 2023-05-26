@@ -13,7 +13,6 @@ import {
 import { AddressesService } from "./addresses.service";
 import { CreateAddressDto } from "./dto/create-address.dto";
 import { UpdateAddressDto } from "./dto/update-address.dto";
-
 @Controller("addresses")
 export class AddressesController {
   constructor(private readonly addressesService: AddressesService) {}
@@ -49,17 +48,25 @@ export class AddressesController {
 
   @Get(":id")
   async findOne(@Param("id") id: string) {
-    const data = await this.addressesService.findOne(+id);
+    const data = await this.addressesService.findOne(id);
     return data;
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateAddressDto: UpdateAddressDto) {
-    return this.addressesService.update(+id, updateAddressDto);
+  @Get("/address/:id")
+  @Render("editaddress")
+  async addressid(@Param("id") id: string) {
+    const address = await this.addressesService.addressid(+id);
+    const data = await this.addressesService.fetchCountry();
+    return { address, data };
+  }
+
+  @Post("/update")
+  update(@Body() updateAddressDto: UpdateAddressDto) {
+    return this.addressesService.update(updateAddressDto);
   }
 
   @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.addressesService.remove(+id);
+  async remove(@Param("id") id: string) {
+    return await this.addressesService.remove(+id);
   }
 }

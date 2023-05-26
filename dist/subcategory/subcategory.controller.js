@@ -28,8 +28,9 @@ let SubcategoryController = class SubcategoryController {
     create(createSubcategoryDto) {
         return this.subcategoryService.create(createSubcategoryDto);
     }
-    findAll() {
-        return this.subcategoryService.findAll();
+    async findAll() {
+        const data = await this.subcategoryService.findAll();
+        return { data };
     }
     findOne(id) {
         return this.subcategoryService.findOne(+id);
@@ -42,8 +43,7 @@ let SubcategoryController = class SubcategoryController {
     }
 };
 __decorate([
-    (0, common_1.Get)('/add'),
-    (0, common_1.Render)('subcategory'),
+    (0, common_1.Get)("/add"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -57,34 +57,35 @@ __decorate([
 ], SubcategoryController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.Render)("subcategoryshow"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], SubcategoryController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], SubcategoryController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Patch)(":id"),
+    __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, update_subcategory_dto_1.UpdateSubcategoryDto]),
     __metadata("design:returntype", void 0)
 ], SubcategoryController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Delete)(":id"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], SubcategoryController.prototype, "remove", null);
 SubcategoryController = __decorate([
-    (0, common_1.Controller)('subcategory'),
+    (0, common_1.Controller)("subcategory"),
     __metadata("design:paramtypes", [subcategory_service_1.SubcategoryService])
 ], SubcategoryController);
 exports.SubcategoryController = SubcategoryController;

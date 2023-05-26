@@ -27,8 +27,9 @@ let UserService = class UserService {
         try {
             const { password, age } = createUserDto, users = __rest(createUserDto, ["password", "age"]);
             const userage = parseInt(age);
+            console.log(...users);
             const data = await prisma.users.create({
-                data: Object.assign(Object.assign({}, users), { age: userage, password: bcrypt.hashSync(password, 11), roles: 'user' }),
+                data: Object.assign(Object.assign({}, users), { age: userage, password: bcrypt.hashSync(password, 11), roles: "user" }),
             });
             return data;
         }
@@ -54,10 +55,10 @@ let UserService = class UserService {
             pwd = await bcrypt.compare(password, data.password);
         }
         if (data == null) {
-            return { error: 'Please check your email and password' };
+            return { error: "Please check your email and password" };
         }
         else if (data != null && pwd == false) {
-            return { error: 'Please check your email and password' };
+            return { error: "Please check your email and password" };
         }
         else {
             return { success: data };

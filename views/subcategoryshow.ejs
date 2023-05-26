@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/add.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  </head>
+  <body onload="token()">
+    <%- include('./admin/header')%>
+    <div id="overlay"><span class="loader"></span></div>
+    <div class="container">
+      <div class="trash">
+        <a class="btn btn-success" onclick="addsubCategory()"
+          >Add SubCategory</a
+        >
+        <!-- <a class="btn btn-primary" onclick="trashdata()">Trash Category</a> -->
+      </div>
+      <br />
+      <table id="myTable" class="display">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>CategoryName</th>
+            <th>CreatedDate</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="data">
+          <% data.forEach(d=> { %>
+          <tr>
+            <td><%= d.id %></td>
+            <td><%= d.subCategoryName %></td>
+            <td><%= d.categories.categoryName %></td>
+            <td><%= (new Date(d.createdAt).toLocaleDateString()) %></td>
+            <td>
+              <a
+                class="btn fas fa-edit btn-primary"
+                onclick="editsubCategory(`<%=d.id%>`)"
+              >
+                EDIT</a
+              >
+              <a
+                class="btn fas fa-delete btn-danger"
+                onclick="deletesubCategory(`<%=d.id%>`)"
+              >
+                Delete</a
+              >
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+    <div class="dialogues">
+      <form action="/subcategory" method="post">
+        <p>Category Name</p>
+        <select
+          class="form-select"
+          id="categoryName"
+          name="categoryId"
+          required
+        ></select
+        ><br />
+        <p>SubCategory Name</p>
+        <input
+          class="text"
+          id="text"
+          type="text"
+          name="categoryName"
+          required
+        />
+        <br />
+        <input type="submit" class="yes input" value="Add" />
+        <botton class="no input">Cancel</botton>
+      </form>
+    </div>
+  </body>
+  <script>
+    let response;
+    $(document).ready(function () {
+      $("#myTable").DataTable();
+    });
+    async function categorydelete(categoryId) {
+      const id = categoryId;
+      const result = await fetch(`/category/  ` + id, {
+        method: "DELETE",
+      });
+      const data = await result.json();
+    }
+  </script>
+  <script src="/js/index.js"></script>
+  <script src="/js/subcategory.js"></script>
+</html>

@@ -1,5 +1,5 @@
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { CreateOrderDto } from "./dto/create-order.dto";
+import { UpdateOrderDto } from "./dto/update-order.dto";
 export declare class OrdersService {
     create(createOrderDto: CreateOrderDto): string;
     findAll(): string;

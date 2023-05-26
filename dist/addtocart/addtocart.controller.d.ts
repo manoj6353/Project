@@ -1,10 +1,11 @@
-import { AddtocartService } from './addtocart.service';
-import { CreateAddtocartDto } from './dto/create-addtocart.dto';
-import { UpdateAddtocartDto } from './dto/update-addtocart.dto';
+import { JwtService } from "@nestjs/jwt";
+import { AddtocartService } from "./addtocart.service";
+import { UpdateAddtocartDto } from "./dto/update-addtocart.dto";
 export declare class AddtocartController {
     private readonly addtocartService;
-    constructor(addtocartService: AddtocartService);
-    create(createAddtocartDto: CreateAddtocartDto): Promise<import(".prisma/client").addtocarts>;
+    private jwtService;
+    constructor(addtocartService: AddtocartService, jwtService: JwtService);
+    create(userId: string, productId: string): Promise<import(".prisma/client").addtocarts>;
     getcarts(userId: string, productId: string): Promise<{
         data: import(".prisma/client").addtocarts[];
     }>;
@@ -19,11 +20,11 @@ export declare class AddtocartController {
                 productName: string;
                 price: string;
             };
-            userId: number;
-            productId: number;
             users: {
                 firstName: string;
             };
+            userId: number;
+            productId: number;
         }[];
     }>;
     update(id: string, updateAddtocartDto: UpdateAddtocartDto): Promise<import(".prisma/client").addtocarts>;

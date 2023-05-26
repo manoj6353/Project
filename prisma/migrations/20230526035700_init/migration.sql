@@ -147,6 +147,7 @@ CREATE TABLE `orders` (
     `productId` INTEGER NOT NULL,
     `quantity` VARCHAR(191) NOT NULL,
     `price` VARCHAR(191) NOT NULL,
+    `address` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `deletedAt` DATETIME(3) NULL,

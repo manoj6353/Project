@@ -40,6 +40,22 @@ export declare class AddressesController {
             name: string;
         };
     }[]>;
-    update(id: string, updateAddressDto: UpdateAddressDto): string;
-    remove(id: string): string;
+    addressid(id: string): Promise<{
+        address: {
+            id: number;
+            userId: number;
+            address1: string;
+            address2: string;
+            countryId: number;
+            stateId: number;
+            cityId: number;
+            pinCode: string;
+        };
+        data: {
+            id: number;
+            name: string;
+        }[];
+    }>;
+    update(updateAddressDto: UpdateAddressDto): import(".prisma/client").Prisma.Prisma__addressesClient<import(".prisma/client").addresses, never>;
+    remove(id: string): Promise<import(".prisma/client").addresses>;
 }

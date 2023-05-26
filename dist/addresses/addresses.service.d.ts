@@ -1,5 +1,7 @@
-import { UpdateAddressDto } from "./dto/update-address.dto";
+import { JwtService } from "@nestjs/jwt";
 export declare class AddressesService {
+    private jwtService;
+    constructor(jwtService: JwtService);
     fetchCountry(): Promise<{
         id: number;
         name: string;
@@ -14,7 +16,7 @@ export declare class AddressesService {
     }[]>;
     create(createAddressDto: any): Promise<import(".prisma/client").addresses>;
     findAll(): string;
-    findOne(id: number): import(".prisma/client").Prisma.PrismaPromise<{
+    findOne(id: string): Promise<{
         id: number;
         userId: number;
         address1: string;
@@ -30,6 +32,16 @@ export declare class AddressesService {
             name: string;
         };
     }[]>;
-    update(id: number, updateAddressDto: UpdateAddressDto): string;
-    remove(id: number): string;
+    addressid(id: number): Promise<{
+        id: number;
+        userId: number;
+        address1: string;
+        address2: string;
+        countryId: number;
+        stateId: number;
+        cityId: number;
+        pinCode: string;
+    }>;
+    update(updateAddressDto: any): import(".prisma/client").Prisma.Prisma__addressesClient<import(".prisma/client").addresses, never>;
+    remove(id: number): Promise<import(".prisma/client").addresses>;
 }

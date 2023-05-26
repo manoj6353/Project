@@ -1,6 +1,6 @@
-import { SubcategoryService } from './subcategory.service';
-import { CreateSubcategoryDto } from './dto/create-subcategory.dto';
-import { UpdateSubcategoryDto } from './dto/update-subcategory.dto';
+import { SubcategoryService } from "./subcategory.service";
+import { CreateSubcategoryDto } from "./dto/create-subcategory.dto";
+import { UpdateSubcategoryDto } from "./dto/update-subcategory.dto";
 export declare class SubcategoryController {
     private readonly subcategoryService;
     constructor(subcategoryService: SubcategoryService);
@@ -11,7 +11,16 @@ export declare class SubcategoryController {
         }[];
     }>;
     create(createSubcategoryDto: CreateSubcategoryDto): import(".prisma/client").Prisma.Prisma__subcategoriesClient<import(".prisma/client").subcategories, never>;
-    findAll(): string;
+    findAll(): Promise<{
+        data: {
+            id: number;
+            subCategoryName: string;
+            createdAt: Date;
+            categories: {
+                categoryName: string;
+            };
+        }[];
+    }>;
     findOne(id: string): string;
     update(id: string, updateSubcategoryDto: UpdateSubcategoryDto): string;
     remove(id: string): string;

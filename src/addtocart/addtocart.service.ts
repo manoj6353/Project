@@ -1,24 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAddtocartDto } from './dto/create-addtocart.dto';
-import { UpdateAddtocartDto } from './dto/update-addtocart.dto';
-import { PrismaClient } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 @Injectable()
 export class AddtocartService {
-  async create(createAddtocartDto) {
-    const productId = parseInt(createAddtocartDto.productId);
-    const UserId = parseInt(createAddtocartDto.userId);
-    // const remove = await prisma.addtocarts.delete({
-    //   where: {
-    //     userId: UserId,
-    //   },
-    // });
+  async create(userId: number, productId: number) {
     return await prisma.addtocarts.create({
       data: {
         productId: productId,
-        userId: UserId,
-        quantity: '1',
+        userId: userId,
+        quantity: "1",
       },
     });
   }

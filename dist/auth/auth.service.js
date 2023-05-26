@@ -14,7 +14,7 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const client_1 = require("@prisma/client");
 const node_localstorage_1 = require("node-localstorage");
-global.localStorage = new node_localstorage_1.LocalStorage('./scratch');
+global.localStorage = new node_localstorage_1.LocalStorage("./scratch");
 const bcrypt = require("bcrypt");
 const prisma = new client_1.PrismaClient();
 let AuthService = class AuthService {
@@ -28,14 +28,14 @@ let AuthService = class AuthService {
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            throw new common_1.UnauthorizedException('Please check your email and password');
+            throw new common_1.UnauthorizedException("Please check your email and password");
         }
         return {
             accessToken: await this.jwtService.sign({ id: user.id }),
         };
     }
     async verifytoken(accessToken, url) {
-        const isAdmin = url.includes('admin');
+        const isAdmin = url.includes("admin");
         const { id } = await this.jwtService.verify(accessToken);
         const user = await prisma.users.findUnique({ where: { id: id } });
         console.log(user);
@@ -43,11 +43,11 @@ let AuthService = class AuthService {
             throw new common_1.NotFoundException(`Please check your email and password`);
         }
         else {
-            if (isAdmin && user.roles == 'admin') {
+            if (isAdmin && user.roles == "admin") {
                 return true;
             }
             else {
-                if (!isAdmin && user.roles == 'user') {
+                if (!isAdmin && user.roles == "user") {
                     return true;
                 }
                 return false;

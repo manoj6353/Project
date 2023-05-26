@@ -47,3 +47,102 @@ a {
 .login {
   margin-top: 30px;
 }
+
+.dialogue {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24rem;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 30;
+}
+
+.add-link {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+}
+
+.add-link .add {
+  background-color: green;
+  padding: 13px;
+  border-radius: 15px;
+  color: white;
+  margin: 0px 0px 10px;
+  cursor: pointer;
+}
+
+.text {
+  margin-bottom: 11px;
+}
+
+.dialogue h2 {
+  margin-top: 0;
+}
+
+.dialogue p {
+  margin-bottom: 19px;
+}
+
+.dialogue .input {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dialogue .input.yes {
+  background-color: #1abc9c;
+  color: #fff;
+}
+
+.dialogue .input.no {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.dialogues h2 {
+  margin-top: 0;
+}
+
+.dialogues p {
+  margin-bottom: 19px;
+}
+
+.dialogues .input {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dialogues .input.yes {
+  background-color: #1abc9c;
+  color: #fff;
+}
+
+.dialogues .input.no {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.dialogues {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24rem;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 30;
+}

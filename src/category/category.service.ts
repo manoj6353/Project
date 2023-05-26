@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 @Injectable()
 export class CategoryService {
   addCategory() {
-    return 'render';
+    return "render";
   }
 
   create(createCategoryDto) {
@@ -22,23 +22,25 @@ export class CategoryService {
 
   async findAll() {
     const data = await prisma.categories.findMany({
-      include: { products: true },
       where: { deletedAt: null },
     });
     return data;
   }
 
-  findOne(id: number) {
-    return prisma.categories.findFirst({
+  async findOne(id: number) {
+    return await prisma.categories.findFirst({
       where: { id: id, deletedAt: null },
-      include: { products: true },
     });
   }
 
-  update(id: number, updateCategoryDto) {
+  update(updateCategoryDto) {
+    const { id, ...category } = updateCategoryDto;
+    const ids = parseInt(id);
     return prisma.categories.update({
-      where: { id: id },
-      ...updateCategoryDto,
+      where: { id: ids },
+      data: {
+        ...category,
+      },
     });
   }
 

@@ -11,14 +11,12 @@ const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 let AddtocartService = class AddtocartService {
-    async create(createAddtocartDto) {
-        const productId = parseInt(createAddtocartDto.productId);
-        const UserId = parseInt(createAddtocartDto.userId);
+    async create(userId, productId) {
         return await prisma.addtocarts.create({
             data: {
                 productId: productId,
-                userId: UserId,
-                quantity: '1',
+                userId: userId,
+                quantity: "1",
             },
         });
     }

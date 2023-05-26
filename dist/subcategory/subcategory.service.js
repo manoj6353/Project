@@ -33,8 +33,19 @@ let SubcategoryService = class SubcategoryService {
             console.log(err);
         }
     }
-    findAll() {
-        return `This action returns all subcategory`;
+    async findAll() {
+        return await prisma.subcategories.findMany({
+            select: {
+                id: true,
+                subCategoryName: true,
+                createdAt: true,
+                categories: {
+                    select: {
+                        categoryName: true,
+                    },
+                },
+            },
+        });
     }
     findOne(id) {
         return `This action returns a #${id} subcategory`;

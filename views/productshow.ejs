@@ -15,7 +15,7 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
   </head>
   <body onload="token()">
-    <%- include('header'); -%>
+    <%- include('./admin/header')%>
     <table id="myTable" class="display">
       <thead>
         <tr>
@@ -48,7 +48,7 @@
   <script>
     let response;
     $(document).ready(function () {
-      $('#myTable').DataTable();
+      $("#myTable").DataTable();
     });
   </script>
   <script src="/js/index.js"></script>

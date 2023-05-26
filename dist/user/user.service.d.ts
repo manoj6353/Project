@@ -1,4 +1,4 @@
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto } from "./dto/update-user.dto";
 export declare class UserService {
     create(createUserDto: any): Promise<import(".prisma/client").users>;
     findAll(): string;

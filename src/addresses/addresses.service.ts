@@ -1,10 +1,12 @@
 import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import { UpdateAddressDto } from "./dto/update-address.dto";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 @Injectable()
 export class AddressesService {
+  constructor(private jwtService: JwtService) {}
   async fetchCountry() {
     const data = await prisma.countries.findMany({
       select: {
@@ -23,6 +25,8 @@ export class AddressesService {
         name: true,
       },
     });
+    console.log(data);
+
     return data;
   }
 
@@ -38,7 +42,9 @@ export class AddressesService {
   }
 
   async create(createAddressDto) {
-    const { countryId, stateId, cityId, ...address } = await createAddressDto;
+    const { countryId, stateId, cityId, userId, ...address } =
+      await createAddressDto;
+    const { id } = await this.jwtService.verify(userId);
     const countryid = parseInt(countryId);
     const stateid = parseInt(stateId);
     const cityid = parseInt(cityId);
@@ -48,7 +54,7 @@ export class AddressesService {
         countryId: countryid,
         stateId: stateid,
         cityId: cityid,
-        userId: 1,
+        userId: id,
       },
     });
   }
@@ -57,9 +63,10 @@ export class AddressesService {
     return `This action returns all addresses`;
   }
 
-  findOne(id: number) {
+  async findOne(id: string) {
+    const user = await this.jwtService.verify(id);
     return prisma.addresses.findMany({
-      where: { userId: id },
+      where: { userId: user.id },
       select: {
         id: true,
         address1: true,
@@ -85,11 +92,42 @@ export class AddressesService {
     });
   }
 
-  update(id: number, updateAddressDto: UpdateAddressDto) {
-    return `This action updates a #${id} address`;
+  async addressid(id: number) {
+    return prisma.addresses.findFirst({
+      where: { id: id },
+      select: {
+        id: true,
+        address1: true,
+        address2: true,
+        userId: true,
+        pinCode: true,
+        countryId: true,
+        stateId: true,
+        cityId: true,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} address`;
+  update(updateAddressDto) {
+    const { id, countryId, stateId, cityId, ...address } = updateAddressDto;
+    const countryid = parseInt(countryId);
+    const addressid = parseInt(id);
+    const stateid = parseInt(stateId);
+    const cityid = parseInt(cityId);
+    return prisma.addresses.update({
+      where: {
+        id: addressid,
+      },
+      data: {
+        ...address,
+        countryId: countryid,
+        stateId: stateid,
+        cityId: cityid,
+      },
+    });
+  }
+
+  async remove(id: number) {
+    return await prisma.addresses.delete({ where: { id: id } });
   }
 }

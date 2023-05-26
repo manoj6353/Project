@@ -25,6 +25,17 @@
                   <form action="/addresses" method="POST">
                     <hr />
                     <div class="tab">
+                      <input
+                        type="hidden"
+                        id="userId"
+                        name="userId"
+                        class="form-control form-control"
+                        required
+                      />
+                      <script>
+                        const userid = localStorage.getItem("id");
+                        document.getElementById("userId").value = userid;
+                      </script>
                       <div class="form-outline mb-4">
                         <label class="form-label" for="address1">Address1</label
                         ><input

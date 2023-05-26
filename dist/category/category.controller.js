@@ -21,12 +21,6 @@ let CategoryController = class CategoryController {
     constructor(categoryService) {
         this.categoryService = categoryService;
     }
-    async addcategory() {
-        return { data: 'done' };
-    }
-    async add() {
-        return await this.categoryService.addCategory();
-    }
     async create(createCategoryDto) {
         try {
             await this.categoryService.create(createCategoryDto);
@@ -35,22 +29,18 @@ let CategoryController = class CategoryController {
             console.log(err);
         }
     }
-    async root() {
-        const data = await this.findAll();
-        return { data };
-    }
     async findAll() {
-        return await this.categoryService.findAll();
+        const data = await this.categoryService.findAll();
+        return { data };
     }
     async trash() {
-        const data = await this.categoryService.trash();
-        return { data };
+        return await this.categoryService.trash();
     }
     async findOne(id) {
         return await this.categoryService.findOne(+id);
     }
-    update(id, updateCategoryDto) {
-        return this.categoryService.update(+id, updateCategoryDto);
+    update(updateCategoryDto) {
+        return this.categoryService.update(updateCategoryDto);
     }
     remove(id) {
         return this.categoryService.remove(+id);
@@ -60,15 +50,8 @@ let CategoryController = class CategoryController {
     }
 };
 __decorate([
-    (0, common_1.Get)('/add'),
-    (0, common_1.Render)('add'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], CategoryController.prototype, "addcategory", null);
-__decorate([
     (0, common_1.Post)(),
-    (0, common_1.Redirect)('/category'),
+    (0, common_1.Redirect)("/category"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_category_dto_1.CreateCategoryDto]),
@@ -76,49 +59,48 @@ __decorate([
 ], CategoryController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.Render)('category'),
+    (0, common_1.Render)("category"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], CategoryController.prototype, "root", null);
+], CategoryController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)('/trash'),
-    (0, common_1.Render)('index'),
+    (0, common_1.Get)("/trash"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "trash", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
+    (0, common_1.Post)("/add"),
+    (0, common_1.Redirect)("/category"),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_category_dto_1.UpdateCategoryDto]),
+    __metadata("design:paramtypes", [update_category_dto_1.UpdateCategoryDto]),
     __metadata("design:returntype", void 0)
 ], CategoryController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Delete)(":id"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], CategoryController.prototype, "remove", null);
 __decorate([
-    (0, common_1.Delete)('/trash/:id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Delete)("/trash/:id"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "restore", null);
 CategoryController = __decorate([
-    (0, common_1.Controller)('category'),
+    (0, common_1.Controller)("category"),
     __metadata("design:paramtypes", [category_service_1.CategoryService])
 ], CategoryController);
 exports.CategoryController = CategoryController;

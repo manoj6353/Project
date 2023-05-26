@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import * as bcrypt from 'bcrypt';
+import { Injectable } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import * as bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 
 @Injectable()
@@ -11,13 +11,14 @@ export class UserService {
     try {
       const { password, age, ...users } = createUserDto;
       const userage = parseInt(age);
+      console.log(...users);
 
       const data = await prisma.users.create({
         data: {
           ...users,
           age: userage,
           password: bcrypt.hashSync(password, 11),
-          roles: 'user',
+          roles: "user",
         },
       });
       return data;
@@ -46,9 +47,9 @@ export class UserService {
     }
 
     if (data == null) {
-      return { error: 'Please check your email and password' };
+      return { error: "Please check your email and password" };
     } else if (data != null && pwd == false) {
-      return { error: 'Please check your email and password' };
+      return { error: "Please check your email and password" };
     } else {
       return { success: data };
     }

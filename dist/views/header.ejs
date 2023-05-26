@@ -40,10 +40,20 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="/addtocart/<%=1%>">Cart</a>
+                <a class="nav-link" id="addtocart">Cart</a>
+                <script>
+                  const id = localStorage.getItem("id");
+                  document.getElementById(
+                    "addtocart"
+                  ).href = `/addtocart/${id}`;
+                </script>
               </li>
               <li class="nav-item">
-                <a class="nav-link">Orders</a>
+                <a class="nav-link" id="orders">Orders</a>
+                <script>
+                  const userid = localStorage.getItem("id");
+                  document.getElementById("orders").href = `/orders/${id}`;
+                </script>
               </li>
             </ul>
             <form class="d-flex mx-auto" role="search">

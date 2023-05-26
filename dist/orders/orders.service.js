@@ -10,7 +10,7 @@ exports.OrdersService = void 0;
 const common_1 = require("@nestjs/common");
 let OrdersService = class OrdersService {
     create(createOrderDto) {
-        return 'This action adds a new order';
+        return "This action adds a new order";
     }
     findAll() {
         return `This action returns all orders`;

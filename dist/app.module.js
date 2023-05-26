@@ -18,6 +18,7 @@ const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const orders_module_1 = require("./orders/orders.module");
 const addresses_module_1 = require("./addresses/addresses.module");
+const admin_module_1 = require("./admin/admin.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -31,6 +32,7 @@ AppModule = __decorate([
             auth_module_1.AuthModule,
             orders_module_1.OrdersModule,
             addresses_module_1.AddressesModule,
+            admin_module_1.AdminModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
