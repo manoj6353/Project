@@ -11,14 +11,14 @@ datasource db {
 }
 
 model categories {
-  id           Int        @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   categoryName String
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @default(now())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
   deletedAt    DateTime?
-  products     products[]
 
-  subcategories subcategories[]
+  subcategories   subcategories[]
+  productCategory productCategory[]
 
   @@map("categories")
 }
@@ -46,21 +46,38 @@ model products {
   productdetails String        @db.Text
   subcategories  subcategories @relation(fields: [subCategoryId], references: [id])
   subCategoryId  Int
-  categories     categories    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId     Int
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @default(now())
   deletedAt      DateTime?
 
-  orders     orders[]
-  addtocarts addtocarts[]
+  orders          orders[]
+  addtocarts      addtocarts[]
+  productCategory productCategory[]
 
   @@map("products")
+}
+
+model productCategory {
+  categories categories @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  products   products   @relation(fields: [productId], references: [id])
+  productId  Int
+
+  @@id([categoryId, productId])
 }
 
 enum Role {
   user
   admin
+}
+
+model roles {
+  id   Int  @id @default(autoincrement())
+  role Role @default(user)
+
+  users users[]
+
+  @@map("roles")
 }
 
 model countries {
@@ -142,7 +159,8 @@ model users {
   email     String
   password  String
   gender    String
-  roles     Role      @default(user)
+  roles     roles     @relation(fields: [roleId], references: [id])
+  roleId    Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
   deletedAt DateTime?

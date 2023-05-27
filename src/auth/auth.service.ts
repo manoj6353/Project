@@ -39,10 +39,10 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException(`Please check your email and password`);
     } else {
-      if (isAdmin && user.roles == "admin") {
+      if (isAdmin && user.roleId == 2) {
         return true;
       } else {
-        if (!isAdmin && user.roles == "user") {
+        if (!isAdmin && user.roleId == 1) {
           return true;
         }
         return false;

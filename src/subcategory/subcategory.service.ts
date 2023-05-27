@@ -19,6 +19,7 @@ export class SubcategoryService {
   fetchcategory() {
     try {
       return prisma.categories.findMany({
+        where: { deletedAt: null },
         select: {
           id: true,
           categoryName: true,
@@ -57,8 +58,6 @@ export class SubcategoryService {
   }
 
   update(updateSubcategoryDto) {
-    console.log("===========", updateSubcategoryDto);
-
     const { id, categoryId, subCategoryName } = updateSubcategoryDto;
     const ids = parseInt(id);
     const categoryid = parseInt(categoryId);

@@ -16,7 +16,12 @@
   </head>
   <body onload="token()">
     <%- include('./admin/header')%>
-    <div class="container">
+    <div id="overlay"><span class="loader"></span></div>
+    <div class="container-xxl">
+      <div class="trash" style="margin-bottom: 20px">
+        <a class="btn btn-success" onclick="addProduct()">Add Product</a>
+        <!-- <a class="btn btn-primary" onclick="trashdata()">Trash Category</a> -->
+      </div>
       <table id="myTable" class="display">
         <thead>
           <tr>
@@ -24,10 +29,12 @@
             <th>Product Name</th>
             <th>Quantity</th>
             <th>Price</th>
+            <th>Image</th>
             <th>Category Name</th>
             <th>Sub-Category Name</th>
             <th>Product Details</th>
             <th>Created Date</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody id="data">
@@ -37,14 +44,260 @@
             <td><%= d.productName %></td>
             <td><%= d.quantity %></td>
             <td><%= d.price %></td>
-            <td><%= d.categories.categoryName %></td>
+            <% if(d.image) {%>
+            <td>
+              <img src="/images/<%=d.image %>" width="100px" height="100px" />
+            </td>
+            <% } %> <% d.productCategory.forEach(p=> { %>
+            <td><%= p.categories.categoryName %></td>
+            <% }) %>
             <td><%= d.subcategories.subCategoryName %></td>
             <td><%= d.productdetails %></td>
             <td><%= (new Date(d.createdAt).toLocaleDateString()) %></td>
+            <td>
+              <a
+                class="btn fas fa-edit btn-primary"
+                onclick="editProduct(`<%=d.id%>`)"
+              >
+                EDIT</a
+              >
+              <a
+                class="btn fas fa-delete btn-danger"
+                onclick="deleteProduct(`<%=d.id%>`)"
+              >
+                Delete</a
+              >
+            </td>
           </tr>
           <% }); %>
         </tbody>
       </table>
+      <div class="dialogues" style="margin-top: 30px; position: relative">
+        <form action="/product" method="post" enctype="multipart/form-data">
+          <hr />
+          <div class="tab">
+            <div class="form-outline mb-4">
+              <label class="form-label" for="categoryName">Category Name</label>
+              <select
+                class="form-select"
+                id="categoryName"
+                name="categoryId"
+                required
+                onchange="subCategory()"
+              >
+                <% categories.forEach(d => { %>
+                <option id="<%=d.id%>" value="<%=d.id%>">
+                  <%=d.categoryName%>
+                </option>
+                <% }); %>
+              </select>
+              <script>
+                async function subCategory() {
+                  const id = document.querySelector("#categoryName").value;
+                  const result = await fetch("/product/subcategory/" + id);
+                  const { categories } = await result.json();
+                  let opt = "";
+                  let subcategory = document.getElementById("subCategoryName");
+                  categories.forEach((d) => {
+                    opt += `<option value='${d.id}'>${d.subCategoryName}</option>`;
+                    subcategory.innerHTML = opt;
+                  });
+                }
+              </script>
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="subCategoryName"
+                >Sub-Category Name</label
+              >
+              <select
+                class="form-select"
+                id="subCategoryName"
+                name="subCategoryId"
+                required
+              ></select>
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="ProductsName">Product Name</label
+              ><input
+                type="text"
+                id="productName"
+                name="productName"
+                class="form-control form-control"
+                required
+              />
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="quantity">Quantity</label
+              ><input
+                type="text"
+                id="quantity"
+                name="quantity"
+                class="form-control form-control"
+                required
+              />
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="image">Image</label
+              ><input
+                type="file"
+                id="image"
+                name="image"
+                class="form-control form-control"
+                required
+              />
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="price">Price(Per Quantity)</label
+              ><input
+                type="text"
+                id="price"
+                name="price"
+                class="form-control form-control"
+                required
+              />
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="productdetails"
+                >Product Details</label
+              >
+              <textarea
+                rows="3"
+                id="productdetails"
+                name="productdetails"
+                class="form-control form-control"
+                required
+              ></textarea>
+            </div>
+            <input type="submit" class="yes input" value="Add" />
+            <botton class="no input">Cancel</botton>
+          </div>
+        </form>
+      </div>
+      <div class="dialogue" style="margin-top: 30px; position: relative">
+        <form
+          action="/product/update"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <input
+            class="text"
+            id="productid"
+            type="hidden"
+            name="productId"
+            value=""
+          />
+          <input
+            class="text"
+            id="categoryid"
+            type="hidden"
+            name="oldCategoryId"
+            value=""
+          />
+          <hr />
+          <div class="tab">
+            <div class="form-outline mb-4">
+              <label class="form-label" for="categoryName">Category Name</label>
+              <select
+                class="form-select"
+                id="categoryNames"
+                name="categoryId"
+                required
+                onchange="subCategories()"
+              >
+                <% categories.forEach(d => { %>
+                <option id="<%=d.id%>" value="<%=d.id%>">
+                  <%=d.categoryName%>
+                </option>
+                <% }); %>
+              </select>
+              <script>
+                async function subCategories() {
+                  const id = document.querySelector("#categoryNames").value;
+                  const result = await fetch("/product/subcategory/" + id);
+                  const { categories } = await result.json();
+                  let opt = "";
+                  let subcategory = document.getElementById("subCategoryNames");
+                  categories.forEach((d) => {
+                    opt += `<option value='${d.id}'>${d.subCategoryName}</option>`;
+                    subcategory.innerHTML = opt;
+                  });
+                }
+              </script>
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="subCategoryName"
+                >Sub-Category Name</label
+              >
+              <select
+                class="form-select"
+                id="subCategoryNames"
+                name="subCategoryId"
+                required
+              ></select>
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="ProductsName">Product Name</label
+              ><input
+                type="text"
+                id="productNames"
+                name="productName"
+                class="form-control form-control"
+                value=""
+                required
+              />
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="quantity">Quantity</label
+              ><input
+                type="text"
+                id="quantities"
+                name="quantity"
+                class="form-control form-control"
+                value=""
+                required
+              />
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="image">Image</label
+              ><input
+                type="file"
+                id="images"
+                name="image"
+                class="form-control form-control"
+                value=""
+                required
+              />
+              <p id="productImage"></p>
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="price">Price(Per Quantity)</label
+              ><input
+                type="text"
+                id="prices"
+                name="price"
+                class="form-control form-control"
+                value=""
+                required
+              />
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="productdetails"
+                >Product Details</label
+              >
+              <textarea
+                rows="3"
+                id="productdetail"
+                name="productdetails"
+                class="form-control form-control"
+                value=""
+                required
+              ></textarea>
+            </div>
+            <input type="submit" class="yes input" value="Update" />
+            <botton class="no input">Cancel</botton>
+          </div>
+        </form>
+      </div>
     </div>
   </body>
   <script>
@@ -54,4 +307,5 @@
     });
   </script>
   <script src="/js/index.js"></script>
+  <script src="/js/product.js"></script>
 </html>

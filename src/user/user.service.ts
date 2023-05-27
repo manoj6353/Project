@@ -11,14 +11,13 @@ export class UserService {
     try {
       const { password, age, ...users } = createUserDto;
       const userage = parseInt(age);
-      console.log(...users);
 
       const data = await prisma.users.create({
         data: {
           ...users,
           age: userage,
           password: bcrypt.hashSync(password, 11),
-          roles: "user",
+          roleId: 2,
         },
       });
       return data;
@@ -28,7 +27,18 @@ export class UserService {
   }
 
   findAll() {
-    return `This action returns all user`;
+    return prisma.users.findMany({
+      where: { roleId: 2 },
+      select: {
+        firstName: true,
+        lastName: true,
+        contact: true,
+        age: true,
+        email: true,
+        gender: true,
+        createdAt: true,
+      },
+    });
   }
 
   async login(createUserDto) {

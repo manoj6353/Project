@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="trash">
+        <a class="btn btn-success" onclick="addCategory()">Add Category</a>
+        <a class="btn btn-primary" onclick="trashdata()">Trash Category</a>
+      </div>
+      <br />
+      <table id="myTable" class="display">
+        <thead>
+          <tr>
+            <!-- <th>ID</th> -->
+            <th>CategoryName</th>
+            <th>CreatedDate</th>
+            <th>UpdatedDate</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="data">
+          <% data.forEach(d=> { %>
+          <tr>
+            <td><%# d.id %></td>
+            <td><%= d.categoryName %></td>
+            <td><%= (new Date(d.createdAt).toLocaleDateString()) %></td>
+            <td><%= (new Date(d.updatedAt).toLocaleDateString()) %></td>
+            <td>
+              <a
+                class="btn fas fa-edit btn-primary"
+                onclick="editCategory(`<%=d.id%>`)"
+              >
+                EDIT</a
+              >
+              <a
+                class="btn fas fa-delete btn-danger"
+                onclick="deleteCategory(`<%=d.id%>`)"
+              >
+                Delete</a
+              >
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

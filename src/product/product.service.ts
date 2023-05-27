@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 @Injectable()
@@ -14,9 +14,13 @@ export class ProductService {
           price: createProductDto.price,
           quantity: createProductDto.quantity,
           productdetails: createProductDto.productdetails,
-          categoryId: id,
           subCategoryId: subId,
           image: file.filename,
+          productCategory: {
+            create: {
+              categoryId: id,
+            },
+          },
         },
       });
       return data;
@@ -31,6 +35,9 @@ export class ProductService {
         select: {
           id: true,
           categoryName: true,
+        },
+        where: {
+          deletedAt: null,
         },
       });
     } catch (err) {
@@ -62,14 +69,20 @@ export class ProductService {
           quantity: true,
           productdetails: true,
           createdAt: true,
-          categories: {
-            select: {
-              categoryName: true,
-            },
-          },
+          image: true,
           subcategories: {
             select: {
               subCategoryName: true,
+            },
+          },
+          productCategory: {
+            select: {
+              categoryId: true,
+              categories: {
+                select: {
+                  categoryName: true,
+                },
+              },
             },
           },
         },
@@ -84,7 +97,30 @@ export class ProductService {
     try {
       return prisma.products.findFirst({
         where: { id: id, deletedAt: null },
-        include: { categories: true },
+        select: {
+          id: true,
+          productName: true,
+          quantity: true,
+          image: true,
+          price: true,
+          productdetails: true,
+          subCategoryId: true,
+          subcategories: {
+            select: {
+              subCategoryName: true,
+            },
+          },
+          productCategory: {
+            select: {
+              categoryId: true,
+              categories: {
+                select: {
+                  categoryName: true,
+                },
+              },
+            },
+          },
+        },
       });
     } catch (err) {
       console.log(err);
@@ -99,23 +135,35 @@ export class ProductService {
             contains: productName,
           },
         },
-        include: { categories: true },
       });
     } catch (err) {
       console.log(err);
     }
   }
 
-  update(id: number, updateProductDto) {
+  async update(updateProductDto, file) {
     try {
-      const id = parseInt(updateProductDto.categoryId);
+      const productId = parseInt(updateProductDto.productId);
+      const oldCategoryid = parseInt(updateProductDto.oldCategoryId);
+      const categoryid = parseInt(updateProductDto.categoryId);
+      const subCategoryid = parseInt(updateProductDto.subCategoryId);
+      await prisma.productCategory.deleteMany({
+        where: { categoryId: oldCategoryid, productId: productId },
+      });
       return prisma.products.update({
-        where: { id: id },
+        where: { id: productId },
         data: {
           productName: updateProductDto.productName,
           price: updateProductDto.price,
           quantity: updateProductDto.quantity,
-          categoryId: id,
+          productdetails: updateProductDto.productdetails,
+          subCategoryId: subCategoryid,
+          image: file.filename,
+          productCategory: {
+            create: {
+              categoryId: categoryid,
+            },
+          },
         },
       });
     } catch (err) {
@@ -125,11 +173,8 @@ export class ProductService {
 
   remove(id: number) {
     try {
-      return prisma.products.update({
+      return prisma.products.delete({
         where: { id: id },
-        data: {
-          deletedAt: new Date(),
-        },
       });
     } catch (err) {
       console.log(err);

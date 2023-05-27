@@ -22,12 +22,6 @@ export class AdminController {
   }
 
   @Get()
-  @Render("admin/index")
-  root() {
-    return;
-  }
-
-  @Get()
   findAll() {
     return this.adminService.findAll();
   }

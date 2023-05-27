@@ -4,7 +4,7 @@ export class User {
   email: string;
   password: string;
   contact: string;
-  role: any;
+  roleId: number;
   age: string;
   createdAt: Date;
   updatedAt: Date;
