@@ -9,4 +9,5 @@ async function main() {
         },
     });
 }
+main();
 //# sourceMappingURL=role-seed.js.map

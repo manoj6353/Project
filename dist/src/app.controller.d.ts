@@ -7,6 +7,7 @@ export declare class AppController {
     getHello(): any;
     findAll(): Promise<{
         data: {
+            id: number;
             productName: string;
             image: string;
             quantity: string;
@@ -22,7 +23,6 @@ export declare class AppController {
                 };
                 categoryId: number;
             }[];
-            id: number;
         }[];
     }>;
     signup(): void;

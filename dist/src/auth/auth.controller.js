@@ -15,45 +15,53 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const jwt_1 = require("@nestjs/jwt");
 const auth_service_1 = require("./auth.service");
 const create_auth_dto_1 = require("./dto/create-auth.dto");
-const node_localstorage_1 = require("node-localstorage");
 const auth_entity_1 = require("./entities/auth.entity");
-const auth_dto_1 = require("./dto/auth.dto");
-global.localStorage = new node_localstorage_1.LocalStorage("./scratch");
 let AuthController = class AuthController {
-    constructor(authService) {
+    constructor(authService, jwtService) {
         this.authService = authService;
+        this.jwtService = jwtService;
     }
-    async login({ email, password }) {
-        const token = await this.authService.login(email, password);
-        localStorage.setItem("id", token.accessToken);
-        return token;
-    }
-    async getProfile({ accessToken, url }) {
-        const token = await this.authService.verifytoken(accessToken, url);
-        return "manoj";
+    async login(req, res, logindto) {
+        const result = await this.authService.login(logindto);
+        if (result.token) {
+            res.cookie("auth_token", result.token, { httpOnly: true });
+            const payload = await this.jwtService.verifyAsync(result.token, {
+                secret: process.env.JWT_SECRET,
+            });
+            res.cookie("data", payload, { httpOnly: true });
+            return res.status(common_1.HttpStatus.OK).json({
+                status: common_1.HttpStatus.OK,
+                data: result,
+                message: `Login Successfull`,
+            });
+        }
+        else {
+            res.status(common_1.HttpStatus.BAD_REQUEST).json({
+                status: common_1.HttpStatus.BAD_REQUEST,
+                data: null,
+                message: `Incorrect Credentials`,
+            });
+        }
     }
 };
 __decorate([
     (0, common_1.Post)("/login"),
     (0, swagger_1.ApiOkResponse)({ type: auth_entity_1.AuthEntity }),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_auth_dto_1.LoginDto]),
+    __metadata("design:paramtypes", [Object, Object, create_auth_dto_1.LoginDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
-__decorate([
-    (0, common_1.Post)("/authenticate"),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [auth_dto_1.Auth]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "getProfile", null);
 AuthController = __decorate([
     (0, common_1.Controller)("auth"),
     (0, swagger_1.ApiTags)("auth"),
-    __metadata("design:paramtypes", [auth_service_1.AuthService])
+    __metadata("design:paramtypes", [auth_service_1.AuthService,
+        jwt_1.JwtService])
 ], AuthController);
 exports.AuthController = AuthController;
 //# sourceMappingURL=auth.controller.js.map

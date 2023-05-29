@@ -78,10 +78,10 @@ async function login() {
       body: JSON.stringify({ email, password }),
     });
     const data = await results.json();
-    if (data.message) {
-      error.innerHTML = data.message;
-    } else if (data.accessToken) {
-      localStorage.setItem("id", data.accessToken);
+    console.log(data);
+    if (data.status != 200) {
+      error.innerHTML = "Please check your email and password";
+    } else if (data.data.token && data.status == 200) {
       window.location.href = "/";
     }
   }

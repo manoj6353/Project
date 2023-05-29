@@ -1,9 +1,10 @@
+import { JwtService } from "@nestjs/jwt";
+import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import { LoginDto } from "./dto/create-auth.dto";
-import { Auth } from "./dto/auth.dto";
 export declare class AuthController {
     private readonly authService;
-    constructor(authService: AuthService);
-    login({ email, password }: LoginDto): Promise<any>;
-    getProfile({ accessToken, url }: Auth): Promise<string>;
+    private jwtService;
+    constructor(authService: AuthService, jwtService: JwtService);
+    login(req: Request, res: Response, logindto: LoginDto): Promise<any>;
 }

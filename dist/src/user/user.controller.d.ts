@@ -21,9 +21,9 @@ export declare class UserController {
         success?: undefined;
     } | {
         success: {
+            id: number;
             password: string;
             email: string;
-            id: number;
         };
         error?: undefined;
     }>;

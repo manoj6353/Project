@@ -169,6 +169,7 @@ model users {
   addtocarts addtocarts[]
   addresses  addresses[]
 
+  @@unique([email])
   @@map("users")
 }
 

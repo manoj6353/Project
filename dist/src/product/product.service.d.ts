@@ -9,6 +9,7 @@ export declare class ProductService {
         subCategoryName: string;
     }[]>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
+        id: number;
         productName: string;
         image: string;
         quantity: string;
@@ -24,9 +25,9 @@ export declare class ProductService {
             };
             categoryId: number;
         }[];
-        id: number;
     }[]>;
     findOne(id: number): import(".prisma/client").Prisma.Prisma__productsClient<{
+        id: number;
         productName: string;
         image: string;
         quantity: string;
@@ -41,7 +42,6 @@ export declare class ProductService {
             };
             categoryId: number;
         }[];
-        id: number;
         subCategoryId: number;
     }, never>;
     findsearch(productName: string): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").products[]>;

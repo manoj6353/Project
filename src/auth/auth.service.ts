@@ -1,12 +1,12 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { PrismaClient } from "@prisma/client";
-import { LocalStorage } from "node-localstorage";
-global.localStorage = new LocalStorage("./scratch");
+import { LoginDto } from "./dto/create-auth.dto";
 import * as bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 
@@ -14,41 +14,66 @@ const prisma = new PrismaClient();
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
-  async login(email: string, password: string): Promise<any> {
-    const user = await prisma.users.findFirst({ where: { email: email } });
+  async login(loginDetails: LoginDto) {
+    try {
+      const findUser = await prisma.users.findUnique({
+        where: {
+          email: loginDetails.email,
+        },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          password: true,
+          roleId: true,
+          roles: {
+            select: {
+              id: true,
+              role: true,
+            },
+          },
+        },
+      });
 
-    if (!user) {
-      throw new NotFoundException(`Please check your email and password`);
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      throw new UnauthorizedException("Please check your email and password");
-    }
-    return {
-      accessToken: await this.jwtService.sign({ id: user.id }),
-    };
-  }
-  async verifytoken(accessToken: string, url: string): Promise<any> {
-    const isAdmin = url.includes("admin");
-    const { id } = await this.jwtService.verify(accessToken);
-    const user = await prisma.users.findUnique({ where: { id: id } });
-    console.log(user);
-
-    if (!user) {
-      throw new NotFoundException(`Please check your email and password`);
-    } else {
-      if (isAdmin && user.roleId == 2) {
-        return true;
+      if (findUser == null) {
+        throw new NotFoundException(`Please check your email and password`);
       } else {
-        if (!isAdmin && user.roleId == 1) {
-          return true;
-        }
-        return false;
-      }
-    }
+        const compare = await bcrypt.compare(
+          loginDetails.password,
+          findUser.password
+        );
 
-    return false;
+        if (compare) {
+          const payload = {
+            id: findUser.id,
+            role: findUser.roles.id,
+          };
+
+          return {
+            token: await this.jwtService.sign(payload, {
+              expiresIn: "30d",
+              algorithm: "HS256",
+              secret: process.env.JWT_SECRET,
+            }),
+            userData: findUser,
+            userRole: findUser.roles.id,
+          };
+        } else {
+          throw new UnauthorizedException(
+            "Please check your email and password"
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async genrateCookie(token, req, res) {
+    res.cookie("access_token", token, {
+      expires: new Date(new Date().getTime() + 30 * 1000),
+      sameSite: "strict",
+      httpOnly: true,
+    });
   }
 }

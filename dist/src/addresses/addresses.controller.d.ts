@@ -44,11 +44,11 @@ export declare class AddressesController {
         address: {
             id: number;
             userId: number;
-            address1: string;
-            address2: string;
             countryId: number;
             stateId: number;
             cityId: number;
+            address1: string;
+            address2: string;
             pinCode: string;
         };
         data: {

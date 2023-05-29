@@ -15,9 +15,9 @@ export declare class UserService {
         success?: undefined;
     } | {
         success: {
+            id: number;
             password: string;
             email: string;
-            id: number;
         };
         error?: undefined;
     }>;
