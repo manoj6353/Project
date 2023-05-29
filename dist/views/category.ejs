@@ -18,90 +18,66 @@
     <%- include('./admin/header')%>
     <div id="overlay"><span class="loader"></span></div>
     <div class="container">
-      <div class="trash">
-        <a class="btn btn-success" onclick="addCategory()">Add Category</a>
-        <a class="btn btn-primary" onclick="trashdata()">Trash Category</a>
-      </div>
-      <br />
-      <table id="myTable" class="display">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>CategoryName</th>
-            <th>CreatedDate</th>
-            <th>UpdatedDate</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="data">
-          <% data.forEach(d=> { %>
-          <tr>
-            <td><%= d.id %></td>
-            <td><%= d.categoryName %></td>
-            <td><%= (new Date(d.createdAt).toLocaleDateString()) %></td>
-            <td><%= (new Date(d.updatedAt).toLocaleDateString()) %></td>
-            <td>
-              <a
-                class="btn fas fa-edit btn-primary"
-                onclick="editCategory(`<%=d.id%>`)"
-              >
-                EDIT</a
-              >
-              <a
-                class="btn fas fa-delete btn-danger"
-                onclick="deleteCategory(`<%=d.id%>`)"
-              >
-                Delete</a
-              >
-            </td>
-          </tr>
-          <% }); %>
-        </tbody>
-      </table>
-      <div class="dialogues">
-        <form action="/category" method="post">
-          <p>Enter Category Name</p>
-          <input
-            class="text"
-            id="text"
-            type="text"
-            name="categoryName"
-            required
-          /><br />
-          <input type="submit" class="yes input" value="Add" />
-          <botton class="no input">Cancel</botton>
-        </form>
-      </div>
-      <div class="dialogue">
-        <form action="/category/add" method="POST">
-          <p>Category Name</p>
-          <input class="text" id="id" type="hidden" name="id" value="" />
-          <input
-            class="text"
-            id="categoryName"
-            type="text"
-            name="categoryName"
-            value=""
-            required
-          /><br />
-          <input type="submit" class="yes input" value="Update" />
-          <botton class="no input">Cancel</botton>
-        </form>
+      <div class="main" id="main">
+        <div class="trash">
+          <a class="btn btn-success" onclick="addCategory()">Add Category</a>
+        </div>
+        <br />
+        <table id="myTable" class="display">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>CategoryName</th>
+              <th>CreatedDate</th>
+              <th>UpdatedDate</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="data"></tbody>
+        </table>
       </div>
     </div>
   </body>
   <script>
     let response;
     $(document).ready(function () {
-      $("#myTable").DataTable();
-    });
-    async function categorydelete(categoryId) {
-      const id = categoryId;
-      const result = await fetch(`/category/  ` + id, {
-        method: "DELETE",
+      $("#myTable").DataTable({
+        lengthMenu: [
+          [5, 10, 15, 20],
+          [5, 10, 15, 20  ],
+        ],
+        language: {
+          info: "Display _PAGE_ to _END_ of _TOTAL_ entries",
+        },
+        paging: true,
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: "/category",
+          type: "GET",
+          success: function (data) {
+            console.log(data);
+          },
+        },
+        columns: [
+          { data: "first_name" },
+          { data: "position" },
+          { data: "company_name" },
+          { data: "age" },
+          { data: "image" },
+          { data: "start_date" },
+          { data: "action" },
+        ],
       });
-      const data = await result.json();
-    }
+    });
+    // async function categorydelete(categoryId) {
+    //   const id = categoryId;
+    //   const result = await fetch(`/category/  ` + id, {
+    //     method: "DELETE",
+    //   });
+    //   const data = await result.json();
+    // }
   </script>
   <script src="/js/index.js"></script>
   <script src="/js/category.js"></script>

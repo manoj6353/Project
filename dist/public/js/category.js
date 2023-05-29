@@ -1,29 +1,84 @@
-let dialogue = document.querySelector(".dialogue");
-dialogue.style.display = "none";
-
 async function editCategory(id) {
   try {
-    document.getElementById("overlay").style.display = "block";
     const result = await fetch(`/category/${id}`);
-    const ans = await result.json();
-    if (ans) {
-      let dialogue = document.querySelector(".dialogue");
-      let text = document.getElementById("categoryName");
-      let id = document.getElementById("id");
-      id.value = ans.id;
-      text.value = ans.categoryName;
-      let yesButton = dialogue.querySelector(".yes");
-      let noButton = dialogue.querySelector(".no");
-      yesButton.addEventListener("click", async function () {
-        dialogue.style.display = "none";
-        document.getElementById("overlay").style.display = "none";
-      });
-      noButton.addEventListener("click", function () {
-        dialogue.style.display = "none";
-        document.getElementById("overlay").style.display = "none";
-      });
-      dialogue.style.display = "block";
-    }
+    const { data } = await result.json();
+    console.log(data);
+    const main = document.getElementById("main");
+
+    main.innerHTML = `<section class="bg-image mt-5">
+    <div class="d-flex align-items-center">
+      <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card" style="border-radius: 15px">
+              <div class="card-body p-5">
+                <form action="/category/add" method="POST" id="regForm">
+                  <div class="tab">
+                    <div class="form-outline mb-4">
+                    <input
+                        type="text"
+                        id="categoryId"
+                        name="id"
+                        class="form-control form-control"
+                        value="${data.id}"
+                        required
+                      />
+                      <label class="form-label" for="Category"
+                        >Category Name</label
+                      ><input
+                        type="text"
+                        id="categoryName"
+                        name="categoryName"
+                        class="form-control form-control"
+                        required
+                        value="${data.categoryName}"
+                        oninput="verifycategory()"
+                      />
+                      <span id="categoryerror"></span>
+                    </div>
+                  </div>
+                  <div class="commonerror">
+                    <span id="fullError"></span>
+                  </div>
+                  <div
+                    style="overflow: auto"
+                    class="d-flex justify-content-center gap"
+                  >
+                    <div
+                      style="float: right"
+                      class="d-flex justify-content-center gap"
+                    >
+                      <div id="submit">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          id="prevBtn"
+                          onclick="nextPrev()"
+                        >
+                          Submit
+                        </a>
+                      </div>
+                      <div id="back">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          href="/category"
+                          class="button"
+                        >
+                          Back
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="login btn btn-link btn-light">
+                    <a style="color: blue" href="/login">Sign in</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
   } catch (err) {
     console.log(err);
   }
@@ -42,7 +97,6 @@ async function deleteCategory(id) {
 async function trashdata() {
   const result = await fetch(`/category/trash`);
   const data = await result.json();
-  console.log(data);
   let tab = document.getElementById("data");
   tab.innerHTML = "";
   let trash = "";
@@ -78,26 +132,118 @@ async function deletetrashCategory(id) {
   }
 }
 
-let dialogues = document.querySelector(".dialogues");
-dialogues.style.display = "none";
+async function verifycategory() {
+  const category = document.getElementById("categoryName");
+  const categories = category.value;
+  const verifycategory = await fetch(`/category/fetchcategory/${categories}`);
+  const { data } = await verifycategory.json();
+  let categoryerror = document.getElementById("categoryerror");
+  let c = 0;
+  if (categories != "") {
+    if (data == null) {
+      category.classList.remove("error");
+      categoryerror.innerHTML = "";
+      categoryerror.classList.remove("error");
+      c++;
+    } else {
+      category.classList.add("error");
+      categoryerror.innerHTML = "Category already exists";
+      categoryerror.classList.add("error");
+    }
+  }
+  if (c == 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+async function nextPrev() {
+  let CommonError = document.getElementById("fullError");
+  try {
+    if (!(await verifycategory())) {
+      CommonError.classList.add("error");
+      CommonError.innerHTML = "Please fill the category";
+      return false;
+    } else {
+      CommonError.classList.remove("error");
+      CommonError.innerHTML = "";
+      document.getElementById("regForm").submit();
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 async function addCategory() {
   try {
-    document.getElementById("overlay").style.display = "block";
-    let dialogues = document.querySelector(".dialogues");
+    const main = document.getElementById("main");
 
-    let yesButton = dialogues.querySelector(".yes");
-    let noButton = dialogues.querySelector(".no");
-
-    yesButton.addEventListener("click", async function () {
-      dialogues.style.display = "none";
-      document.getElementById("overlay").style.display = "none";
-    });
-    noButton.addEventListener("click", function () {
-      dialogues.style.display = "none";
-      document.getElementById("overlay").style.display = "none";
-    });
-    dialogues.style.display = "block";
+    main.innerHTML = `<section class="bg-image mt-5">
+    <div class="d-flex align-items-center">
+      <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card" style="border-radius: 15px">
+              <div class="card-body p-5">
+                <form action="/category" method="POST" id="regForm">
+                  <div class="tab">
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="Category"
+                        >Category Name</label
+                      ><input
+                        type="text"
+                        id="categoryName"
+                        name="categoryName"
+                        class="form-control form-control"
+                        required
+                        oninput="verifycategory()"
+                      />
+                      <span id="categoryerror"></span>
+                    </div>
+                  </div>
+                  <div class="commonerror">
+                    <span id="fullError"></span>
+                  </div>
+                  <div
+                    style="overflow: auto"
+                    class="d-flex justify-content-center gap"
+                  >
+                    <div
+                      style="float: right"
+                      class="d-flex justify-content-center gap"
+                    >
+                      <div id="submit">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          id="prevBtn"
+                          onclick="nextPrev()"
+                        >
+                          Submit
+                        </a>
+                      </div>
+                      <div id="back">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          href="/admin"
+                          class="button"
+                        >
+                          Back
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="login btn btn-link btn-light">
+                    <a style="color: blue" href="/login">Sign in</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
   } catch (err) {
     console.log("error");
   }

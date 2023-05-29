@@ -9,13 +9,13 @@ export declare class ProductService {
         subCategoryName: string;
     }[]>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
+        createdAt: Date;
         id: number;
         productName: string;
         image: string;
         quantity: string;
         price: string;
         productdetails: string;
-        createdAt: Date;
         subcategories: {
             subCategoryName: string;
         };

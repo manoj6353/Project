@@ -39,7 +39,6 @@ let CategoryService = class CategoryService {
         const data = await prisma.categories.findMany({
             where: { deletedAt: null },
         });
-        return data;
     }
     async findOne(id) {
         return await prisma.categories.findFirst({
@@ -61,6 +60,14 @@ let CategoryService = class CategoryService {
                 deletedAt: new Date(),
             },
         });
+    }
+    fetchcategory(category) {
+        try {
+            return prisma.categories.findFirst({ where: { categoryName: category } });
+        }
+        catch (err) {
+            return err;
+        }
     }
     trash() {
         try {

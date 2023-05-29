@@ -31,17 +31,26 @@ let UserController = class UserController {
     login(createUserDto) {
         return this.userService.login(createUserDto);
     }
-    findOne(id) {
+    async findOne(id) {
+        const users = await this.userService.findOne(+id);
+        return { users };
     }
-    update(id, updateUserDto) {
-        return this.userService.update(+id, updateUserDto);
+    async findUnique(mail) {
+        const verifymail = await this.userService.findUnique(mail);
+        return { verifymail };
     }
-    remove(id) {
-        return this.userService.remove(+id);
+    async update(updateUserDto) {
+        const data = await this.userService.update(updateUserDto);
+        return { data };
+    }
+    async remove(id) {
+        const record = await this.userService.remove(+id);
+        return { record };
     }
 };
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.Redirect)("login"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
@@ -49,6 +58,7 @@ __decorate([
 ], UserController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.Render)("user"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -65,22 +75,29 @@ __decorate([
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(":id"),
-    __param(0, (0, common_1.Param)("id")),
-    __param(1, (0, common_1.Body)()),
+    (0, common_1.Get)("/email/:mail"),
+    __param(0, (0, common_1.Param)("mail")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_user_dto_1.UpdateUserDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "findUnique", null);
+__decorate([
+    (0, common_1.Post)("/update"),
+    (0, common_1.Redirect)("/admin"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [update_user_dto_1.UpdateUserDto]),
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(":id"),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "remove", null);
 UserController = __decorate([
     (0, common_1.Controller)("user"),

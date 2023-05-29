@@ -13,13 +13,14 @@ exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
 const product_service_1 = require("./product/product.service");
+const jwt_auth_guard_1 = require("./authguard/jwt-auth-guard");
 let AppController = class AppController {
     constructor(appService, productService) {
         this.appService = appService;
         this.productService = productService;
     }
     getHello() {
-        throw new Error('Method not implemented.');
+        throw new Error("Method not implemented.");
     }
     async findAll() {
         const data = await this.productService.findAll();
@@ -28,31 +29,22 @@ let AppController = class AppController {
     signup() {
         return;
     }
-    login() {
-        return;
-    }
 };
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.Render)('index'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
+    (0, common_1.Render)("login"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AppController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)('/signup'),
-    (0, common_1.Render)('registration'),
+    (0, common_1.Get)("/signup"),
+    (0, common_1.Render)("registration"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "signup", null);
-__decorate([
-    (0, common_1.Get)('/login'),
-    (0, common_1.Render)('login'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], AppController.prototype, "login", null);
 AppController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [app_service_1.AppService,

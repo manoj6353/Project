@@ -6,6 +6,14 @@ export declare class JwtStrategy extends JwtStrategy_base {
     constructor(usersService: UserService);
     validate(payload: {
         userId: number;
-    }): Promise<import(".prisma/client").users>;
+    }): Promise<{
+        age: number;
+        firstName: string;
+        lastName: string;
+        contact: string;
+        gender: string;
+        updatedAt: Date;
+        id: number;
+    }>;
 }
 export {};

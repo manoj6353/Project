@@ -10,12 +10,13 @@ exports.SubcategoryModule = void 0;
 const common_1 = require("@nestjs/common");
 const subcategory_service_1 = require("./subcategory.service");
 const subcategory_controller_1 = require("./subcategory.controller");
+const jwt_1 = require("@nestjs/jwt");
 let SubcategoryModule = class SubcategoryModule {
 };
 SubcategoryModule = __decorate([
     (0, common_1.Module)({
         controllers: [subcategory_controller_1.SubcategoryController],
-        providers: [subcategory_service_1.SubcategoryService],
+        providers: [subcategory_service_1.SubcategoryService, jwt_1.JwtService],
         exports: [subcategory_service_1.SubcategoryService],
     })
 ], SubcategoryModule);

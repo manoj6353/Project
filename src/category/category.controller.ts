@@ -8,10 +8,13 @@ import {
   Delete,
   Render,
   Redirect,
+  Req,
+  Query,
 } from "@nestjs/common";
 import { CategoryService } from "./category.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
+import { Request } from "express";
 
 @Controller("category")
 export class CategoryController {
@@ -38,8 +41,16 @@ export class CategoryController {
 
   @Get()
   @Render("category")
-  async findAll() {
+  async findAll(@Query() query) {
+    console.log(query);
+
     const data = await this.categoryService.findAll();
+    return { data };
+  }
+
+  @Get("/fetchcategory/:category")
+  async fetchcategory(@Param("category") category: string) {
+    const data = await this.categoryService.fetchcategory(category);
     return { data };
   }
 
@@ -50,7 +61,8 @@ export class CategoryController {
 
   @Get(":id")
   async findOne(@Param("id") id: string) {
-    return await this.categoryService.findOne(+id);
+    const data = await this.categoryService.findOne(+id);
+    return { data };
   }
 
   @Post("/add")

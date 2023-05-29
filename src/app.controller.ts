@@ -1,33 +1,29 @@
-import { Controller, Get, Render } from '@nestjs/common';
-import { AppService } from './app.service';
-import { ProductService } from './product/product.service';
+import { Controller, Get, Render, UseGuards } from "@nestjs/common";
+import { AppService } from "./app.service";
+import { ProductService } from "./product/product.service";
+import { AuthGuard } from "./authguard/jwt-auth-guard";
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly productService: ProductService,
+    private readonly productService: ProductService
   ) {}
 
   getHello(): any {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 
   @Get()
-  @Render('index')
+  @UseGuards(AuthGuard)
+  @Render("login")
   async findAll() {
     const data = await this.productService.findAll();
     return { data };
   }
 
-  @Get('/signup')
-  @Render('registration')
+  @Get("/signup")
+  @Render("registration")
   signup() {
-    return;
-  }
-
-  @Get('/login')
-  @Render('login')
-  login() {
     return;
   }
 }

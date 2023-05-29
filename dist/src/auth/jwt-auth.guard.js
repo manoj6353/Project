@@ -9,10 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JwtAuthGuard = void 0;
+exports.AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-let JwtAuthGuard = class JwtAuthGuard {
+let AuthGuard = class AuthGuard {
     constructor(jwtService) {
         this.jwtService = jwtService;
     }
@@ -26,7 +26,7 @@ let JwtAuthGuard = class JwtAuthGuard {
             const payload = await this.jwtService.verifyAsync(token, {
                 secret: process.env.JWT_SECRET,
             });
-            console.log("🚀 ~ file: auth.guard.ts:25 ~ AuthGuard ~ canActivate ~ payload:", payload);
+            console.log(payload);
             if (!(payload.role == 1)) {
                 throw new common_1.UnauthorizedException();
             }
@@ -37,9 +37,9 @@ let JwtAuthGuard = class JwtAuthGuard {
         return true;
     }
 };
-JwtAuthGuard = __decorate([
+AuthGuard = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [jwt_1.JwtService])
-], JwtAuthGuard);
-exports.JwtAuthGuard = JwtAuthGuard;
+], AuthGuard);
+exports.AuthGuard = AuthGuard;
 //# sourceMappingURL=jwt-auth.guard.js.map

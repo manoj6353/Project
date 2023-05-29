@@ -69,6 +69,7 @@ model productCategory {
 enum Role {
   user
   admin
+  superadmin
 }
 
 model roles {

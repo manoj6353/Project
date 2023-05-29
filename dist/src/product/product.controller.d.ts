@@ -24,13 +24,13 @@ export declare class ProductController {
             categoryName: string;
         }[];
         data: {
+            createdAt: Date;
             id: number;
             productName: string;
             image: string;
             quantity: string;
             price: string;
             productdetails: string;
-            createdAt: Date;
             subcategories: {
                 subCategoryName: string;
             };
@@ -44,13 +44,13 @@ export declare class ProductController {
     }>;
     category(): Promise<{
         data: {
+            createdAt: Date;
             id: number;
             productName: string;
             image: string;
             quantity: string;
             price: string;
             productdetails: string;
-            createdAt: Date;
             subcategories: {
                 subCategoryName: string;
             };

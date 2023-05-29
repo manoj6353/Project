@@ -14,9 +14,6 @@ export declare class AddtocartController {
     })[]>;
     findOne(id: string): Promise<{
         data: {
-            users: {
-                firstName: string;
-            };
             id: number;
             quantity: string;
             products: {
@@ -24,6 +21,9 @@ export declare class AddtocartController {
                 price: string;
             };
             productId: number;
+            users: {
+                firstName: string;
+            };
             userId: number;
         }[];
     }>;

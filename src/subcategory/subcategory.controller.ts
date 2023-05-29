@@ -8,11 +8,12 @@ import {
   Delete,
   Render,
   Redirect,
+  UseGuards,
 } from "@nestjs/common";
 import { SubcategoryService } from "./subcategory.service";
 import { CreateSubcategoryDto } from "./dto/create-subcategory.dto";
 import { UpdateSubcategoryDto } from "./dto/update-subcategory.dto";
-
+import { AuthGuard } from "../authguard/jwt-auth-guard";
 @Controller("subcategory")
 export class SubcategoryController {
   constructor(private readonly subcategoryService: SubcategoryService) {}
@@ -30,6 +31,7 @@ export class SubcategoryController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   @Render("subcategoryshow")
   async findAll() {
     const data = await this.subcategoryService.findAll();

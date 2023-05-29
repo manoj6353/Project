@@ -29,15 +29,21 @@ let CategoryController = class CategoryController {
             console.log(err);
         }
     }
-    async findAll() {
+    async findAll(query) {
+        console.log(query);
         const data = await this.categoryService.findAll();
+        return { data };
+    }
+    async fetchcategory(category) {
+        const data = await this.categoryService.fetchcategory(category);
         return { data };
     }
     async trash() {
         return await this.categoryService.trash();
     }
     async findOne(id) {
-        return await this.categoryService.findOne(+id);
+        const data = await this.categoryService.findOne(+id);
+        return { data };
     }
     update(updateCategoryDto) {
         return this.categoryService.update(updateCategoryDto);
@@ -60,10 +66,18 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.Render)("category"),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)("/fetchcategory/:category"),
+    __param(0, (0, common_1.Param)("category")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CategoryController.prototype, "fetchcategory", null);
 __decorate([
     (0, common_1.Get)("/trash"),
     __metadata("design:type", Function),

@@ -1,5 +1,5 @@
-import { AppService } from './app.service';
-import { ProductService } from './product/product.service';
+import { AppService } from "./app.service";
+import { ProductService } from "./product/product.service";
 export declare class AppController {
     private readonly appService;
     private readonly productService;
@@ -9,11 +9,11 @@ export declare class AppController {
         data: {
             id: number;
             productName: string;
-            image: string;
-            quantity: string;
             price: string;
+            quantity: string;
             productdetails: string;
             createdAt: Date;
+            image: string;
             subcategories: {
                 subCategoryName: string;
             };
@@ -26,5 +26,4 @@ export declare class AppController {
         }[];
     }>;
     signup(): void;
-    login(): void;
 }
