@@ -17,6 +17,25 @@ export class UserService {
           ...users,
           age: userage,
           password: bcrypt.hashSync(password, 11),
+          roleId: 1,
+        },
+      });
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async createadmin(createUserDto) {
+    try {
+      const { password, age, ...users } = createUserDto;
+      const userage = parseInt(age);
+
+      const data = await prisma.users.create({
+        data: {
+          ...users,
+          age: userage,
+          password: bcrypt.hashSync(password, 11),
           roleId: 2,
         },
       });
@@ -26,10 +45,27 @@ export class UserService {
     }
   }
 
-  findAll() {
+  findadminuser() {
     return prisma.users.findMany({
       where: { roleId: 2 },
       select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        contact: true,
+        age: true,
+        email: true,
+        gender: true,
+        createdAt: true,
+      },
+    });
+  }
+
+  findAll() {
+    return prisma.users.findMany({
+      where: { roleId: 1 },
+      select: {
+        id: true,
         firstName: true,
         lastName: true,
         contact: true,
@@ -66,14 +102,45 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return prisma.users.findFirst({ where: { id: id } });
+    return prisma.users.findFirst({
+      where: { id: id },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        age: true,
+        contact: true,
+        gender: true,
+        updatedAt: true,
+      },
+    });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  findUnique(mail: string) {
+    try {
+      return prisma.users.findUnique({
+        where: { email: mail },
+        select: { email: true },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async update(updateUserDto) {
+    const { userId, age, ...users } = updateUserDto;
+    const id = parseInt(userId);
+    const userage = parseInt(age);
+    return await prisma.users.update({
+      where: { id: id },
+      data: {
+        ...users,
+        age: userage,
+      },
+    });
+  }
+
+  async remove(id: number) {
+    return await prisma.users.delete({ where: { id: id } });
   }
 }

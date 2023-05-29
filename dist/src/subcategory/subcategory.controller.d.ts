@@ -13,8 +13,8 @@ export declare class SubcategoryController {
     create(createSubcategoryDto: CreateSubcategoryDto): import(".prisma/client").Prisma.Prisma__subcategoriesClient<import(".prisma/client").subcategories, never>;
     findAll(): Promise<{
         data: {
-            id: number;
             createdAt: Date;
+            id: number;
             categories: {
                 categoryName: string;
             };

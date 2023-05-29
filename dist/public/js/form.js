@@ -1,21 +1,22 @@
-let firstname = document.getElementById("firstName");
-let lastname = document.getElementById("lastName");
-let contact = document.getElementById("contact");
-let email = document.getElementById("email");
-let age = document.getElementById("age");
-let password = document.getElementById("password");
-let confirmpassword = document.getElementById("confirmpassword");
-let firsterror = document.getElementById("firsterror");
-let lasterror = document.getElementById("lasterror");
-let contacterror = document.getElementById("contacterror");
-let emailerror = document.getElementById("emailerror");
-let ageerror = document.getElementById("ageerror");
-let passworderror = document.getElementById("confirmpassworderror");
-const namepattern = /^[a-zA-Z ]{2,30}$/gm;
-const agepattern = /^[0-9]{2,2}$/gm;
-const contactpattern = /^\(?([0-9]{3})\)?([0-9]{3})([0-9]{4})$/;
-const emailPattern = /\S+@\S+\.\S+/;
-function basicvalidation() {
+async function basicvalidation() {
+  let firstname = document.getElementById("firstName");
+  let lastname = document.getElementById("lastName");
+  let contact = document.getElementById("contact");
+  let email = document.getElementById("email");
+  let age = document.getElementById("age");
+  let password = document.getElementById("password");
+  let confirmpassword = document.getElementById("confirmpassword");
+  let firsterror = document.getElementById("firsterror");
+  let lasterror = document.getElementById("lasterror");
+  let contacterror = document.getElementById("contacterror");
+  let emailerror = document.getElementById("emailerror");
+  let emailverifyerror = document.getElementById("emailverifyerror");
+  let ageerror = document.getElementById("ageerror");
+  let passworderror = document.getElementById("confirmpassworderror");
+  const namepattern = /^[a-zA-Z ]{2,30}$/gm;
+  const agepattern = /^[0-9]{2,2}$/gm;
+  const contactpattern = /^\(?([0-9]{3})\)?([0-9]{3})([0-9]{4})$/;
+  const emailPattern = /\S+@\S+\.\S+/;
   let c = 0;
   try {
     if (firstname.value != "") {
@@ -42,6 +43,9 @@ function basicvalidation() {
         lasterror.innerHTML = "Please enter a valid last name";
       }
     }
+    const mail = email.value;
+    const result = await fetch(`/user/email/${mail}`);
+    const { verifymail } = await result.json();
     if (email.value != "") {
       if (email.value.match(emailPattern)) {
         email.classList.remove("error");
@@ -52,6 +56,18 @@ function basicvalidation() {
         email.classList.add("error");
         emailerror.classList.add("error");
         emailerror.innerHTML = "Please enter a valid email";
+      }
+    }
+    if (email.value != "") {
+      if (verifymail == null) {
+        email.classList.remove("error");
+        emailverifyerror.innerHTML = "";
+        emailverifyerror.classList.remove("error");
+        c++;
+      } else {
+        email.classList.add("error");
+        emailverifyerror.classList.add("error");
+        emailverifyerror.innerHTML = "Email already exists";
       }
     }
     if (contact.value != "") {
@@ -91,7 +107,7 @@ function basicvalidation() {
         ageerror.innerHTML = "Please enter a valid age";
       }
     }
-    if (c == 6) {
+    if (c == 7) {
       return true;
     } else {
       return false;
@@ -103,6 +119,8 @@ function basicvalidation() {
 
 function toupper() {
   try {
+    let firstname = document.getElementById("firstName");
+    let lastname = document.getElementById("lastName");
     if (firstname.value != "") {
       let firstName = firstname.value;
       let firstChar = firstName.charAt(0);
@@ -126,14 +144,13 @@ function toupper() {
   }
 }
 
-let CommonError = document.getElementById("fullError");
-
-function nextPrev(n) {
+async function nextPrev(n) {
+  let CommonError = document.getElementById("fullError");
   try {
     let n = 1;
     let currentTab = 1;
     var x = document.getElementsByClassName("tab");
-    if (n == 1 && !basicvalidation()) {
+    if (!(await basicvalidation())) {
       CommonError.classList.add("error");
       CommonError.innerHTML = "Please fill the Basic details";
       return false;

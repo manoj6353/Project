@@ -7,23 +7,31 @@ import {
   Param,
   Delete,
   Render,
+  Redirect,
 } from "@nestjs/common";
 import { AdminService } from "./admin.service";
 import { CreateAdminDto } from "./dto/create-admin.dto";
 import { UpdateAdminDto } from "./dto/update-admin.dto";
+import { UserService } from "../user/user.service";
 
 @Controller("admin")
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(
+    private readonly adminService: AdminService,
+    private readonly userservice: UserService
+  ) {}
 
   @Post()
+  @Redirect("/admin")
   create(@Body() createAdminDto: CreateAdminDto) {
-    return this.adminService.create(createAdminDto);
+    return this.userservice.createadmin(createAdminDto);
   }
 
   @Get()
-  findAll() {
-    return this.adminService.findAll();
+  @Render("admin/user")
+  async findAll() {
+    const user = await this.userservice.findadminuser();
+    return { user };
   }
 
   @Get(":id")

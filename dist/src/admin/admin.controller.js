@@ -17,15 +17,18 @@ const common_1 = require("@nestjs/common");
 const admin_service_1 = require("./admin.service");
 const create_admin_dto_1 = require("./dto/create-admin.dto");
 const update_admin_dto_1 = require("./dto/update-admin.dto");
+const user_service_1 = require("../user/user.service");
 let AdminController = class AdminController {
-    constructor(adminService) {
+    constructor(adminService, userservice) {
         this.adminService = adminService;
+        this.userservice = userservice;
     }
     create(createAdminDto) {
-        return this.adminService.create(createAdminDto);
+        return this.userservice.createadmin(createAdminDto);
     }
-    findAll() {
-        return this.adminService.findAll();
+    async findAll() {
+        const user = await this.userservice.findadminuser();
+        return { user };
     }
     findOne(id) {
         return this.adminService.findOne(+id);
@@ -39,6 +42,7 @@ let AdminController = class AdminController {
 };
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.Redirect)("/admin"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_admin_dto_1.CreateAdminDto]),
@@ -46,9 +50,10 @@ __decorate([
 ], AdminController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.Render)("admin/user"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AdminController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(":id"),
@@ -74,7 +79,8 @@ __decorate([
 ], AdminController.prototype, "remove", null);
 AdminController = __decorate([
     (0, common_1.Controller)("admin"),
-    __metadata("design:paramtypes", [admin_service_1.AdminService])
+    __metadata("design:paramtypes", [admin_service_1.AdminService,
+        user_service_1.UserService])
 ], AdminController);
 exports.AdminController = AdminController;
 //# sourceMappingURL=admin.controller.js.map

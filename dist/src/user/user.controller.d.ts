@@ -7,13 +7,14 @@ export declare class UserController {
     create(createUserDto: CreateUserDto): Promise<import(".prisma/client").users>;
     findAll(): Promise<{
         user: {
-            age: number;
             firstName: string;
             lastName: string;
             contact: string;
+            age: number;
             email: string;
             gender: string;
             createdAt: Date;
+            id: number;
         }[];
     }>;
     login(createUserDto: any): Promise<{
@@ -21,13 +22,32 @@ export declare class UserController {
         success?: undefined;
     } | {
         success: {
-            password: string;
             email: string;
+            password: string;
             id: number;
         };
         error?: undefined;
     }>;
-    findOne(id: string): void;
-    update(id: string, updateUserDto: UpdateUserDto): string;
-    remove(id: string): string;
+    findOne(id: string): Promise<{
+        users: {
+            firstName: string;
+            lastName: string;
+            contact: string;
+            age: number;
+            gender: string;
+            updatedAt: Date;
+            id: number;
+        };
+    }>;
+    findUnique(mail: string): Promise<{
+        verifymail: {
+            email: string;
+        };
+    }>;
+    update(updateUserDto: UpdateUserDto): Promise<{
+        data: import(".prisma/client").users;
+    }>;
+    remove(id: string): Promise<{
+        record: import(".prisma/client").users;
+    }>;
 }

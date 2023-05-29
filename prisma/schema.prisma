@@ -69,6 +69,7 @@ model productCategory {
 enum Role {
   user
   admin
+  superadmin
 }
 
 model roles {
@@ -169,6 +170,7 @@ model users {
   addtocarts addtocarts[]
   addresses  addresses[]
 
+  @@unique([email])
   @@map("users")
 }
 

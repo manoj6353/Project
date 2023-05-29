@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Render,
+  Redirect,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -16,13 +17,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  // @Redirect('/')
+  @Redirect("login")
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
   @Get()
-  // @Render("user")
+  @Render("user")
   async findAll() {
     const user = await this.userService.findAll();
     return { user };
@@ -34,17 +35,27 @@ export class UserController {
   }
 
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    // return this.userService.findOne(+id);
+  async findOne(@Param("id") id: string) {
+    const users = await this.userService.findOne(+id);
+    return { users };
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @Get("/email/:mail")
+  async findUnique(@Param("mail") mail: string) {
+    const verifymail = await this.userService.findUnique(mail);
+    return { verifymail };
+  }
+
+  @Post("/update")
+  @Redirect("/admin")
+  async update(@Body() updateUserDto: UpdateUserDto) {
+    const data = await this.userService.update(updateUserDto);
+    return { data };
   }
 
   @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.userService.remove(+id);
+  async remove(@Param("id") id: string) {
+    const record = await this.userService.remove(+id);
+    return { record };
   }
 }

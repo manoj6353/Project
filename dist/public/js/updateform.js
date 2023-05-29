@@ -1,22 +1,15 @@
-async function basicvalidation() {
+function updatevalidation() {
   let firstname = document.getElementById("firstName");
   let lastname = document.getElementById("lastName");
   let contact = document.getElementById("contact");
-  let email = document.getElementById("email");
   let age = document.getElementById("age");
-  let password = document.getElementById("password");
-  let confirmpassword = document.getElementById("confirmpassword");
   let firsterror = document.getElementById("firsterror");
   let lasterror = document.getElementById("lasterror");
   let contacterror = document.getElementById("contacterror");
-  let emailerror = document.getElementById("emailerror");
-  let emailverifyerror = document.getElementById("emailverifyerror");
   let ageerror = document.getElementById("ageerror");
-  let passworderror = document.getElementById("confirmpassworderror");
   const namepattern = /^[a-zA-Z ]{2,30}$/gm;
   const agepattern = /^[0-9]{2,2}$/gm;
   const contactpattern = /^\(?([0-9]{3})\)?([0-9]{3})([0-9]{4})$/;
-  const emailPattern = /\S+@\S+\.\S+/;
   let c = 0;
   try {
     if (firstname.value != "") {
@@ -43,33 +36,6 @@ async function basicvalidation() {
         lasterror.innerHTML = "Please enter a valid last name";
       }
     }
-    const mail = email.value;
-    const result = await fetch(`/user/email/${mail}`);
-    const { verifymail } = await result.json();
-    if (email.value != "") {
-      if (email.value.match(emailPattern)) {
-        email.classList.remove("error");
-        emailerror.innerHTML = "";
-        emailerror.classList.remove("error");
-        c++;
-      } else {
-        email.classList.add("error");
-        emailerror.classList.add("error");
-        emailerror.innerHTML = "Please enter a valid email";
-      }
-    }
-    if (email.value != "") {
-      if (verifymail == null) {
-        email.classList.remove("error");
-        emailverifyerror.innerHTML = "";
-        emailverifyerror.classList.remove("error");
-        c++;
-      } else {
-        email.classList.add("error");
-        emailverifyerror.classList.add("error");
-        emailverifyerror.innerHTML = "Email already exists";
-      }
-    }
     if (contact.value != "") {
       if (contact.value.match(contactpattern)) {
         contact.classList.remove("error");
@@ -80,19 +46,6 @@ async function basicvalidation() {
         contact.classList.add("error");
         contacterror.classList.add("error");
         contacterror.innerHTML = "Please enter a valid contact";
-      }
-    }
-    if (password.value != "" || confirmpassword.value != "") {
-      if (password.value == confirmpassword.value) {
-        confirmpassword.classList.remove("error");
-        passworderror.innerHTML = "";
-        passworderror.classList.remove("error");
-        c++;
-      } else {
-        confirmpassword.classList.add("error");
-        passworderror.innerHTML =
-          "confirm password and password does not match";
-        passworderror.classList.add("error");
       }
     }
     if (age.value != "") {
@@ -107,7 +60,7 @@ async function basicvalidation() {
         ageerror.innerHTML = "Please enter a valid age";
       }
     }
-    if (c == 7) {
+    if (c == 4) {
       return true;
     } else {
       return false;
@@ -144,13 +97,13 @@ function toupper() {
   }
 }
 
-async function nextPrev(n) {
+function submitform() {
   let CommonError = document.getElementById("fullError");
   try {
     let n = 1;
     let currentTab = 1;
     var x = document.getElementsByClassName("tab");
-    if (!(await basicvalidation())) {
+    if (!updatevalidation()) {
       CommonError.classList.add("error");
       CommonError.innerHTML = "Please fill the Basic details";
       return false;

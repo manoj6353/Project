@@ -5,8 +5,8 @@ export declare class SubcategoryService {
         categoryName: string;
     }[]>;
     findAll(): Promise<{
-        id: number;
         createdAt: Date;
+        id: number;
         categories: {
             categoryName: string;
         };

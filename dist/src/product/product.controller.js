@@ -78,7 +78,7 @@ __decorate([
     (0, common_1.Redirect)("/product"),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("image", {
         storage: (0, multer_1.diskStorage)({
-            destination: "./images",
+            destination: "./public/images",
             filename: filefilter_middleware_1.editFileName,
         }),
         fileFilter: filefilter_middleware_1.imageFileFilter,
@@ -121,7 +121,7 @@ __decorate([
     (0, common_1.Redirect)("/product"),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("image", {
         storage: (0, multer_1.diskStorage)({
-            destination: "./images",
+            destination: "./public/images",
             filename: filefilter_middleware_1.editFileName,
         }),
         fileFilter: filefilter_middleware_1.imageFileFilter,
