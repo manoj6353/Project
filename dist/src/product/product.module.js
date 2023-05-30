@@ -17,7 +17,7 @@ ProductModule = __decorate([
     (0, common_1.Module)({
         imports: [
             platform_express_1.MulterModule.register({
-                dest: './image',
+                dest: "./image",
             }),
         ],
         controllers: [product_controller_1.ProductController],

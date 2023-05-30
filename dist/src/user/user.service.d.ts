@@ -1,42 +1,36 @@
 export declare class UserService {
     create(createUserDto: any): Promise<import(".prisma/client").users>;
     createadmin(createUserDto: any): Promise<import(".prisma/client").users>;
-    findadminuser(): import(".prisma/client").Prisma.PrismaPromise<{
-        age: number;
-        firstName: string;
-        lastName: string;
-        contact: string;
-        email: string;
-        gender: string;
-        createdAt: Date;
-        id: number;
-    }[]>;
-    findAll(): import(".prisma/client").Prisma.PrismaPromise<{
-        age: number;
-        firstName: string;
-        lastName: string;
-        contact: string;
-        email: string;
-        gender: string;
-        createdAt: Date;
-        id: number;
-    }[]>;
+    findadminuser(query: any): Promise<{
+        draw: any;
+        start: number;
+        recordsFiltered: number;
+        recordsTotal: number;
+        data: any[];
+    }>;
+    findAll(query: any): Promise<{
+        draw: any;
+        start: number;
+        recordsFiltered: number;
+        recordsTotal: number;
+        data: any[];
+    }>;
     login(createUserDto: any): Promise<{
         error: string;
         success?: undefined;
     } | {
         success: {
-            password: string;
             email: string;
+            password: string;
             id: number;
         };
         error?: undefined;
     }>;
     findOne(id: number): import(".prisma/client").Prisma.Prisma__usersClient<{
-        age: number;
         firstName: string;
         lastName: string;
         contact: string;
+        age: number;
         gender: string;
         updatedAt: Date;
         id: number;

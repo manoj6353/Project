@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Categories</title>
     <link rel="stylesheet" href="/css/add.css" />
     <link
       rel="stylesheet"
@@ -26,10 +26,9 @@
         <table id="myTable" class="display">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Id</th>
               <th>CategoryName</th>
-              <th>CreatedDate</th>
-              <th>UpdatedDate</th>
+              <th>CreatedAt</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -39,38 +38,45 @@
     </div>
   </body>
   <script>
-    let response;
-    $(document).ready(function () {
-      $("#myTable").DataTable({
-        lengthMenu: [
-          [5, 10, 15, 20],
-          [5, 10, 15, 20  ],
-        ],
-        language: {
-          info: "Display _PAGE_ to _END_ of _TOTAL_ entries",
-        },
-        paging: true,
-        pagingType: "full_numbers",
-        processing: true,
-        serverSide: true,
-        ajax: {
-          url: "/category",
-          type: "GET",
-          success: function (data) {
-            console.log(data);
+    try {
+      let response;
+      $(document).ready(function () {
+        $("#myTable").DataTable({
+          lengthMenu: [
+            [5, 10, 15, 20],
+            [5, 10, 15, 20],
+          ],
+          language: {
+            info: "Display _PAGE_ to _END_ of _TOTAL_ entries",
           },
-        },
-        columns: [
-          { data: "first_name" },
-          { data: "position" },
-          { data: "company_name" },
-          { data: "age" },
-          { data: "image" },
-          { data: "start_date" },
-          { data: "action" },
-        ],
+          columnDefs: [
+            {
+              targets: [3],
+              orderable: false,
+            },
+          ],
+          paging: true,
+          pagingType: "full_numbers",
+          processing: true,
+          serverSide: true,
+          ajax: {
+            url: "/category/categories",
+            type: "get",
+            // success: function (data) {
+            //   console.log(data);
+            // },
+          },
+          columns: [
+            { data: "id" },
+            { data: "categoryName" },
+            { data: "createdAt" },
+            { data: "action" },
+          ],
+        });
       });
-    });
+    } catch (err) {
+      console.log(err);
+    }
     // async function categorydelete(categoryId) {
     //   const id = categoryId;
     //   const result = await fetch(`/category/  ` + id, {

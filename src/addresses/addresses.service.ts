@@ -1,12 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
 import { UpdateAddressDto } from "./dto/update-address.dto";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 @Injectable()
 export class AddressesService {
-  constructor(private jwtService: JwtService) {}
   async fetchCountry() {
     const data = await prisma.countries.findMany({
       select: {
@@ -25,8 +23,6 @@ export class AddressesService {
         name: true,
       },
     });
-    console.log(data);
-
     return data;
   }
 
@@ -41,10 +37,9 @@ export class AddressesService {
     return data;
   }
 
-  async create(createAddressDto) {
+  async create(createAddressDto, id) {
     const { countryId, stateId, cityId, userId, ...address } =
       await createAddressDto;
-    const { id } = await this.jwtService.verify(userId);
     const countryid = parseInt(countryId);
     const stateid = parseInt(stateId);
     const cityid = parseInt(cityId);
@@ -63,10 +58,9 @@ export class AddressesService {
     return `This action returns all addresses`;
   }
 
-  async findOne(id: string) {
-    const user = await this.jwtService.verify(id);
+  async findOne(id: number) {
     return prisma.addresses.findMany({
-      where: { userId: user.id },
+      where: { userId: id },
       select: {
         id: true,
         address1: true,

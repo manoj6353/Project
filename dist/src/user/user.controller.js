@@ -24,9 +24,13 @@ let UserController = class UserController {
     create(createUserDto) {
         return this.userService.create(createUserDto);
     }
-    async findAll() {
-        const user = await this.userService.findAll();
-        return { user };
+    async findAll(req) {
+        const { query } = req;
+        const { data, draw, start, recordsFiltered, recordsTotal } = await this.userService.findAll(query);
+        return { data, draw, start, recordsFiltered, recordsTotal };
+    }
+    root() {
+        return;
     }
     login(createUserDto) {
         return this.userService.login(createUserDto);
@@ -57,12 +61,19 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "create", null);
 __decorate([
+    (0, common_1.Get)("/users"),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "findAll", null);
+__decorate([
     (0, common_1.Get)(),
     (0, common_1.Render)("user"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "findAll", null);
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "root", null);
 __decorate([
     (0, common_1.Post)("/login"),
     __param(0, (0, common_1.Body)()),

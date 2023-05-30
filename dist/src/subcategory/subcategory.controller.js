@@ -17,7 +17,6 @@ const common_1 = require("@nestjs/common");
 const subcategory_service_1 = require("./subcategory.service");
 const create_subcategory_dto_1 = require("./dto/create-subcategory.dto");
 const update_subcategory_dto_1 = require("./dto/update-subcategory.dto");
-const jwt_auth_guard_1 = require("../authguard/jwt-auth-guard");
 let SubcategoryController = class SubcategoryController {
     constructor(subcategoryService) {
         this.subcategoryService = subcategoryService;
@@ -29,9 +28,13 @@ let SubcategoryController = class SubcategoryController {
     create(createSubcategoryDto) {
         return this.subcategoryService.create(createSubcategoryDto);
     }
-    async findAll() {
-        const data = await this.subcategoryService.findAll();
-        return { data };
+    async findCategory(req) {
+        const { query } = req;
+        const { data, draw, start, recordsFiltered, recordsTotal } = await this.subcategoryService.findAll(query);
+        return { data, draw, start, recordsFiltered, recordsTotal };
+    }
+    root() {
+        return;
     }
     findOne(id) {
         return this.subcategoryService.findOne(+id);
@@ -58,13 +61,19 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], SubcategoryController.prototype, "create", null);
 __decorate([
+    (0, common_1.Get)("/subcategories"),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], SubcategoryController.prototype, "findCategory", null);
+__decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Render)("subcategoryshow"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], SubcategoryController.prototype, "findAll", null);
+    __metadata("design:returntype", void 0)
+], SubcategoryController.prototype, "root", null);
 __decorate([
     (0, common_1.Get)(":id"),
     __param(0, (0, common_1.Param)("id")),

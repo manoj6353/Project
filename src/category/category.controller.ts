@@ -3,13 +3,11 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Render,
   Redirect,
   Req,
-  Query,
 } from "@nestjs/common";
 import { CategoryService } from "./category.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
@@ -39,13 +37,19 @@ export class CategoryController {
     }
   }
 
+  @Get("/categories")
+  async findCategory(@Req() req: Request) {
+    const { query } = req;
+    const { data, draw, start, recordsFiltered, recordsTotal } =
+      await this.categoryService.findAll(query);
+
+    return { data, draw, start, recordsFiltered, recordsTotal };
+  }
+
   @Get()
   @Render("category")
-  async findAll(@Query() query) {
-    console.log(query);
-
-    const data = await this.categoryService.findAll();
-    return { data };
+  root() {
+    return;
   }
 
   @Get("/fetchcategory/:category")

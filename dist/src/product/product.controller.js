@@ -35,10 +35,14 @@ let ProductController = class ProductController {
     async create(createProductDto, file) {
         return await this.productService.create(createProductDto, file);
     }
+    async findCategory(req) {
+        const { query } = req;
+        const { data, draw, start, recordsFiltered, recordsTotal } = await this.productService.allProducts(query);
+        return { data, draw, start, recordsFiltered, recordsTotal };
+    }
     async findAll() {
-        const data = await this.productService.findAll();
         const categories = await this.productService.fetchcategory();
-        return { categories, data };
+        return { categories };
     }
     async category() {
         const data = await this.productService.findAll();
@@ -89,6 +93,13 @@ __decorate([
     __metadata("design:paramtypes", [create_product_dto_1.CreateProductDto, Object]),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)("/products"),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "findCategory", null);
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.Render)("productshow"),

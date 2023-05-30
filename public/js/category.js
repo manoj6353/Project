@@ -68,9 +68,6 @@ async function editCategory(id) {
                       </div>
                     </div>
                   </div>
-                  <div class="login btn btn-link btn-light">
-                    <a style="color: blue" href="/login">Sign in</a>
-                  </div>
                 </form>
               </div>
             </div>
@@ -232,9 +229,6 @@ async function addCategory() {
                         </a>
                       </div>
                     </div>
-                  </div>
-                  <div class="login btn btn-link btn-light">
-                    <a style="color: blue" href="/login">Sign in</a>
                   </div>
                 </form>
               </div>

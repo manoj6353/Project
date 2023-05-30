@@ -6,24 +6,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AddressesModule = exports.jwtSecret = void 0;
+exports.AddressesModule = void 0;
 const common_1 = require("@nestjs/common");
 const addresses_service_1 = require("./addresses.service");
 const addresses_controller_1 = require("./addresses.controller");
-const passport_1 = require("@nestjs/passport");
-const jwt_1 = require("@nestjs/jwt");
-exports.jwtSecret = "zjP9h6ZI5LoSKCRj";
 let AddressesModule = class AddressesModule {
 };
 AddressesModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            passport_1.PassportModule,
-            jwt_1.JwtModule.register({
-                secret: exports.jwtSecret,
-                signOptions: { expiresIn: "24h" },
-            }),
-        ],
         controllers: [addresses_controller_1.AddressesController],
         providers: [addresses_service_1.AddressesService],
     })

@@ -1,20 +1,20 @@
-/* eslint-disable prettier/prettier */
+let addressradio;
+let isAddressOpened = false;
 async function addtocart(id) {
   const productId = id;
   const userId = localStorage.getItem("id");
-  const fetchCart = await fetch(
-    `/addtocart/getcart?userId=${userId}&productId=${productId}`
-  );
+  const fetchCart = await fetch(`/addtocart/getcart?productId=${productId}`);
   const { data } = await fetchCart.json();
   if (data.length > 0) {
     alert("product already exists");
   } else {
-    const result = await fetch(
-      `/addtocart?userId=${userId}&productId=${productId}`,
-      {
-        method: "POST",
-      }
-    );
+    const result = await fetch(`/addtocart`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ productId }),
+    });
     const data = await result.json();
     if (data) {
       alert("product added successfully");
@@ -82,7 +82,7 @@ async function login() {
     if (data.status != 200) {
       error.innerHTML = "Please check your email and password";
     } else if (data.data.token && data.status == 200) {
-      window.location.href = "/";
+      window.location.href = "/home";
     }
   }
 }
@@ -178,34 +178,58 @@ async function token() {
 }
 
 async function order() {
-  const id = localStorage.getItem("id");
-  const results = await fetch(`/addresses/${id}`);
+  const results = await fetch(`/addresses`);
   const data = await results.json();
   if (data.length != 0) {
     let address = document.getElementById("address");
     let addresses = "";
     addresses += `<br><span>
     Delivered on which address<br><hr>`;
-    data.forEach((d) => {
-      addresses += `<input type="radio" name="address" value="${d.id}" checked>
-      ${d.address1} ${d.address2},${d.cities.name},${d.states.name},${d.countries.name},${d.pinCode} <a class="btn btn-info" href="/addresses/address/${d.id}">Edit</a>&nbsp
+    data.forEach((d, i) => {
+      console.log({ i });
+      addresses += `<div id="${
+        d.id
+      }"><input type="radio" name="address" value="${d.id}" ${
+        i === 0 ? "checked" : ""
+      } onclick="eventCatch(this)">
+      ${d.address1} ${d.address2},${d.cities.name},${d.states.name},${
+        d.countries.name
+      },${d.pinCode} <a class="btn btn-info" href="/addresses/address/${
+        d.id
+      }">Edit</a>&nbsp
       <a class="btn btn-danger" onclick="addressdelete(${d.id})">Delete</a>
       <a class="btn btn-secondary " onclick="add()">Add new address</a>
-      </span><br><br>`;
+      </span><br><br></div>`;
     });
     addresses += `<hr>`;
     address.innerHTML = addresses;
-    document.getElementById("payment").innerHTML = "Place the Order";
+    addressradio = document.querySelector('input[name = "address"]:checked');
     document
       .getElementById("payment")
-      .setAttribute("onclick", `placeorder(${id})`);
+      .setAttribute("onclick", `placeorder(${addressradio.value})`);
+    document.getElementById("payment").innerHTML = "Place the Order";
   } else {
     window.location.href = "/addresses/add";
   }
 }
 
 async function placeorder(id) {
+  let productId = document.getElementById('')
+  const results = await fetch(`/orders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({  }),
+  });
+  const data = await results.json();
   console.log("in order", id);
+}
+function eventCatch(e) {
+  console.log(e.value);
+  document
+    .getElementById("payment")
+    .setAttribute("onclick", `placeorder(${e.value})`);
 }
 
 async function addressdelete(id) {
@@ -218,4 +242,17 @@ async function addressdelete(id) {
 
 async function add() {
   window.location.href = "/addresses/add";
+}
+
+async function forgotpassword() {
+  const email = document.getElementById("email").value;
+  const emailerror = document.getElementById("emailerror");
+  const result = await fetch(`/user/email/${email}`);
+  const { verifymail } = await result.json();
+  if (verifymail == null) {
+    emailerror.innerHTML = "Please check your email";
+  } else {
+    emailerror.classList.remove("emailerror");
+    emailerror.innerHTML = "";
+  }
 }

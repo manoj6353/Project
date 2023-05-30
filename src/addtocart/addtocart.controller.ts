@@ -8,47 +8,41 @@ import {
   Delete,
   Render,
   Query,
+  Req,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { Request } from "express";
 import { AddtocartService } from "./addtocart.service";
 import { UpdateAddtocartDto } from "./dto/update-addtocart.dto";
 @Controller("addtocart")
 export class AddtocartController {
-  constructor(
-    private readonly addtocartService: AddtocartService,
-    private jwtService: JwtService
-  ) {}
+  constructor(private readonly addtocartService: AddtocartService) {}
 
   @Post()
-  async create(
-    @Query("userId") userId: string,
-    @Query("productId") productId: string
-  ) {
-    const { id } = await this.jwtService.verify(userId);
-    return this.addtocartService.create(+id, +productId);
+  async create(@Req() req: Request, @Body() { productId }: any) {
+    const id = req.cookies.data.id;
+    const data = await this.addtocartService.create(+id, +productId);
+    return { data };
   }
 
   @Get("/getcart")
-  async getcarts(
-    @Query("userId") userId: string,
-    @Query("productId") productId: string
-  ) {
-    const { id } = await this.jwtService.verify(userId);
+  async getcarts(@Req() req: Request, @Query("productId") productId: string) {
+    const id = await req.cookies.data.id;
     const data = await this.addtocartService.getcart(+id, +productId);
     return { data };
   }
 
   @Get()
-  findAll() {
-    const data = this.addtocartService.findAll();
-    return data;
+  @Render("addtocart")
+  async findAll(@Req() req: Request) {
+    const userid = await req.cookies.data.id;
+    const data = await this.addtocartService.findAll(+userid);
+    return { data };
   }
 
   @Get(":id")
-  @Render("addtocart")
   async findOne(@Param("id") id: string) {
-    const user = await this.jwtService.verify(id);
-    const data = await this.addtocartService.findOne(+user.id);
+    const data = await this.addtocartService.findOne(+id);
     return { data };
   }
 

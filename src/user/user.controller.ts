@@ -9,10 +9,12 @@ import {
   Render,
   Redirect,
   UseGuards,
+  Req,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { Request } from "express";
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -23,11 +25,19 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @Get("/users")
+  async findAll(@Req() req: Request) {
+    const { query } = req;
+    const { data, draw, start, recordsFiltered, recordsTotal } =
+      await this.userService.findAll(query);
+
+    return { data, draw, start, recordsFiltered, recordsTotal };
+  }
+
   @Get()
   @Render("user")
-  async findAll() {
-    const user = await this.userService.findAll();
-    return { user };
+  root() {
+    return;
   }
 
   @Post("/login")

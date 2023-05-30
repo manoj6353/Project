@@ -190,21 +190,24 @@ model addresses {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
   deletedAt DateTime?
+
+  orders orders[]
 }
 
 model orders {
   id Int @id @default(autoincrement())
 
-  users     users     @relation(fields: [userId], references: [id])
-  userId    Int
-  products  products  @relation(fields: [productId], references: [id])
-  productId Int
-  quantity  String
-  price     String
-  address   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
-  deletedAt DateTime?
+  users       users      @relation(fields: [userId], references: [id])
+  userId      Int
+  products    products   @relation(fields: [productId], references: [id])
+  productId   Int
+  quantity    String
+  addresses   addresses? @relation(fields: [addressesId], references: [id])
+  addressesId Int
+  price       String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now())
+  deletedAt   DateTime?
 
   @@map("orders")
 }

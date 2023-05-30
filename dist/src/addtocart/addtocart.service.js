@@ -20,12 +20,7 @@ let AddtocartService = class AddtocartService {
             },
         });
     }
-    findAll() {
-        return prisma.addtocarts.findMany({
-            include: { products: true },
-        });
-    }
-    async findOne(id) {
+    async findAll(id) {
         return await prisma.addtocarts.findMany({
             where: { userId: id },
             select: {
@@ -37,6 +32,7 @@ let AddtocartService = class AddtocartService {
                     select: {
                         productName: true,
                         price: true,
+                        image: true,
                     },
                 },
                 users: {
@@ -45,6 +41,11 @@ let AddtocartService = class AddtocartService {
                     },
                 },
             },
+        });
+    }
+    async findOne(id) {
+        return prisma.addtocarts.findMany({
+            include: { products: true },
         });
     }
     async getcart(userId, productId) {

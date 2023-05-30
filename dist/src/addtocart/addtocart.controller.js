@@ -14,30 +14,29 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddtocartController = void 0;
 const common_1 = require("@nestjs/common");
-const jwt_1 = require("@nestjs/jwt");
 const addtocart_service_1 = require("./addtocart.service");
 const update_addtocart_dto_1 = require("./dto/update-addtocart.dto");
 let AddtocartController = class AddtocartController {
-    constructor(addtocartService, jwtService) {
+    constructor(addtocartService) {
         this.addtocartService = addtocartService;
-        this.jwtService = jwtService;
     }
-    async create(userId, productId) {
-        const { id } = await this.jwtService.verify(userId);
-        return this.addtocartService.create(+id, +productId);
+    async create(req, { productId }) {
+        const id = req.cookies.data.id;
+        const data = await this.addtocartService.create(+id, +productId);
+        return { data };
     }
-    async getcarts(userId, productId) {
-        const { id } = await this.jwtService.verify(userId);
+    async getcarts(req, productId) {
+        const id = await req.cookies.data.id;
         const data = await this.addtocartService.getcart(+id, +productId);
         return { data };
     }
-    findAll() {
-        const data = this.addtocartService.findAll();
-        return data;
+    async findAll(req) {
+        const userid = await req.cookies.data.id;
+        const data = await this.addtocartService.findAll(+userid);
+        return { data };
     }
     async findOne(id) {
-        const user = await this.jwtService.verify(id);
-        const data = await this.addtocartService.findOne(+user.id);
+        const data = await this.addtocartService.findOne(+id);
         return { data };
     }
     update(id, updateAddtocartDto) {
@@ -50,29 +49,30 @@ let AddtocartController = class AddtocartController {
 };
 __decorate([
     (0, common_1.Post)(),
-    __param(0, (0, common_1.Query)("userId")),
-    __param(1, (0, common_1.Query)("productId")),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AddtocartController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)("/getcart"),
-    __param(0, (0, common_1.Query)("userId")),
+    __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Query)("productId")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], AddtocartController.prototype, "getcarts", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.Render)("addtocart"),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
 ], AddtocartController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(":id"),
-    (0, common_1.Render)("addtocart"),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -95,8 +95,7 @@ __decorate([
 ], AddtocartController.prototype, "remove", null);
 AddtocartController = __decorate([
     (0, common_1.Controller)("addtocart"),
-    __metadata("design:paramtypes", [addtocart_service_1.AddtocartService,
-        jwt_1.JwtService])
+    __metadata("design:paramtypes", [addtocart_service_1.AddtocartService])
 ], AddtocartController);
 exports.AddtocartController = AddtocartController;
 //# sourceMappingURL=addtocart.controller.js.map

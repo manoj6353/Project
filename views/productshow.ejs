@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Products</title>
     <link rel="stylesheet" href="/css/add.css" />
     <link
       rel="stylesheet"
@@ -37,40 +37,7 @@
             <th>Action</th>
           </tr>
         </thead>
-        <tbody id="data">
-          <% data.forEach(d=> { %>
-          <tr>
-            <td><%= d.id %></td>
-            <td><%= d.productName %></td>
-            <td><%= d.quantity %></td>
-            <td><%= d.price %></td>
-            <% if(d.image) {%>
-            <td>
-              <img src="/images/<%=d.image %>" width="100px" height="100px" />
-            </td>
-            <% } %> <% d.productCategory.forEach(p=> { %>
-            <td><%= p.categories.categoryName %></td>
-            <% }) %>
-            <td><%= d.subcategories.subCategoryName %></td>
-            <td><%= d.productdetails %></td>
-            <td><%= (new Date(d.createdAt).toLocaleDateString()) %></td>
-            <td>
-              <a
-                class="btn fas fa-edit btn-primary"
-                onclick="editProduct(`<%=d.id%>`)"
-              >
-                EDIT</a
-              >
-              <a
-                class="btn fas fa-delete btn-danger"
-                onclick="deleteProduct(`<%=d.id%>`)"
-              >
-                Delete</a
-              >
-            </td>
-          </tr>
-          <% }); %>
-        </tbody>
+        <tbody id="data"></tbody>
       </table>
       <div class="dialogues" style="margin-top: 30px; position: relative">
         <form action="/product" method="post" enctype="multipart/form-data">
@@ -301,10 +268,51 @@
     </div>
   </body>
   <script>
-    let response;
-    $(document).ready(function () {
-      $("#myTable").DataTable();
-    });
+    try {
+      let response;
+      $(document).ready(function () {
+        $("#myTable").DataTable({
+          lengthMenu: [
+            [5, 10, 15, 20],
+            [5, 10, 15, 20],
+          ],
+          language: {
+            info: "Display _PAGE_ to _END_ of _TOTAL_ Entries",
+          },
+          columnDefs: [
+            {
+              targets: [4, 9],
+              orderable: false,
+            },
+          ],
+          paging: true,
+          pagingType: "full_numbers",
+          processing: true,
+          serverSide: true,
+          ajax: {
+            url: "/product/products",
+            type: "get",
+            // success: function (data) {
+            //   console.log(data);
+            // },
+          },
+          columns: [
+            { data: "id" },
+            { data: "productName" },
+            { data: "quantity" },
+            { data: "price" },
+            { data: "image" },
+            { data: "productDetails" },
+            { data: "subCategoryName" },
+            { data: "categoryName" },
+            { data: "createdAt" },
+            { data: "action" },
+          ],
+        });
+      });
+    } catch (err) {
+      console.log(err);
+    }
   </script>
   <script src="/js/index.js"></script>
   <script src="/js/product.js"></script>

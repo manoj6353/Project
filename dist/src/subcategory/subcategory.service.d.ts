@@ -4,14 +4,13 @@ export declare class SubcategoryService {
         id: number;
         categoryName: string;
     }[]>;
-    findAll(): Promise<{
-        createdAt: Date;
-        id: number;
-        categories: {
-            categoryName: string;
-        };
-        subCategoryName: string;
-    }[]>;
+    findAll(query: any): Promise<{
+        draw: any;
+        start: number;
+        recordsFiltered: number;
+        recordsTotal: number;
+        data: any[];
+    }>;
     findOne(id: number): Promise<{
         id: number;
         categoryId: number;

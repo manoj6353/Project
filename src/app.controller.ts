@@ -2,6 +2,7 @@ import { Controller, Get, Render, UseGuards } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { ProductService } from "./product/product.service";
 import { AuthGuard } from "./authguard/jwt-auth-guard";
+import * as transporter from "mail.config";
 @Controller()
 export class AppController {
   constructor(
@@ -13,12 +14,25 @@ export class AppController {
     throw new Error("Method not implemented.");
   }
 
-  @Get()
-  @UseGuards(AuthGuard)
-  @Render("login")
+  @Get("/home")
+  @Render("index")
   async findAll() {
     const data = await this.productService.findAll();
     return { data };
+  }
+
+  @Get("/forgotpassword")
+  @Render("forgotpassword")
+  roots() {
+    console.log(transporter);
+
+    return;
+  }
+
+  @Get()
+  @Render("login")
+  root() {
+    return;
   }
 
   @Get("/signup")

@@ -11,6 +11,7 @@ import {
   Render,
   Redirect,
 } from "@nestjs/common";
+import { Request } from "express";
 import { AddressesService } from "./addresses.service";
 import { CreateAddressDto } from "./dto/create-address.dto";
 import { UpdateAddressDto } from "./dto/update-address.dto";
@@ -20,8 +21,13 @@ export class AddressesController {
 
   @Post()
   @Redirect("/addtocart")
-  create(@Body() createAddressDto: CreateAddressDto) {
-    return this.addressesService.create(createAddressDto);
+  async create(
+    @Req() req: Request,
+    @Body() createAddressDto: CreateAddressDto
+  ) {
+    const id = await req.cookies.data.id;
+    const data = await this.addressesService.create(createAddressDto, +id);
+    return { data };
   }
 
   @Get("/add")
@@ -44,13 +50,9 @@ export class AddressesController {
   }
 
   @Get()
-  findAll() {
-    return this.addressesService.findAll();
-  }
-
-  @Get(":id")
-  async findOne(@Param("id") id: string) {
-    const data = await this.addressesService.findOne(id);
+  async findOne(@Req() req: Request) {
+    const userid = await req.cookies.data.id;
+    const data = await this.addressesService.findOne(userid);
     return data;
   }
 

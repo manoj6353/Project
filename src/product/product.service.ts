@@ -59,7 +59,7 @@ export class ProductService {
     }
   }
 
-  findAll() {
+  async findAll() {
     try {
       return prisma.products.findMany({
         select: {
@@ -88,6 +88,161 @@ export class ProductService {
         },
         where: { deletedAt: null },
       });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async allProducts(query) {
+    try {
+      const draw = query.draw;
+      const columnIndex = query.order[0]["column"];
+      const columnName = query.columns[columnIndex]["data"];
+      const search = query.search || "";
+      const columnSort = query.order[0]["dir"];
+      const start = parseInt(query.start);
+      const length = parseInt(query.length);
+
+      const count = await prisma.products.count({
+        where: {
+          deletedAt: null,
+          OR: [
+            {
+              productName: {
+                contains: search.value,
+              },
+            },
+            {
+              price: {
+                contains: search.value,
+              },
+            },
+            {
+              quantity: {
+                contains: search.value,
+              },
+            },
+            {
+              productdetails: {
+                contains: search.value,
+              },
+            },
+            {
+              subcategories: {
+                subCategoryName: {
+                  contains: search.value,
+                },
+              },
+            },
+          ],
+        },
+      });
+
+      const row = await prisma.products.findMany({
+        skip: start,
+        take: length,
+        orderBy: { subcategories: { subCategoryName: columnSort } },
+        select: {
+          id: true,
+          productName: true,
+          price: true,
+          quantity: true,
+          productdetails: true,
+          createdAt: true,
+          image: true,
+          subcategories: {
+            select: {
+              subCategoryName: true,
+            },
+          },
+          productCategory: {
+            select: {
+              categoryId: true,
+              categories: {
+                select: {
+                  categoryName: true,
+                },
+              },
+            },
+          },
+        },
+        where: {
+          deletedAt: null,
+          OR: [
+            {
+              productName: {
+                contains: search.value,
+              },
+            },
+            {
+              price: {
+                contains: search.value,
+              },
+            },
+            {
+              quantity: {
+                contains: search.value,
+              },
+            },
+            {
+              productdetails: {
+                contains: search.value,
+              },
+            },
+            {
+              subcategories: {
+                subCategoryName: {
+                  contains: search.value,
+                },
+              },
+            },
+          ],
+        },
+      });
+
+      const payload = { data: [] };
+
+      for (const data of row) {
+        let images;
+        if (data.image) {
+          images = `<img src="/images/${data.image}" width="100px" height="100px" />`;
+        } else {
+          images = "";
+        }
+        const view = `<a
+        class="btn fas fa-edit btn-primary"
+        onclick="editProduct('${data.id}')"
+      >
+        EDIT</a
+      >
+      <a
+        class="btn fas fa-delete btn-danger"
+        onclick="deleteProduct('${data.id}')"
+      >
+        Delete</a
+      >`;
+
+        payload.data.push({
+          id: data.id,
+          productName: data.productName,
+          quantity: data.quantity,
+          price: data.price,
+          image: images,
+          productDetails: data.productdetails,
+          subCategoryName: data.subcategories.subCategoryName,
+          categoryName: data.productCategory[0].categories.categoryName,
+          createdAt: new Date(data.createdAt).toLocaleDateString(),
+          action: view,
+        });
+      }
+
+      return {
+        ...payload,
+        draw,
+        start,
+        recordsFiltered: count,
+        recordsTotal: count,
+      };
     } catch (err) {
       console.log(err);
     }

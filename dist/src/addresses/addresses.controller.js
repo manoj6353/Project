@@ -21,8 +21,10 @@ let AddressesController = class AddressesController {
     constructor(addressesService) {
         this.addressesService = addressesService;
     }
-    create(createAddressDto) {
-        return this.addressesService.create(createAddressDto);
+    async create(req, createAddressDto) {
+        const id = await req.cookies.data.id;
+        const data = await this.addressesService.create(createAddressDto, +id);
+        return { data };
     }
     async fetchCountry() {
         const data = await this.addressesService.fetchCountry();
@@ -36,11 +38,9 @@ let AddressesController = class AddressesController {
         const city = await this.addressesService.fetchCity(+id);
         return { city };
     }
-    findAll() {
-        return this.addressesService.findAll();
-    }
-    async findOne(id) {
-        const data = await this.addressesService.findOne(id);
+    async findOne(req) {
+        const userid = await req.cookies.data.id;
+        const data = await this.addressesService.findOne(userid);
         return data;
     }
     async addressid(id) {
@@ -58,10 +58,11 @@ let AddressesController = class AddressesController {
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.Redirect)("/addtocart"),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_address_dto_1.CreateAddressDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object, create_address_dto_1.CreateAddressDto]),
+    __metadata("design:returntype", Promise)
 ], AddressesController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)("/add"),
@@ -86,15 +87,9 @@ __decorate([
 ], AddressesController.prototype, "fetchCity", null);
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], AddressesController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)(":id"),
-    __param(0, (0, common_1.Param)("id")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AddressesController.prototype, "findOne", null);
 __decorate([

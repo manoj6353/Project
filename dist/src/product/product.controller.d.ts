@@ -2,6 +2,7 @@
 import { ProductService } from "./product.service";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
+import { Request } from "express";
 export declare class ProductController {
     private readonly productService;
     constructor(productService: ProductService);
@@ -18,28 +19,17 @@ export declare class ProductController {
         }[];
     }>;
     create(createProductDto: CreateProductDto, file: Express.Multer.File): Promise<import(".prisma/client").products>;
+    findCategory(req: Request): Promise<{
+        data: any[];
+        draw: any;
+        start: number;
+        recordsFiltered: number;
+        recordsTotal: number;
+    }>;
     findAll(): Promise<{
         categories: {
             id: number;
             categoryName: string;
-        }[];
-        data: {
-            createdAt: Date;
-            id: number;
-            productName: string;
-            image: string;
-            quantity: string;
-            price: string;
-            productdetails: string;
-            subcategories: {
-                subCategoryName: string;
-            };
-            productCategory: {
-                categories: {
-                    categoryName: string;
-                };
-                categoryId: number;
-            }[];
         }[];
     }>;
     category(): Promise<{

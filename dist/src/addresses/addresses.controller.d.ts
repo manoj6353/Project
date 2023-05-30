@@ -1,10 +1,13 @@
+import { Request } from "express";
 import { AddressesService } from "./addresses.service";
 import { CreateAddressDto } from "./dto/create-address.dto";
 import { UpdateAddressDto } from "./dto/update-address.dto";
 export declare class AddressesController {
     private readonly addressesService;
     constructor(addressesService: AddressesService);
-    create(createAddressDto: CreateAddressDto): Promise<import(".prisma/client").addresses>;
+    create(req: Request, createAddressDto: CreateAddressDto): Promise<{
+        data: import(".prisma/client").addresses;
+    }>;
     fetchCountry(): Promise<{
         data: {
             id: number;
@@ -23,8 +26,7 @@ export declare class AddressesController {
             name: string;
         }[];
     }>;
-    findAll(): string;
-    findOne(id: string): Promise<{
+    findOne(req: Request): Promise<{
         id: number;
         userId: number;
         address1: string;
@@ -44,11 +46,11 @@ export declare class AddressesController {
         address: {
             id: number;
             userId: number;
-            address1: string;
-            address2: string;
             countryId: number;
             stateId: number;
             cityId: number;
+            address1: string;
+            address2: string;
             pinCode: string;
         };
         data: {

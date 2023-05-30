@@ -49,35 +49,240 @@ let UserService = class UserService {
             console.log(err);
         }
     }
-    findadminuser() {
-        return prisma.users.findMany({
-            where: { roleId: 2 },
-            select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                contact: true,
-                age: true,
-                email: true,
-                gender: true,
-                createdAt: true,
-            },
-        });
+    async findadminuser(query) {
+        try {
+            const draw = query.draw;
+            const columnIndex = query.order[0]["column"];
+            let columnName = query.columns[columnIndex]["data"];
+            const search = query.search || "";
+            const columnSort = query.order[0]["dir"];
+            const start = parseInt(query.start);
+            const length = parseInt(query.length);
+            if (columnName == "Name") {
+                columnName = "firstName";
+            }
+            const count = await prisma.users.count({
+                where: {
+                    deletedAt: null,
+                    roleId: 1,
+                    OR: [
+                        {
+                            firstName: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            lastName: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            email: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            contact: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            gender: {
+                                contains: search.value,
+                            },
+                        },
+                    ],
+                },
+            });
+            const row = await prisma.users.findMany({
+                skip: start,
+                take: length,
+                orderBy: {
+                    [columnName]: columnSort,
+                },
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    contact: true,
+                    age: true,
+                    email: true,
+                    gender: true,
+                    createdAt: true,
+                },
+                where: {
+                    deletedAt: null,
+                    roleId: 2,
+                    OR: [
+                        {
+                            firstName: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            lastName: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            email: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            contact: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            gender: {
+                                contains: search.value,
+                            },
+                        },
+                    ],
+                },
+            });
+            const payload = { data: [] };
+            for (const data of row) {
+                const views = `<a
+        class="btn fas fa-edit btn-primary"
+        onclick="editUser('${data.id}')"
+      >
+        Edit</a
+      >
+      <a
+        class="btn fas fa-delete btn-danger"
+        onclick="deleteUser('${data.id}')"
+      >
+        Delete</a
+      >`;
+                payload.data.push({
+                    id: data.id,
+                    Name: `${data.firstName} ${data.lastName}`,
+                    email: data.email,
+                    contact: data.contact,
+                    gender: data.gender,
+                    createdAt: new Date(data.createdAt).toLocaleDateString(),
+                    action: views,
+                });
+            }
+            return Object.assign(Object.assign({}, payload), { draw,
+                start, recordsFiltered: count, recordsTotal: count });
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
-    findAll() {
-        return prisma.users.findMany({
-            where: { roleId: 1 },
-            select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                contact: true,
-                age: true,
-                email: true,
-                gender: true,
-                createdAt: true,
-            },
-        });
+    async findAll(query) {
+        try {
+            const draw = query.draw;
+            const columnIndex = query.order[0]["column"];
+            let columnName = query.columns[columnIndex]["data"];
+            const search = query.search || "";
+            const columnSort = query.order[0]["dir"];
+            const start = parseInt(query.start);
+            const length = parseInt(query.length);
+            if (columnName == "Name") {
+                columnName = "firstName";
+            }
+            const count = await prisma.users.count({
+                where: {
+                    deletedAt: null,
+                    roleId: 1,
+                    OR: [
+                        {
+                            firstName: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            lastName: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            email: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            contact: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            gender: {
+                                contains: search.value,
+                            },
+                        },
+                    ],
+                },
+            });
+            const row = await prisma.users.findMany({
+                skip: start,
+                take: length,
+                orderBy: {
+                    [columnName]: columnSort,
+                },
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    contact: true,
+                    age: true,
+                    email: true,
+                    gender: true,
+                    createdAt: true,
+                },
+                where: {
+                    deletedAt: null,
+                    roleId: 1,
+                    OR: [
+                        {
+                            firstName: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            lastName: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            email: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            contact: {
+                                contains: search.value,
+                            },
+                        },
+                        {
+                            gender: {
+                                contains: search.value,
+                            },
+                        },
+                    ],
+                },
+            });
+            const payload = { data: [] };
+            for (const data of row) {
+                payload.data.push({
+                    id: data.id,
+                    Name: `${data.firstName} ${data.lastName}`,
+                    email: data.email,
+                    contact: data.contact,
+                    gender: data.gender,
+                    createdAt: new Date(data.createdAt).toLocaleDateString(),
+                });
+            }
+            return Object.assign(Object.assign({}, payload), { draw,
+                start, recordsFiltered: count, recordsTotal: count });
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
     async login(createUserDto) {
         const { email, password } = createUserDto;

@@ -6,6 +6,7 @@ import {
   Res,
   HttpCode,
   HttpStatus,
+  Redirect,
 } from "@nestjs/common";
 import {
   ApiOkResponse,
@@ -28,6 +29,7 @@ export class AuthController {
   ) {}
 
   @Post("/login")
+  @Redirect("/home")
   @ApiOkResponse({ type: AuthEntity })
   async login(
     @Req()

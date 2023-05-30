@@ -13,7 +13,7 @@ exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
 const product_service_1 = require("./product/product.service");
-const jwt_auth_guard_1 = require("./authguard/jwt-auth-guard");
+const transporter = require("../mail.config");
 let AppController = class AppController {
     constructor(appService, productService) {
         this.appService = appService;
@@ -26,18 +26,38 @@ let AppController = class AppController {
         const data = await this.productService.findAll();
         return { data };
     }
+    roots() {
+        console.log(transporter);
+        return;
+    }
+    root() {
+        return;
+    }
     signup() {
         return;
     }
 };
 __decorate([
-    (0, common_1.Get)(),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
-    (0, common_1.Render)("login"),
+    (0, common_1.Get)("/home"),
+    (0, common_1.Render)("index"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AppController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)("/forgotpassword"),
+    (0, common_1.Render)("forgotpassword"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "roots", null);
+__decorate([
+    (0, common_1.Get)(),
+    (0, common_1.Render)("login"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "root", null);
 __decorate([
     (0, common_1.Get)("/signup"),
     (0, common_1.Render)("registration"),

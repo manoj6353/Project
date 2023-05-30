@@ -5,9 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -22,13 +19,9 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddressesService = void 0;
 const common_1 = require("@nestjs/common");
-const jwt_1 = require("@nestjs/jwt");
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 let AddressesService = class AddressesService {
-    constructor(jwtService) {
-        this.jwtService = jwtService;
-    }
     async fetchCountry() {
         const data = await prisma.countries.findMany({
             select: {
@@ -46,7 +39,6 @@ let AddressesService = class AddressesService {
                 name: true,
             },
         });
-        console.log(data);
         return data;
     }
     async fetchCity(id) {
@@ -59,9 +51,8 @@ let AddressesService = class AddressesService {
         });
         return data;
     }
-    async create(createAddressDto) {
+    async create(createAddressDto, id) {
         const _a = await createAddressDto, { countryId, stateId, cityId, userId } = _a, address = __rest(_a, ["countryId", "stateId", "cityId", "userId"]);
-        const { id } = await this.jwtService.verify(userId);
         const countryid = parseInt(countryId);
         const stateid = parseInt(stateId);
         const cityid = parseInt(cityId);
@@ -73,9 +64,8 @@ let AddressesService = class AddressesService {
         return `This action returns all addresses`;
     }
     async findOne(id) {
-        const user = await this.jwtService.verify(id);
         return prisma.addresses.findMany({
-            where: { userId: user.id },
+            where: { userId: id },
             select: {
                 id: true,
                 address1: true,
@@ -133,8 +123,7 @@ let AddressesService = class AddressesService {
     }
 };
 AddressesService = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [jwt_1.JwtService])
+    (0, common_1.Injectable)()
 ], AddressesService);
 exports.AddressesService = AddressesService;
 //# sourceMappingURL=addresses.service.js.map

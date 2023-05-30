@@ -9,11 +9,13 @@ import {
   Render,
   Redirect,
   UseGuards,
+  Req,
 } from "@nestjs/common";
 import { SubcategoryService } from "./subcategory.service";
 import { CreateSubcategoryDto } from "./dto/create-subcategory.dto";
 import { UpdateSubcategoryDto } from "./dto/update-subcategory.dto";
 import { AuthGuard } from "../authguard/jwt-auth-guard";
+import { Request } from "express";
 @Controller("subcategory")
 export class SubcategoryController {
   constructor(private readonly subcategoryService: SubcategoryService) {}
@@ -30,12 +32,19 @@ export class SubcategoryController {
     return this.subcategoryService.create(createSubcategoryDto);
   }
 
+  @Get("/subcategories")
+  async findCategory(@Req() req: Request) {
+    const { query } = req;
+    const { data, draw, start, recordsFiltered, recordsTotal } =
+      await this.subcategoryService.findAll(query);
+
+    return { data, draw, start, recordsFiltered, recordsTotal };
+  }
+
   @Get()
-  @UseGuards(AuthGuard)
   @Render("subcategoryshow")
-  async findAll() {
-    const data = await this.subcategoryService.findAll();
-    return { data };
+  root() {
+    return;
   }
 
   @Get(":id")

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Admin Users</title>
     <link rel="stylesheet" href="/css/add.css" />
     <link
       rel="stylesheet"
@@ -25,6 +25,7 @@
         <table id="myTable" class="display">
           <thead>
             <tr>
+              <th>Id</th>
               <th>Name</th>
               <th>Email</th>
               <th>Contact</th>
@@ -33,40 +34,54 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody id="data">
-            <% user.forEach(d=> { %>
-            <tr>
-              <td><%= d.firstName %> <%= d.lastName %></td>
-              <td><%= d.email %></td>
-              <td><%= d.contact %></td>
-              <td><%= d.gender %></td>
-              <td><%= (new Date(d.createdAt).toLocaleDateString()) %></td>
-              <td>
-                <a
-                  class="btn fas fa-edit btn-primary"
-                  onclick="editUser(`<%=d.id%>`)"
-                >
-                  Edit</a
-                >
-                <a
-                  class="btn fas fa-delete btn-danger"
-                  onclick="deleteUser(`<%=d.id%>`)"
-                >
-                  Delete</a
-                >
-              </td>
-            </tr>
-            <% }); %>
-          </tbody>
+          <tbody id="data"></tbody>
         </table>
       </div>
     </div>
   </body>
   <script>
-    let response;
-    $(document).ready(function () {
-      $("#myTable").DataTable();
-    });
+    try {
+      let response;
+      $(document).ready(function () {
+        $("#myTable").DataTable({
+          lengthMenu: [
+            [5, 10, 15, 20],
+            [5, 10, 15, 20],
+          ],
+          language: {
+            info: "Display _PAGE_ to _END_ of _TOTAL_ entries",
+          },
+          columnDefs: [
+            {
+              targets: [6],
+              orderable: false,
+            },
+          ],
+          paging: true,
+          pagingType: "full_numbers",
+          processing: true,
+          serverSide: true,
+          ajax: {
+            url: "/admin/adminuser",
+            type: "get",
+            // success: function (data) {
+            //   console.log(data);
+            // },
+          },
+          columns: [
+            { data: "id" },
+            { data: "Name" },
+            { data: "email" },
+            { data: "contact" },
+            { data: "gender" },
+            { data: "createdAt" },
+            { data: "action" },
+          ],
+        });
+      });
+    } catch (err) {
+      console.log(err);
+    }
   </script>
   <script src="/js/index.js"></script>
   <script src="/js/user.js"></script>

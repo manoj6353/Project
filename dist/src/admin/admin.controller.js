@@ -26,9 +26,13 @@ let AdminController = class AdminController {
     create(createAdminDto) {
         return this.userservice.createadmin(createAdminDto);
     }
-    async findAll() {
-        const user = await this.userservice.findadminuser();
-        return { user };
+    root() {
+        return;
+    }
+    async findAll(req) {
+        const { query } = req;
+        const { data, draw, start, recordsFiltered, recordsTotal } = await this.userservice.findadminuser(query);
+        return { data, draw, start, recordsFiltered, recordsTotal };
     }
     findOne(id) {
         return this.adminService.findOne(+id);
@@ -53,6 +57,13 @@ __decorate([
     (0, common_1.Render)("admin/user"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "root", null);
+__decorate([
+    (0, common_1.Get)("/adminuser"),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "findAll", null);
 __decorate([

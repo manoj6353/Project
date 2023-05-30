@@ -36,14 +36,15 @@
         <div class="row" id="search"></div>
         <div class="row" id="rows">
           <% data.forEach(d=> { %>
-          <div class="col-6 h-100">
+          <div class="col-10 h-100">
             <div class="card h-100">
               <div class="h-100 d-flex align-items-center">
-                <!-- <img
-                  src="../images/iphone14"
+                <img
+                  src="/images/<%=d.image%>"
                   class="card-img mx-auto"
-                  alt="..."
-                /> -->
+                  width="200px"
+                  height="100px"
+                />
               </div>
               <div class="card-body">
                 <h5 class="card-title"><%=d.productName%></h5>

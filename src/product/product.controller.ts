@@ -10,6 +10,7 @@ import {
   Redirect,
   UseInterceptors,
   UploadedFile,
+  Req,
 } from "@nestjs/common";
 import { ProductService } from "./product.service";
 import { CreateProductDto } from "./dto/create-product.dto";
@@ -20,6 +21,7 @@ import {
   imageFileFilter,
 } from "./middleware/filefilter.middleware";
 import { diskStorage } from "multer";
+import { Request } from "express";
 
 @Controller("product")
 export class ProductController {
@@ -55,12 +57,20 @@ export class ProductController {
     return await this.productService.create(createProductDto, file);
   }
 
+  @Get("/products")
+  async findCategory(@Req() req: Request) {
+    const { query } = req;
+    const { data, draw, start, recordsFiltered, recordsTotal } =
+      await this.productService.allProducts(query);
+
+    return { data, draw, start, recordsFiltered, recordsTotal };
+  }
+
   @Get()
   @Render("productshow")
   async findAll() {
-    const data = await this.productService.findAll();
     const categories = await this.productService.fetchcategory();
-    return { categories, data };
+    return { categories };
   }
 
   @Get("/category")
