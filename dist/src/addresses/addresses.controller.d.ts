@@ -27,8 +27,6 @@ export declare class AddressesController {
         }[];
     }>;
     findOne(req: Request): Promise<{
-        id: number;
-        userId: number;
         address1: string;
         address2: string;
         pinCode: string;
@@ -41,17 +39,19 @@ export declare class AddressesController {
         cities: {
             name: string;
         };
+        id: number;
+        userId: number;
     }[]>;
     addressid(id: string): Promise<{
         address: {
-            id: number;
-            userId: number;
             address1: string;
             address2: string;
+            pinCode: string;
+            id: number;
+            userId: number;
             countryId: number;
             stateId: number;
             cityId: number;
-            pinCode: string;
         };
         data: {
             id: number;

@@ -39,20 +39,25 @@
             <div class="card h-50">
               <div class="h-100 d-flex align-items-center">
                 <img
-                  src="/images/<%=d.image%>"
+                  src="/images/<%=d.products.image%>"
                   class="card-img mx-auto"
                   width="200px"
                   height="100px"
                 />
               </div>
+              <div class="card-body fw-medium">
+                <label class="form-label">Name :</label
+                ><span><%=d.products.productName%></span>
+              </div>
               <div class="card-body">
-                <h5 class="card-title"><%=d.productName%></h5>
-                <a
-                  onclick="addtocart(`<%=d.id%>`)"
-                  class="btn btn-primary btn-md btn-block"
-                >
-                  Add to Cart
-                </a>
+                <label class="form-label">Quantity :</label><%=d.quantity%>
+              </div>
+              <div class="card-body">
+                <label class="form-label">Total Price :</label><%=d.totalprice%>
+              </div>
+              <div class="card-body">
+                <label class="form-label">Order Date :</label>
+                <%=new Date(d.createdAt).toLocaleDateString()%>
               </div>
             </div>
           </div>

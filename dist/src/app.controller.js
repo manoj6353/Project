@@ -8,17 +8,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
 const app_service_1 = require("./app.service");
 const product_service_1 = require("./product/product.service");
 const jwt_auth_guard_1 = require("./authguard/jwt-auth-guard");
-const transporter = require("../mail.config");
+const user_service_1 = require("./user/user.service");
 let AppController = class AppController {
-    constructor(appService, productService) {
+    constructor(appService, productService, userService) {
         this.appService = appService;
         this.productService = productService;
+        this.userService = userService;
     }
     getHello() {
         throw new Error("Method not implemented.");
@@ -28,11 +33,35 @@ let AppController = class AppController {
         return { data };
     }
     roots() {
-        console.log(transporter);
         return;
     }
-    root() {
+    async logout(req, res) {
+        await res.clearCookie("auth_token");
+        await res.clearCookie("data");
+        return res.redirect("/");
+    }
+    async root(req, res) {
+        try {
+            if (req.cookies.auth_token) {
+                if (req.cookies.data.role == 2 || req.cookies.data.role == 1) {
+                    console.log("in role");
+                    res.redirect("/home");
+                }
+                else {
+                    res.redirect("/admin");
+                }
+                console.log("in if");
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+    async googleRegister() {
         return;
+    }
+    googleAuthRedirect(req) {
+        console.log(req.user);
     }
     signup() {
         return;
@@ -54,12 +83,38 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "roots", null);
 __decorate([
+    (0, common_1.Get)("/logout"),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "logout", null);
+__decorate([
     (0, common_1.Get)(),
     (0, common_1.Render)("login"),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "root", null);
+__decorate([
+    (0, common_1.Get)("/google"),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("google")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "googleRegister", null);
+__decorate([
+    (0, common_1.Get)("/google/login"),
+    (0, common_1.Redirect)("/"),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("google")),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], AppController.prototype, "root", null);
+], AppController.prototype, "googleAuthRedirect", null);
 __decorate([
     (0, common_1.Get)("/signup"),
     (0, common_1.Render)("registration"),
@@ -70,7 +125,8 @@ __decorate([
 AppController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [app_service_1.AppService,
-        product_service_1.ProductService])
+        product_service_1.ProductService,
+        user_service_1.UserService])
 ], AppController);
 exports.AppController = AppController;
 //# sourceMappingURL=app.controller.js.map

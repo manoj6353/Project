@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const addresses_service_1 = require("./addresses.service");
 const create_address_dto_1 = require("./dto/create-address.dto");
 const update_address_dto_1 = require("./dto/update-address.dto");
+const jwt_auth_guard_1 = require("../authguard/jwt-auth-guard");
 let AddressesController = class AddressesController {
     constructor(addressesService) {
         this.addressesService = addressesService;
@@ -57,6 +58,7 @@ let AddressesController = class AddressesController {
 };
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Redirect)("/addtocart"),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
@@ -66,6 +68,7 @@ __decorate([
 ], AddressesController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)("/add"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Render)("address"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -73,6 +76,7 @@ __decorate([
 ], AddressesController.prototype, "fetchCountry", null);
 __decorate([
     (0, common_1.Get)("fetch-state/:id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -80,6 +84,7 @@ __decorate([
 ], AddressesController.prototype, "fetchState", null);
 __decorate([
     (0, common_1.Get)("fetch-city/:id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -87,6 +92,7 @@ __decorate([
 ], AddressesController.prototype, "fetchCity", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -94,6 +100,7 @@ __decorate([
 ], AddressesController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Get)("/address/:id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Render)("editaddress"),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
@@ -102,6 +109,7 @@ __decorate([
 ], AddressesController.prototype, "addressid", null);
 __decorate([
     (0, common_1.Post)("/update"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [update_address_dto_1.UpdateAddressDto]),
@@ -109,6 +117,7 @@ __decorate([
 ], AddressesController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(":id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

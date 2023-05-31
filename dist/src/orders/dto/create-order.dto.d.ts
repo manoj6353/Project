@@ -4,4 +4,5 @@ export declare class CreateOrderDto {
     quantity: string;
     price: string;
     addressId: number;
+    totalprice: number;
 }

@@ -43,4 +43,4 @@ AuthGuard = __decorate([
     __metadata("design:paramtypes", [jwt_1.JwtService])
 ], AuthGuard);
 exports.AuthGuard = AuthGuard;
-//# sourceMappingURL=jwt-auth-guard.js.map
+//# sourceMappingURL=role-guard.js.map

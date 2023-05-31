@@ -16,7 +16,7 @@ export class UserService {
         data: {
           ...users,
           age: userage,
-          password: bcrypt.hashSync(password, 11),
+          password: bcrypt.hashSync(password, 11) || "",
           roleId: 1,
         },
       });

@@ -45,12 +45,14 @@ export class AddtocartController {
   }
 
   @Get(":id")
+  @UseGuards(AuthGuard)
   async findOne(@Param("id") id: string) {
     const data = await this.addtocartService.findOne(+id);
     return { data };
   }
 
   @Patch(":id")
+  @UseGuards(AuthGuard)
   update(
     @Param("id") id: string,
     @Body() updateAddtocartDto: UpdateAddtocartDto
@@ -59,6 +61,7 @@ export class AddtocartController {
   }
 
   @Delete(":id")
+  @UseGuards(AuthGuard)
   async remove(@Param("id") id: string) {
     const data = await this.addtocartService.remove(+id);
     return { data };

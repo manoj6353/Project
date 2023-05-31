@@ -4,6 +4,7 @@ export declare class OrdersService {
     findAll(id: number): import(".prisma/client").Prisma.PrismaPromise<{
         quantity: string;
         price: string;
+        totalprice: number;
         createdAt: Date;
         products: {
             productName: string;

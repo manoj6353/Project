@@ -28,7 +28,7 @@ let UserService = class UserService {
             const { password, age } = createUserDto, users = __rest(createUserDto, ["password", "age"]);
             const userage = parseInt(age);
             const data = await prisma.users.create({
-                data: Object.assign(Object.assign({}, users), { age: userage, password: bcrypt.hashSync(password, 11), roleId: 1 }),
+                data: Object.assign(Object.assign({}, users), { age: userage, password: bcrypt.hashSync(password, 11) || "", roleId: 1 }),
             });
             return data;
         }

@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrdersController = void 0;
 const common_1 = require("@nestjs/common");
 const orders_service_1 = require("./orders.service");
-const create_order_dto_1 = require("./dto/create-order.dto");
 const update_order_dto_1 = require("./dto/update-order.dto");
 let OrdersController = class OrdersController {
     constructor(ordersService) {
@@ -29,7 +28,6 @@ let OrdersController = class OrdersController {
     async findAll(req) {
         const id = req.cookies.data.id;
         const data = await this.ordersService.findAll(+id);
-        console.log(data);
         return { data };
     }
     findOne(id) {
@@ -47,11 +45,12 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_order_dto_1.CreateOrderDto, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], OrdersController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.Render)("order"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

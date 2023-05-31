@@ -18,19 +18,17 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  async create(@Body() createOrderDto: CreateOrderDto, @Req() req: Request) {
+  async create(@Body() createOrderDto: any, @Req() req: Request) {
     const id = await req.cookies.data.id;
     const data = await this.ordersService.create(createOrderDto, +id);
     return { data };
   }
 
   @Get()
-  // @Render("order")
+  @Render("order")
   async findAll(@Req() req: Request) {
     const id = req.cookies.data.id;
     const data = await this.ordersService.findAll(+id);
-    console.log(data);
-
     return { data };
   }
 

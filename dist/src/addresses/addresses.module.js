@@ -10,12 +10,13 @@ exports.AddressesModule = void 0;
 const common_1 = require("@nestjs/common");
 const addresses_service_1 = require("./addresses.service");
 const addresses_controller_1 = require("./addresses.controller");
+const jwt_1 = require("@nestjs/jwt");
 let AddressesModule = class AddressesModule {
 };
 AddressesModule = __decorate([
     (0, common_1.Module)({
         controllers: [addresses_controller_1.AddressesController],
-        providers: [addresses_service_1.AddressesService],
+        providers: [addresses_service_1.AddressesService, jwt_1.JwtService],
     })
 ], AddressesModule);
 exports.AddressesModule = AddressesModule;

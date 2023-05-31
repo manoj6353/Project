@@ -1,6 +1,5 @@
 async function addtocart(id) {
   const productId = id;
-  const userId = localStorage.getItem("id");
   const fetchCart = await fetch(`/addtocart/getcart?productId=${productId}`);
   const { data } = await fetchCart.json();
   if (data.length > 0) {
@@ -76,11 +75,15 @@ async function login() {
       body: JSON.stringify({ email, password }),
     });
     const data = await results.json();
-    console.log(data);
+    console.log(data.data.userRole);
     if (data.status != 200) {
       error.innerHTML = "Please check your email and password";
     } else if (data.data.token && data.status == 200) {
-      window.location.href = "/home";
+      if (data.data.userRole == 3) {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/home";
+      }
     }
   }
 }
@@ -134,17 +137,16 @@ function tap() {
     s += total;
   }
   checkout.innerHTML += s;
-  token();
 }
 
-async function token() {
-  let token = localStorage.getItem("id");
-  if (token) {
-    return true;
-  } else {
-    window.location.replace("/login");
-  }
-}
+// async function token() {
+//   let token = localStorage.getItem("id");
+//   if (token) {
+//     return true;
+//   } else {
+//     window.location.replace("/login");
+//   }
+// }
 
 async function order() {
   const results = await fetch(`/addresses`);
@@ -192,7 +194,8 @@ async function placeorder(addressid) {
     let productId = productid[i].id;
     let Quantity = quantity[i].value;
     let Price = price[i].innerHTML;
-    addtocart.push({ productId, Quantity, Price });
+    let total = Price * Quantity;
+    addtocart.push({ productId, Quantity, Price, total });
   }
   const deleteaddtocart = document.querySelectorAll(".delete");
   const results = await fetch(`/orders`, {

@@ -29,8 +29,8 @@ export declare class UserController {
         users: {
             firstName: string;
             lastName: string;
-            contact: string;
             age: number;
+            contact: string;
             gender: string;
             updatedAt: Date;
             id: number;

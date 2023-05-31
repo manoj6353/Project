@@ -18,6 +18,7 @@ const admin_service_1 = require("./admin.service");
 const create_admin_dto_1 = require("./dto/create-admin.dto");
 const update_admin_dto_1 = require("./dto/update-admin.dto");
 const user_service_1 = require("../user/user.service");
+const jwt_auth_guard_1 = require("../authguard/jwt-auth-guard");
 let AdminController = class AdminController {
     constructor(adminService, userservice) {
         this.adminService = adminService;
@@ -46,6 +47,7 @@ let AdminController = class AdminController {
 };
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Redirect)("/admin"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -54,6 +56,7 @@ __decorate([
 ], AdminController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Render)("admin/user"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -61,6 +64,7 @@ __decorate([
 ], AdminController.prototype, "root", null);
 __decorate([
     (0, common_1.Get)("/adminuser"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -68,6 +72,7 @@ __decorate([
 ], AdminController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(":id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -75,6 +80,7 @@ __decorate([
 ], AdminController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(":id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -83,6 +89,7 @@ __decorate([
 ], AdminController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(":id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

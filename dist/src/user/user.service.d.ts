@@ -29,8 +29,8 @@ export declare class UserService {
     findOne(id: number): import(".prisma/client").Prisma.Prisma__usersClient<{
         firstName: string;
         lastName: string;
-        contact: string;
         age: number;
+        contact: string;
         gender: string;
         updatedAt: Date;
         id: number;

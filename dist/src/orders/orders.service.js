@@ -14,15 +14,14 @@ let OrdersService = class OrdersService {
     async create(createOrderDto, id) {
         let result;
         for (let i = 0; i < createOrderDto.addtocart.length; i++) {
-            const productid = parseInt(createOrderDto.addtocart[i].productId);
-            const addressId = parseInt(createOrderDto.addressid);
             result = await prisma.orders.create({
                 data: {
                     userId: id,
-                    productId: productid,
+                    productId: +createOrderDto.addtocart[i].productId,
                     price: createOrderDto.addtocart[i].Price,
                     quantity: createOrderDto.addtocart[i].Quantity,
-                    addressesId: addressId,
+                    totalprice: createOrderDto.addtocart[i].total,
+                    addressesId: +createOrderDto.addressid,
                 },
             });
         }
@@ -35,6 +34,7 @@ let OrdersService = class OrdersService {
                 quantity: true,
                 id: true,
                 price: true,
+                totalprice: true,
                 createdAt: true,
                 products: {
                     select: {

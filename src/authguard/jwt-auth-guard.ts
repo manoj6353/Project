@@ -22,10 +22,9 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_SECRET,
       });
 
-      if (!(payload.role == 2)) {
-        throw new UnauthorizedException({
-          message: "Please provide a valid token",
-        });
+      if (!(payload.role == 1) && !(payload.role == 2)) {
+        console.log("1 and 2", payload.role);
+        throw new UnauthorizedException();
       }
     } catch {
       throw new UnauthorizedException();
@@ -33,7 +32,6 @@ export class AuthGuard implements CanActivate {
     return true;
   }
 
-  /* extract token fromm reqest header */
   //   private extractTokenFromHeader(request: Request): string | undefined {
   //     const [type, token] = request.headers.authorization?.split(' ') ?? [];
   //     return type === 'Bearer' ? token : undefined;
