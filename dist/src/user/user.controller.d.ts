@@ -19,21 +19,21 @@ export declare class UserController {
         success?: undefined;
     } | {
         success: {
+            id: number;
             email: string;
             password: string;
-            id: number;
         };
         error?: undefined;
     }>;
     findOne(id: string): Promise<{
         users: {
-            firstName: string;
-            lastName: string;
-            age: number;
-            contact: string;
-            gender: string;
             updatedAt: Date;
             id: number;
+            firstName: string;
+            lastName: string;
+            contact: string;
+            age: number;
+            gender: string;
         };
     }>;
     findUnique(mail: string): Promise<{

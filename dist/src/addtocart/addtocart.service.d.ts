@@ -1,7 +1,11 @@
 export declare class AddtocartService {
     create(userId: number, productId: number): Promise<import(".prisma/client").addtocarts>;
     findAll(id: number): Promise<{
+        users: {
+            firstName: string;
+        };
         id: number;
+        userId: number;
         quantity: string;
         products: {
             productName: string;
@@ -9,10 +13,6 @@ export declare class AddtocartService {
             price: string;
         };
         productId: number;
-        users: {
-            firstName: string;
-        };
-        userId: number;
     }[]>;
     findOne(id: number): Promise<(import(".prisma/client").addtocarts & {
         products: import(".prisma/client").products;

@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { MailerModule } from "@nestjs-modules/mailer";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { CategoryModule } from "./category/category.module";
@@ -11,8 +12,21 @@ import { AuthModule } from "./auth/auth.module";
 import { OrdersModule } from "./orders/orders.module";
 import { AddressesModule } from "./addresses/addresses.module";
 import { AdminModule } from "./admin/admin.module";
+import { ForgotPasswordModule } from "./forgot-password/forgot-password.module";
 @Module({
   imports: [
+    MailerModule.forRoot({
+      transport: {
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "manoj.bajiya.2023@gmail.com",
+          pass: "iylmlwplnjjbuifw",
+        },
+      },
+    }),
+
     CategoryModule,
     ProductModule,
     AddtocartModule,
@@ -22,6 +36,7 @@ import { AdminModule } from "./admin/admin.module";
     OrdersModule,
     AddressesModule,
     AdminModule,
+    ForgotPasswordModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtService],

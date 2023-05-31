@@ -9,15 +9,30 @@ const prisma = new PrismaClient();
 export class UserService {
   async create(createUserDto) {
     try {
-      const { password, age, ...users } = createUserDto;
-      const userage = parseInt(age);
+      console.log(createUserDto);
 
+      const firstName = createUserDto.firstName || createUserDto.name.givenName;
+      const lastName = createUserDto.lastName || createUserDto.name.familyName;
+      const age = +createUserDto.age || "";
+      const contact = createUserDto.contact || "";
+      const email = createUserDto.email || createUserDto.emails[0].value;
+      let password;
+      if (createUserDto.password) {
+        password = createUserDto.password;
+      } else {
+        password = "";
+      }
+      const gender = createUserDto.gender || "";
       const data = await prisma.users.create({
         data: {
-          ...users,
-          age: userage,
-          password: bcrypt.hashSync(password, 11) || "",
-          roleId: 1,
+          firstName: firstName,
+          lastName: lastName,
+          contact: contact,
+          email: email,
+          password: password,
+          gender: gender,
+          age: +age,
+          roleId: 2,
         },
       });
       return data;

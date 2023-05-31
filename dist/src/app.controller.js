@@ -61,7 +61,7 @@ let AppController = class AppController {
         return;
     }
     googleAuthRedirect(req) {
-        console.log(req.user);
+        return this.userService.create(req.user);
     }
     signup() {
         return;

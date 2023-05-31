@@ -15,7 +15,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   lastName: string;
   @IsString()
-  @IsNotEmpty()
   age: string;
   @IsString()
   @IsNotEmpty()
