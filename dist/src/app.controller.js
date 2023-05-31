@@ -13,6 +13,7 @@ exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
 const product_service_1 = require("./product/product.service");
+const jwt_auth_guard_1 = require("./authguard/jwt-auth-guard");
 const transporter = require("../mail.config");
 let AppController = class AppController {
     constructor(appService, productService) {
@@ -39,6 +40,7 @@ let AppController = class AppController {
 };
 __decorate([
     (0, common_1.Get)("/home"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Render)("index"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

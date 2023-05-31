@@ -8,12 +8,42 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrdersService = void 0;
 const common_1 = require("@nestjs/common");
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
 let OrdersService = class OrdersService {
-    create(createOrderDto) {
-        return "This action adds a new order";
+    async create(createOrderDto, id) {
+        let result;
+        for (let i = 0; i < createOrderDto.addtocart.length; i++) {
+            const productid = parseInt(createOrderDto.addtocart[i].productId);
+            const addressId = parseInt(createOrderDto.addressid);
+            result = await prisma.orders.create({
+                data: {
+                    userId: id,
+                    productId: productid,
+                    price: createOrderDto.addtocart[i].Price,
+                    quantity: createOrderDto.addtocart[i].Quantity,
+                    addressesId: addressId,
+                },
+            });
+        }
+        return result;
     }
-    findAll() {
-        return `This action returns all orders`;
+    findAll(id) {
+        return prisma.orders.findMany({
+            where: { userId: id },
+            select: {
+                quantity: true,
+                id: true,
+                price: true,
+                createdAt: true,
+                products: {
+                    select: {
+                        productName: true,
+                        image: true,
+                    },
+                },
+            },
+        });
     }
     findOne(id) {
         return `This action returns a #${id} order`;

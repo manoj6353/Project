@@ -1,8 +1,9 @@
-import { Controller, Get, Render, UseGuards } from "@nestjs/common";
+import { Controller, Get, Render, Res, UseGuards } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { ProductService } from "./product/product.service";
 import { AuthGuard } from "./authguard/jwt-auth-guard";
 import * as transporter from "mail.config";
+import { Response } from "express";
 @Controller()
 export class AppController {
   constructor(
@@ -15,6 +16,7 @@ export class AppController {
   }
 
   @Get("/home")
+  @UseGuards(AuthGuard)
   @Render("index")
   async findAll() {
     const data = await this.productService.findAll();

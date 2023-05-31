@@ -16,6 +16,7 @@ exports.AddtocartController = void 0;
 const common_1 = require("@nestjs/common");
 const addtocart_service_1 = require("./addtocart.service");
 const update_addtocart_dto_1 = require("./dto/update-addtocart.dto");
+const jwt_auth_guard_1 = require("../authguard/jwt-auth-guard");
 let AddtocartController = class AddtocartController {
     constructor(addtocartService) {
         this.addtocartService = addtocartService;
@@ -49,6 +50,7 @@ let AddtocartController = class AddtocartController {
 };
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -57,6 +59,7 @@ __decorate([
 ], AddtocartController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)("/getcart"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Query)("productId")),
     __metadata("design:type", Function),
@@ -65,6 +68,7 @@ __decorate([
 ], AddtocartController.prototype, "getcarts", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Render)("addtocart"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),

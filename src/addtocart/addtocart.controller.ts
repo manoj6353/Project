@@ -9,16 +9,18 @@ import {
   Render,
   Query,
   Req,
+  UseGuards,
 } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
 import { AddtocartService } from "./addtocart.service";
 import { UpdateAddtocartDto } from "./dto/update-addtocart.dto";
+import { AuthGuard } from "../authguard/jwt-auth-guard";
 @Controller("addtocart")
 export class AddtocartController {
   constructor(private readonly addtocartService: AddtocartService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   async create(@Req() req: Request, @Body() { productId }: any) {
     const id = req.cookies.data.id;
     const data = await this.addtocartService.create(+id, +productId);
@@ -26,6 +28,7 @@ export class AddtocartController {
   }
 
   @Get("/getcart")
+  @UseGuards(AuthGuard)
   async getcarts(@Req() req: Request, @Query("productId") productId: string) {
     const id = await req.cookies.data.id;
     const data = await this.addtocartService.getcart(+id, +productId);
@@ -33,6 +36,7 @@ export class AddtocartController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   @Render("addtocart")
   async findAll(@Req() req: Request) {
     const userid = await req.cookies.data.id;

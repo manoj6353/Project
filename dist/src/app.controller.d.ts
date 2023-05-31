@@ -7,13 +7,13 @@ export declare class AppController {
     getHello(): any;
     findAll(): Promise<{
         data: {
-            createdAt: Date;
             id: number;
             productName: string;
-            image: string;
-            quantity: string;
             price: string;
+            quantity: string;
             productdetails: string;
+            createdAt: Date;
+            image: string;
             subcategories: {
                 subCategoryName: string;
             };

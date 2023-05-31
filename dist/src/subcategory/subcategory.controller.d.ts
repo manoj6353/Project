@@ -22,8 +22,8 @@ export declare class SubcategoryController {
     root(): void;
     findOne(id: string): Promise<{
         id: number;
-        categoryId: number;
         subCategoryName: string;
+        categoryId: number;
     }>;
     update(updateSubcategoryDto: UpdateSubcategoryDto): import(".prisma/client").Prisma.Prisma__subcategoriesClient<import(".prisma/client").subcategories, never>;
     remove(id: string): Promise<import(".prisma/client").subcategories>;

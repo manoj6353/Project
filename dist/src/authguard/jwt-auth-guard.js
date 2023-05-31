@@ -18,16 +18,19 @@ let AuthGuard = class AuthGuard {
     }
     async canActivate(context) {
         const request = context.switchToHttp().getRequest();
+        const response = context.switchToHttp().getResponse();
         const token = request.cookies["auth_token"];
         if (!token) {
-            throw new common_1.UnauthorizedException();
+            response.redirect("/");
         }
         try {
             const payload = await this.jwtService.verifyAsync(token, {
                 secret: process.env.JWT_SECRET,
             });
-            if (!(payload.role == 1)) {
-                throw new common_1.UnauthorizedException();
+            if (!(payload.role == 2)) {
+                throw new common_1.UnauthorizedException({
+                    message: "Please provide a valid token",
+                });
             }
         }
         catch (_a) {

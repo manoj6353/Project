@@ -32,11 +32,11 @@ export declare class AddressesService {
     addressid(id: number): Promise<{
         id: number;
         userId: number;
+        address1: string;
+        address2: string;
         countryId: number;
         stateId: number;
         cityId: number;
-        address1: string;
-        address2: string;
         pinCode: string;
     }>;
     update(updateAddressDto: any): import(".prisma/client").Prisma.Prisma__addressesClient<import(".prisma/client").addresses, never>;

@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddtocartModule = void 0;
 const common_1 = require("@nestjs/common");
+const jwt_1 = require("@nestjs/jwt");
 const addtocart_service_1 = require("./addtocart.service");
 const addtocart_controller_1 = require("./addtocart.controller");
 let AddtocartModule = class AddtocartModule {
@@ -15,7 +16,7 @@ let AddtocartModule = class AddtocartModule {
 AddtocartModule = __decorate([
     (0, common_1.Module)({
         controllers: [addtocart_controller_1.AddtocartController],
-        providers: [addtocart_service_1.AddtocartService],
+        providers: [addtocart_service_1.AddtocartService, jwt_1.JwtService],
     })
 ], AddtocartModule);
 exports.AddtocartModule = AddtocartModule;

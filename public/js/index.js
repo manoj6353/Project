@@ -1,5 +1,3 @@
-let addressradio;
-let isAddressOpened = false;
 async function addtocart(id) {
   const productId = id;
   const userId = localStorage.getItem("id");
@@ -87,41 +85,12 @@ async function login() {
   }
 }
 
-// async function token() {
-//   let accessToken = localStorage.getItem('id');
-//   console.log(accessToken);
-//   const path = window.location.href;
-//   let urls = document.createElement('a');
-//   urls.href = path;
-//   const url = urls.pathname;
-
-//   console.log(url);
-//   if (accessToken) {
-//     const results = await fetch(`/auth/authenticate`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ accessToken, url }),
-//     });
-//     const data = await results.json();
-//     console.log('in fetch accessToken', data);
-//     return accessToken;
-//   } else {
-//     window.location.replace('/login');
-//   }
-// }
-
 async function remove(id) {
-  if (confirm("Are you sure you want to delete")) {
-    const results = await fetch(`/addtocart/` + id, {
-      method: "DELETE",
-    });
-    const data = await results.json();
-    window.location.reload();
-  } else {
-    return false;
-  }
+  const results = await fetch(`/addtocart/` + id, {
+    method: "DELETE",
+  });
+  const data = await results.json();
+  window.location.reload();
 }
 
 async function total(tot, id) {
@@ -186,12 +155,11 @@ async function order() {
     addresses += `<br><span>
     Delivered on which address<br><hr>`;
     data.forEach((d, i) => {
-      console.log({ i });
       addresses += `<div id="${
         d.id
       }"><input type="radio" name="address" value="${d.id}" ${
         i === 0 ? "checked" : ""
-      } onclick="eventCatch(this)">
+      } onclick="eventCatch(this,${d.id})">
       ${d.address1} ${d.address2},${d.cities.name},${d.states.name},${
         d.countries.name
       },${d.pinCode} <a class="btn btn-info" href="/addresses/address/${
@@ -203,7 +171,9 @@ async function order() {
     });
     addresses += `<hr>`;
     address.innerHTML = addresses;
-    addressradio = document.querySelector('input[name = "address"]:checked');
+    let addressradio = document.querySelector(
+      'input[name = "address"]:checked'
+    );
     document
       .getElementById("payment")
       .setAttribute("onclick", `placeorder(${addressradio.value})`);
@@ -213,20 +183,36 @@ async function order() {
   }
 }
 
-async function placeorder(id) {
-  let productId = document.getElementById('')
+async function placeorder(addressid) {
+  let productid = document.querySelectorAll(".productId");
+  let quantity = document.querySelectorAll(".quantity");
+  let price = document.querySelectorAll(".price");
+  let addtocart = [];
+  for (let i = 0; i < productid.length; i++) {
+    let productId = productid[i].id;
+    let Quantity = quantity[i].value;
+    let Price = price[i].innerHTML;
+    addtocart.push({ productId, Quantity, Price });
+  }
+  const deleteaddtocart = document.querySelectorAll(".delete");
   const results = await fetch(`/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({  }),
+    body: JSON.stringify({ addtocart, addressid }),
   });
   const data = await results.json();
-  console.log("in order", id);
+  if (data) {
+    for (let i = 0; i < deleteaddtocart.length; i++) {
+      console.log(deleteaddtocart[i]);
+      deleteaddtocart[i].click();
+    }
+    window.location.href = "/home";
+    alert("Order placed Successfully");
+  }
 }
 function eventCatch(e) {
-  console.log(e.value);
   document
     .getElementById("payment")
     .setAttribute("onclick", `placeorder(${e.value})`);

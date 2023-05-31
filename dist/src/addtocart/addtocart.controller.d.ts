@@ -12,6 +12,7 @@ export declare class AddtocartController {
     }>;
     findAll(req: Request): Promise<{
         data: {
+            productId: number;
             quantity: string;
             users: {
                 firstName: string;
@@ -23,7 +24,6 @@ export declare class AddtocartController {
             };
             id: number;
             userId: number;
-            productId: number;
         }[];
     }>;
     findOne(id: string): Promise<{

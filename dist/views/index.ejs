@@ -33,11 +33,10 @@
     <%- include('header')%>
     <div class="content">
       <div class="container d-flex">
-        <div class="row" id="search"></div>
-        <div class="row" id="rows">
+        <div class="row col-3 flex-column" id="rows">
           <% data.forEach(d=> { %>
           <div class="col-10 h-100">
-            <div class="card h-100">
+            <div class="card h-50">
               <div class="h-100 d-flex align-items-center">
                 <img
                   src="/images/<%=d.image%>"

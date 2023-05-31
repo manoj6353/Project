@@ -6,23 +6,32 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
+  Render,
 } from "@nestjs/common";
 import { OrdersService } from "./orders.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateOrderDto } from "./dto/update-order.dto";
-
+import { Request } from "express";
 @Controller("orders")
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.create(createOrderDto);
+  async create(@Body() createOrderDto: CreateOrderDto, @Req() req: Request) {
+    const id = await req.cookies.data.id;
+    const data = await this.ordersService.create(createOrderDto, +id);
+    return { data };
   }
 
   @Get()
-  findAll() {
-    return this.ordersService.findAll();
+  // @Render("order")
+  async findAll(@Req() req: Request) {
+    const id = req.cookies.data.id;
+    const data = await this.ordersService.findAll(+id);
+    console.log(data);
+
+    return { data };
   }
 
   @Get(":id")

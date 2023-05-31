@@ -21,11 +21,16 @@ let OrdersController = class OrdersController {
     constructor(ordersService) {
         this.ordersService = ordersService;
     }
-    create(createOrderDto) {
-        return this.ordersService.create(createOrderDto);
+    async create(createOrderDto, req) {
+        const id = await req.cookies.data.id;
+        const data = await this.ordersService.create(createOrderDto, +id);
+        return { data };
     }
-    findAll() {
-        return this.ordersService.findAll();
+    async findAll(req) {
+        const id = req.cookies.data.id;
+        const data = await this.ordersService.findAll(+id);
+        console.log(data);
+        return { data };
     }
     findOne(id) {
         return this.ordersService.findOne(+id);
@@ -40,15 +45,17 @@ let OrdersController = class OrdersController {
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_order_dto_1.CreateOrderDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [create_order_dto_1.CreateOrderDto, Object]),
+    __metadata("design:returntype", Promise)
 ], OrdersController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
 ], OrdersController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(":id"),
