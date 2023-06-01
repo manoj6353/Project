@@ -25,10 +25,31 @@ const prisma = new client_1.PrismaClient();
 let UserService = class UserService {
     async create(createUserDto) {
         try {
-            const { password, age } = createUserDto, users = __rest(createUserDto, ["password", "age"]);
-            const userage = parseInt(age);
+            const firstName = createUserDto.firstName || createUserDto.name.givenName;
+            const lastName = createUserDto.lastName || createUserDto.name.familyName;
+            const age = +createUserDto.age || "";
+            const contact = createUserDto.contact || "";
+            const email = createUserDto.email || createUserDto.emails[0].value;
+            let password;
+            if (createUserDto.password) {
+                const passwords = createUserDto.password;
+                password = bcrypt.hashSync(passwords, 11);
+            }
+            else {
+                password = "";
+            }
+            const gender = createUserDto.gender || "";
             const data = await prisma.users.create({
-                data: Object.assign(Object.assign({}, users), { age: userage, password: bcrypt.hashSync(password, 11) || "", roleId: 1 }),
+                data: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    contact: contact,
+                    email: email,
+                    password: password,
+                    gender: gender,
+                    age: +age,
+                    roleId: 2,
+                },
             });
             return data;
         }
@@ -112,7 +133,7 @@ let UserService = class UserService {
                 },
                 where: {
                     deletedAt: null,
-                    roleId: 2,
+                    roleId: 1,
                     OR: [
                         {
                             firstName: {
@@ -188,7 +209,7 @@ let UserService = class UserService {
             const count = await prisma.users.count({
                 where: {
                     deletedAt: null,
-                    roleId: 1,
+                    roleId: 2,
                     OR: [
                         {
                             firstName: {
@@ -236,7 +257,7 @@ let UserService = class UserService {
                 },
                 where: {
                     deletedAt: null,
-                    roleId: 1,
+                    roleId: 2,
                     OR: [
                         {
                             firstName: {
@@ -324,8 +345,15 @@ let UserService = class UserService {
     }
     findUnique(mail) {
         try {
+            let email;
+            if (mail.emails) {
+                email = mail.emails[0].value;
+            }
+            else {
+                email = mail;
+            }
             return prisma.users.findUnique({
-                where: { email: mail },
+                where: { email: email },
                 select: { email: true },
             });
         }

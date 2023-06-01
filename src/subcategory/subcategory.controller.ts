@@ -21,18 +21,21 @@ export class SubcategoryController {
   constructor(private readonly subcategoryService: SubcategoryService) {}
 
   @Get("/add")
+  @UseGuards(AuthGuard)
   async addproducts() {
     const data = await this.subcategoryService.fetchcategory();
     return { data };
   }
 
   @Post()
+  @UseGuards(AuthGuard)
   @Redirect("/subcategory")
   create(@Body() createSubcategoryDto: CreateSubcategoryDto) {
     return this.subcategoryService.create(createSubcategoryDto);
   }
 
   @Get("/subcategories")
+  @UseGuards(AuthGuard)
   async findCategory(@Req() req: Request) {
     const { query } = req;
     const { data, draw, start, recordsFiltered, recordsTotal } =
@@ -42,23 +45,27 @@ export class SubcategoryController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   @Render("subcategoryshow")
   root() {
     return;
   }
 
   @Get(":id")
+  @UseGuards(AuthGuard)
   findOne(@Param("id") id: string) {
     return this.subcategoryService.findOne(+id);
   }
 
   @Post("/update")
+  @UseGuards(AuthGuard)
   @Redirect("/subcategory")
   update(@Body() updateSubcategoryDto: UpdateSubcategoryDto) {
     return this.subcategoryService.update(updateSubcategoryDto);
   }
 
   @Delete(":id")
+  @UseGuards(AuthGuard)
   async remove(@Param("id") id: string) {
     return await this.subcategoryService.remove(+id);
   }

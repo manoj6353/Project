@@ -27,9 +27,25 @@ let AuthGuard = class AuthGuard {
             const payload = await this.jwtService.verifyAsync(token, {
                 secret: process.env.JWT_SECRET,
             });
-            if (!(payload.role == 1) && !(payload.role == 2)) {
-                console.log("1 and 2", payload.role);
-                throw new common_1.UnauthorizedException();
+            const array = [
+                "/admin",
+                "/admin/adminuser",
+                "/category",
+                "/category/fetchcategory",
+                "/category/categories",
+                "/subcategory",
+                "/subcategory/subcategories",
+                "/subcategory/add",
+                "/product",
+                "/product/products",
+                "/product/subcategory/",
+                "/user",
+                "/user/users",
+                "/user/email/",
+            ];
+            if (array.includes(request.route.path) &&
+                (payload.role == 2 || payload.role == 1)) {
+                response.redirect("/home");
             }
         }
         catch (_a) {

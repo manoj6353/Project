@@ -75,10 +75,18 @@ export class AppController {
   @Get("/google/login")
   @Redirect("/")
   @UseGuards(GoogleAuthGuard("google"))
-  googleAuthRedirect(@Req() req: Request) {
-    console.log(req.user);
+  async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+    const emails = await this.userService.findUnique(req.user);
+    console.log(emails);
+    if (emails != null) {
+      console.log("in login");
 
-    return this.userService.create(req);
+      res.send("You are already logged in please login <a href='/'>Login</a>");
+    } else {
+      console.log("in create");
+
+      return this.userService.create(req.user);
+    }
   }
 
   @Get("/signup")

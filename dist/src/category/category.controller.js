@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const category_service_1 = require("./category.service");
 const create_category_dto_1 = require("./dto/create-category.dto");
 const update_category_dto_1 = require("./dto/update-category.dto");
+const jwt_auth_guard_1 = require("../authguard/jwt-auth-guard");
 let CategoryController = class CategoryController {
     constructor(categoryService) {
         this.categoryService = categoryService;
@@ -60,6 +61,7 @@ let CategoryController = class CategoryController {
 };
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Redirect)("/category"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -68,6 +70,7 @@ __decorate([
 ], CategoryController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)("/categories"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -75,6 +78,7 @@ __decorate([
 ], CategoryController.prototype, "findCategory", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Render)("category"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -82,6 +86,7 @@ __decorate([
 ], CategoryController.prototype, "root", null);
 __decorate([
     (0, common_1.Get)("/fetchcategory/:category"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("category")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -89,12 +94,14 @@ __decorate([
 ], CategoryController.prototype, "fetchcategory", null);
 __decorate([
     (0, common_1.Get)("/trash"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "trash", null);
 __decorate([
     (0, common_1.Get)(":id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -102,6 +109,7 @@ __decorate([
 ], CategoryController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)("/add"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Redirect)("/category"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -110,6 +118,7 @@ __decorate([
 ], CategoryController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(":id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -117,6 +126,7 @@ __decorate([
 ], CategoryController.prototype, "remove", null);
 __decorate([
     (0, common_1.Delete)("/trash/:id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

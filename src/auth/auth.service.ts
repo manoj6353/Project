@@ -43,7 +43,6 @@ export class AuthService {
           loginDetails.password,
           findUser.password
         );
-
         if (compare) {
           const payload = {
             id: findUser.id,

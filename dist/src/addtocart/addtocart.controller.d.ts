@@ -12,18 +12,18 @@ export declare class AddtocartController {
     }>;
     findAll(req: Request): Promise<{
         data: {
-            productId: number;
-            quantity: string;
             users: {
                 firstName: string;
             };
-            products: {
-                productName: string;
-                price: string;
-                image: string;
-            };
             id: number;
             userId: number;
+            quantity: string;
+            products: {
+                productName: string;
+                image: string;
+                price: string;
+            };
+            productId: number;
         }[];
     }>;
     findOne(id: string): Promise<{

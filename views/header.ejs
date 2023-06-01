@@ -55,7 +55,7 @@
                 </script>
               </li>
             </ul>
-            <form class="d-flex mx-auto" role="search">
+            <form class="d-flex mx-auto" role="search" id="forms">
               <input
                 class="form-control me-2 float-end"
                 type="search"
@@ -78,6 +78,11 @@
     </header>
   </body>
   <script>
+    const link = window.location.href;
+    if (link != "http://localhost:4000/home") {
+      document.getElementById("forms");
+    }
+
     function logout() {
       if (confirm("Are you sure you want to logout?")) {
         window.location.href = "/logout";

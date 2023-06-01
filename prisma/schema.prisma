@@ -166,9 +166,10 @@ model users {
   updatedAt DateTime  @default(now())
   deletedAt DateTime?
 
-  orders     orders[]
-  addtocarts addtocarts[]
-  addresses  addresses[]
+  orders       orders[]
+  addtocarts   addtocarts[]
+  addresses    addresses[]
+  forgotTokens forgotTokens?
 
   @@unique([email])
   @@map("users")
@@ -227,4 +228,17 @@ model addtocarts {
   deletedAt DateTime?
 
   @@map("addtocarts")
+}
+
+model forgotTokens {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @unique
+  otp        String
+  expireTime String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  users      users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([otp])
+  @@index([userId], map: "forgotTokens_userId_fkey")
 }

@@ -14,82 +14,30 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
   </head>
-  <body onload="token()">
+  <body>
     <%- include('./admin/header')%>
-    <div id="overlay"><span class="loader"></span></div>
     <div class="container">
-      <div class="trash">
-        <a class="btn btn-success" onclick="addsubCategory()"
-          >Add SubCategory</a
-        >
-        <!-- <a class="btn btn-primary" onclick="trashdata()">Trash Category</a> -->
+      <div id="main">
+        <div class="trash">
+          <a class="btn btn-success" onclick="addsubCategory()"
+            >Add SubCategory</a
+          >
+          <!-- <a class="btn btn-primary" onclick="trashdata()">Trash Category</a> -->
+        </div>
+        <br />
+        <table id="myTable" class="display">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>CategoryName</th>
+              <th>CreatedDate</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="data"></tbody>
+        </table>
       </div>
-      <br />
-      <table id="myTable" class="display">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>CategoryName</th>
-            <th>CreatedDate</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="data"></tbody>
-      </table>
-    </div>
-    <div class="dialogues">
-      <form action="/subcategory" method="post">
-        <p>Category Name</p>
-        <select
-          class="form-select"
-          id="categoryName"
-          name="categoryId"
-          required
-        ></select
-        ><br />
-        <p>SubCategory Name</p>
-        <input
-          class="text"
-          id="text"
-          type="text"
-          name="subCategoryName"
-          required
-        />
-        <br />
-        <input type="submit" class="yes input" value="Add" />
-        <botton class="no input">Cancel</botton>
-      </form>
-    </div>
-    <div class="dialogue">
-      <form action="/subcategory/update" method="POST">
-        <p>Category Name</p>
-        <input
-          class="text"
-          id="subcategoryid"
-          type="hidden"
-          name="id"
-          value=""
-        />
-        <select
-          class="form-select"
-          id="subcategoryName"
-          name="categoryId"
-          required
-        ></select
-        ><br />
-        <p>SubCategory Name</p>
-        <input
-          class="text"
-          id="subCategoryName"
-          type="text"
-          name="subCategoryName"
-          required
-        />
-        <br />
-        <input type="submit" class="yes input" value="Update" />
-        <botton class="no input">Cancel</botton>
-      </form>
     </div>
   </body>
   <script>

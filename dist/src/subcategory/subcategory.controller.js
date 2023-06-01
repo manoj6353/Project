@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const subcategory_service_1 = require("./subcategory.service");
 const create_subcategory_dto_1 = require("./dto/create-subcategory.dto");
 const update_subcategory_dto_1 = require("./dto/update-subcategory.dto");
+const jwt_auth_guard_1 = require("../authguard/jwt-auth-guard");
 let SubcategoryController = class SubcategoryController {
     constructor(subcategoryService) {
         this.subcategoryService = subcategoryService;
@@ -48,12 +49,14 @@ let SubcategoryController = class SubcategoryController {
 };
 __decorate([
     (0, common_1.Get)("/add"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], SubcategoryController.prototype, "addproducts", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Redirect)("/subcategory"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -62,6 +65,7 @@ __decorate([
 ], SubcategoryController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)("/subcategories"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -69,6 +73,7 @@ __decorate([
 ], SubcategoryController.prototype, "findCategory", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Render)("subcategoryshow"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -76,6 +81,7 @@ __decorate([
 ], SubcategoryController.prototype, "root", null);
 __decorate([
     (0, common_1.Get)(":id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -83,6 +89,7 @@ __decorate([
 ], SubcategoryController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)("/update"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Redirect)("/subcategory"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -91,6 +98,7 @@ __decorate([
 ], SubcategoryController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(":id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

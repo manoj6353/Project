@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
+const mailer_1 = require("@nestjs-modules/mailer");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const category_module_1 = require("./category/category.module");
@@ -20,11 +21,23 @@ const auth_module_1 = require("./auth/auth.module");
 const orders_module_1 = require("./orders/orders.module");
 const addresses_module_1 = require("./addresses/addresses.module");
 const admin_module_1 = require("./admin/admin.module");
+const forgot_password_module_1 = require("./forgot-password/forgot-password.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            mailer_1.MailerModule.forRoot({
+                transport: {
+                    host: "smtp.gmail.com",
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: "manoj.bajiya.2023@gmail.com",
+                        pass: "iylmlwplnjjbuifw",
+                    },
+                },
+            }),
             category_module_1.CategoryModule,
             product_module_1.ProductModule,
             addtocart_module_1.AddtocartModule,
@@ -34,6 +47,7 @@ AppModule = __decorate([
             orders_module_1.OrdersModule,
             addresses_module_1.AddressesModule,
             admin_module_1.AdminModule,
+            forgot_password_module_1.ForgotPasswordModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, jwt_1.JwtService],

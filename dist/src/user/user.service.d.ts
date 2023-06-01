@@ -29,13 +29,13 @@ export declare class UserService {
     findOne(id: number): import(".prisma/client").Prisma.Prisma__usersClient<{
         firstName: string;
         lastName: string;
-        age: number;
         contact: string;
+        age: number;
         gender: string;
         updatedAt: Date;
         id: number;
     }, never>;
-    findUnique(mail: string): import(".prisma/client").Prisma.Prisma__usersClient<{
+    findUnique(mail: any): import(".prisma/client").Prisma.Prisma__usersClient<{
         email: string;
     }, never>;
     update(updateUserDto: any): Promise<import(".prisma/client").users>;

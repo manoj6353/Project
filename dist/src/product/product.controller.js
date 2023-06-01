@@ -14,12 +14,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductController = void 0;
 const common_1 = require("@nestjs/common");
+const platform_express_1 = require("@nestjs/platform-express");
+const multer_1 = require("multer");
 const product_service_1 = require("./product.service");
 const create_product_dto_1 = require("./dto/create-product.dto");
 const update_product_dto_1 = require("./dto/update-product.dto");
-const platform_express_1 = require("@nestjs/platform-express");
 const filefilter_middleware_1 = require("./middleware/filefilter.middleware");
-const multer_1 = require("multer");
+const jwt_auth_guard_1 = require("../authguard/jwt-auth-guard");
 let ProductController = class ProductController {
     constructor(productService) {
         this.productService = productService;
@@ -66,12 +67,14 @@ let ProductController = class ProductController {
 };
 __decorate([
     (0, common_1.Get)("/add"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "addproducts", null);
 __decorate([
     (0, common_1.Get)("/subcategory/:id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -79,6 +82,7 @@ __decorate([
 ], ProductController.prototype, "fetchcategory", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Redirect)("/product"),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("image", {
         storage: (0, multer_1.diskStorage)({
@@ -95,6 +99,7 @@ __decorate([
 ], ProductController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)("/products"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -102,6 +107,7 @@ __decorate([
 ], ProductController.prototype, "findCategory", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Render)("productshow"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -109,12 +115,14 @@ __decorate([
 ], ProductController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)("/category"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "category", null);
 __decorate([
     (0, common_1.Get)("search/:productName"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("productName")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -122,6 +130,7 @@ __decorate([
 ], ProductController.prototype, "findsearch", null);
 __decorate([
     (0, common_1.Get)(":id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -129,6 +138,7 @@ __decorate([
 ], ProductController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)("/update"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     (0, common_1.Redirect)("/product"),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("image", {
         storage: (0, multer_1.diskStorage)({
@@ -145,6 +155,7 @@ __decorate([
 ], ProductController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(":id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -152,6 +163,7 @@ __decorate([
 ], ProductController.prototype, "remove", null);
 __decorate([
     (0, common_1.Delete)("/trash/:id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

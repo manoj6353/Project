@@ -10,12 +10,12 @@ export declare class AppController {
     getHello(): any;
     findAll(): Promise<{
         data: {
+            createdAt: Date;
             id: number;
             productName: string;
             price: string;
             quantity: string;
             productdetails: string;
-            createdAt: Date;
             image: string;
             subcategories: {
                 subCategoryName: string;
@@ -32,6 +32,6 @@ export declare class AppController {
     logout(req: Request, res: Response): Promise<void>;
     root(req: Request, res: Response): Promise<void>;
     googleRegister(): Promise<void>;
-    googleAuthRedirect(req: Request): Promise<import(".prisma/client").users>;
+    googleAuthRedirect(req: Request, res: Response): Promise<import(".prisma/client").users>;
     signup(): void;
 }

@@ -1,33 +1,87 @@
-let dialogues = document.querySelector(".dialogues");
-dialogues.style.display = "none";
-
 async function addsubCategory() {
   try {
-    document.getElementById("overlay").style.display = "block";
-    let dialogues = document.querySelector(".dialogues");
-    let text = document.getElementById("text");
-    let id = document.getElementById("id");
     const result = await fetch("/subcategory/add");
     const { data } = await result.json();
-    let category = document.getElementById("categoryName");
-    let add = "";
+    const main = document.getElementById("main");
+    let categoryadd = "";
+    categoryadd += `<section class="bg-image mt-5">
+    <div class="d-flex align-items-center">
+      <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card" style="border-radius: 15px">
+              <div class="card-body p-5">
+                <form action="/subcategory" method="POST" id="regForm">
+                  <div class="tab">
+                    <div class="form-outline mb-4">
+                    <div class="form-outline mb-4">
+                    <div class="form-outline mb-4">
+                    <label class="form-label" for="categoryId"
+                      >Category Name</label
+                    >
+                    <select
+                      class="form-select"
+                      id="categoryId"
+                      name="categoryId"
+                      required
+                    >`;
     data.forEach((d) => {
-      add += `<option id="${d.id}" value="${d.id}">
-              ${d.categoryName}</option>`;
+      categoryadd += `<option value="${d.id}">${d.categoryName}</option>`;
     });
-    category.innerHTML = add;
-    let yesButton = dialogues.querySelector(".yes");
-    let noButton = dialogues.querySelector(".no");
-
-    yesButton.addEventListener("click", async function () {
-      dialogues.style.display = "none";
-      document.getElementById("overlay").style.display = "none";
-    });
-    noButton.addEventListener("click", function () {
-      dialogues.style.display = "none";
-      document.getElementById("overlay").style.display = "none";
-    });
-    dialogues.style.display = "block";
+    categoryadd += `</select>
+                  </div>
+                      <label class="form-label" for="SubCategory"
+                        >Category Name</label
+                      ><input
+                        type="text"
+                        id="subCategoryName"
+                        name="subCategoryName"
+                        class="form-control form-control"
+                        required
+                      />
+                      <span id="subcategoryerror"></span>
+                    </div>
+                  </div>
+                  <div class="commonerror">
+                    <span id="fullError"></span>
+                  </div>
+                  <div
+                    style="overflow: auto"
+                    class="d-flex justify-content-center gap"
+                  >
+                    <div
+                      style="float: right"
+                      class="d-flex justify-content-center gap"
+                    >
+                      <div id="submit">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          id="prevBtn"
+                          onclick="nextPrev()"
+                        >
+                          Submit
+                        </a>
+                      </div>
+                      <div id="back">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          href="/subcategory"
+                          class="button"
+                        >
+                          Back
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+    main.innerHTML = categoryadd;
   } catch (err) {
     console.log(err);
   }
@@ -44,46 +98,141 @@ async function deletesubCategory(categoryId) {
   }
 }
 
-let dialogue = document.querySelector(".dialogue");
-dialogue.style.display = "none";
-
 async function editsubCategory(id) {
   try {
-    document.getElementById("overlay").style.display = "block";
     const result = await fetch(`/subcategory/${id}`);
     const ans = await result.json();
     if (ans) {
-      let dialogue = document.querySelector(".dialogue");
-      let text = document.getElementById("subCategoryName");
-      let id = document.getElementById("subcategoryid");
-      id.value = ans.id;
-      text.value = ans.subCategoryName;
       const result = await fetch("/subcategory/add");
       const { data } = await result.json();
-      let category = document.getElementById("subcategoryName");
-      let add = "";
+      const main = document.getElementById("main");
+      let editcategory = "";
+      editcategory += `<section class="bg-image mt-5">
+    <div class="d-flex align-items-center">
+      <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card" style="border-radius: 15px">
+              <div class="card-body p-5">
+                <form action="/subcategory/update" method="POST" id="regForm">
+                  <div class="tab">
+                    <div class="form-outline mb-4">
+                    <input
+                        type="hidden"
+                        id="categoryId"
+                        name="id"
+                        class="form-control form-control"
+                        value="${ans.id}"
+                        required
+                      />
+                      <label class="form-label" for="categoryId"
+                      >Category Name</label
+                    >
+                    <select
+                      class="form-select"
+                      id="categoryId"
+                      name="categoryId"
+                      required
+                    >`;
       data.forEach((d) => {
         if (d.id == ans.categoryId) {
-          add += `<option id="${d.id}" value="${d.id}" selected>
-                ${d.categoryName}</option>`;
+          editcategory += `<option value="${d.id}" selected>
+                    ${d.categoryName}</option>`;
         } else {
-          add += `<option id="${d.id}" value="${d.id}">
-                ${d.categoryName}</option>`;
+          editcategory += `<option value="${d.id}">
+                    ${d.categoryName}</option>`;
         }
       });
-      category.innerHTML = add;
+      editcategory += `</select>
+                  </div>
+                      <label class="form-label" for="SubCategory"
+                        >Category Name</label
+                      ><input
+                        type="text"
+                        id="subCategoryName"
+                        name="subCategoryName"
+                        class="form-control form-control"
+                        value = "${ans.subCategoryName}"
+                        required
+                      />
+                      <span id="subcategoryerror"></span>
+                    </div>
+                  </div>
+                  <div class="commonerror">
+                    <span id="fullError"></span>
+                  </div>
+                  <div
+                    style="overflow: auto"
+                    class="d-flex justify-content-center gap"
+                  >
+                    <div
+                      style="float: right"
+                      class="d-flex justify-content-center gap"
+                    >
+                      <div id="submit">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          id="prevBtn"
+                          onclick="nextPrev()"
+                        >
+                          Submit
+                        </a>
+                      </div>
+                      <div id="back">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          href="/subcategory"
+                          class="button"
+                        >
+                          Back
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+      main.innerHTML = editcategory;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
 
-      let yesButton = dialogue.querySelector(".yes");
-      let noButton = dialogue.querySelector(".no");
-      yesButton.addEventListener("click", async function () {
-        dialogue.style.display = "none";
-        document.getElementById("overlay").style.display = "none";
-      });
-      noButton.addEventListener("click", function () {
-        dialogue.style.display = "none";
-        document.getElementById("overlay").style.display = "none";
-      });
-      dialogue.style.display = "block";
+async function subcategory() {
+  const subcategory = document.getElementById("subCategoryName");
+  const subcategories = subcategory.value;
+  let subcategoryerror = document.getElementById("subcategoryerror");
+  let c = 0;
+  if (subcategories != "") {
+    subcategory.classList.remove("error");
+    subcategoryerror.innerHTML = "";
+    subcategoryerror.classList.remove("error");
+    c++;
+  }
+  if (c == 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+async function nextPrev() {
+  let CommonError = document.getElementById("fullError");
+  try {
+    if (!(await subcategory())) {
+      CommonError.classList.add("error");
+      CommonError.innerHTML = "Please fill the subCategory";
+      return false;
+    } else {
+      CommonError.classList.remove("error");
+      CommonError.innerHTML = "";
+      document.getElementById("regForm").submit();
     }
   } catch (err) {
     console.log(err);

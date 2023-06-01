@@ -16,7 +16,7 @@ async function editCategory(id) {
                   <div class="tab">
                     <div class="form-outline mb-4">
                     <input
-                        type="text"
+                        type="hidden"
                         id="categoryId"
                         name="id"
                         class="form-control form-control"
@@ -160,7 +160,7 @@ async function nextPrev() {
   try {
     if (!(await verifycategory())) {
       CommonError.classList.add("error");
-      CommonError.innerHTML = "Please fill the category";
+      CommonError.innerHTML = "Please fill the subCategory";
       return false;
     } else {
       CommonError.classList.remove("error");

@@ -13,7 +13,6 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse();
     const token = request.cookies["auth_token"];
-
     if (!token) {
       response.redirect("/");
     }
@@ -22,9 +21,28 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_SECRET,
       });
 
-      if (!(payload.role == 1) && !(payload.role == 2)) {
-        console.log("1 and 2", payload.role);
-        throw new UnauthorizedException();
+      const array = [
+        "/admin",
+        "/admin/adminuser",
+        "/category",
+        "/category/fetchcategory",
+        "/category/categories",
+        "/subcategory",
+        "/subcategory/subcategories",
+        "/subcategory/add",
+        "/product",
+        "/product/products",
+        "/product/subcategory/",
+        "/user",
+        "/user/users",
+        "/user/email/",
+      ];
+      if (
+        array.includes(request.route.path) &&
+        (payload.role == 2 || payload.role == 1)
+      ) {
+        response.redirect("/home");
+        // throw new UnauthorizedException();
       }
     } catch {
       throw new UnauthorizedException();

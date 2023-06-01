@@ -1,7 +1,7 @@
+import { Request } from "express";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { Request } from "express";
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
@@ -29,8 +29,8 @@ export declare class UserController {
         users: {
             firstName: string;
             lastName: string;
-            age: number;
             contact: string;
+            age: number;
             gender: string;
             updatedAt: Date;
             id: number;

@@ -31,24 +31,29 @@ async function search(search) {
     rows.classList.add("active");
     searchrow.classList.remove("active");
     for (let d of data) {
-      searchrow.innerHTML += `<div class="col-6 h-100">
+      searchrow.innerHTML += `
+      <div class="col-10 h-100">
         <div class="card h-100">
           <div class="h-100 d-flex align-items-center">
-            <!-- <img
-              src="../images/iphone14"
+            <img
+              src="/images/${d.image}"
               class="card-img mx-auto"
-              alt="..."
-            /> -->
+              width="200px"
+              height="100px"
+            />
           </div>
           <div class="card-body">
-            <h5 class="card-title">${d.productName}</h5>
-            <a
-              onclick="addtocart('${d.id}')"
-              class="btn btn-primary btn-md btn-block"
-            >
-              Add to Cart
-            </a>
-          </div>
+                <div class="card-body">
+                  <h5 class="card-title">${d.productName}</h5>
+                  <p>₹ ${d.price}</p>
+                  <a
+                    onclick="addtocart(${d.id})"
+                    class="btn btn-primary btn-md btn-block"
+                  >
+                    Add to Cart
+                  </a>
+                </div>
+              </div>
         </div>
       </div>`;
     }
@@ -65,6 +70,7 @@ async function login() {
   let error = document.getElementById("fullError");
 
   if (email == "" && password == "") {
+    error.classList.add("error");
     error.innerHTML = "Please fill the Form";
   } else {
     const results = await fetch(`/auth/login`, {
@@ -75,8 +81,9 @@ async function login() {
       body: JSON.stringify({ email, password }),
     });
     const data = await results.json();
-    console.log(data.data.userRole);
+    console.log(data);
     if (data.status != 200) {
+      error.classList.add("error");
       error.innerHTML = "Please check your email and password";
     } else if (data.data.token && data.status == 200) {
       if (data.data.userRole == 3) {
@@ -233,15 +240,22 @@ async function add() {
   window.location.href = "/addresses/add";
 }
 
+const password = document.getElementById("changepassword");
+password.disabled = true;
+
 async function forgotpassword() {
   const email = document.getElementById("email").value;
   const emailerror = document.getElementById("emailerror");
+  const password = document.getElementById("changepassword");
   const result = await fetch(`/user/email/${email}`);
   const { verifymail } = await result.json();
   if (verifymail == null) {
+    emailerror.classList.add("error");
     emailerror.innerHTML = "Please check your email";
+    password.disabled = true;
   } else {
     emailerror.classList.remove("emailerror");
     emailerror.innerHTML = "";
+    password.disabled = false;
   }
 }

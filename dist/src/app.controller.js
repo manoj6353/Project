@@ -60,9 +60,17 @@ let AppController = class AppController {
     async googleRegister() {
         return;
     }
-    googleAuthRedirect(req) {
-        console.log(req.user);
-        return this.userService.create(req);
+    async googleAuthRedirect(req, res) {
+        const emails = await this.userService.findUnique(req.user);
+        console.log(emails);
+        if (emails != null) {
+            console.log("in login");
+            res.send("You are already logged in please login <a href='/'>Login</a>");
+        }
+        else {
+            console.log("in create");
+            return this.userService.create(req.user);
+        }
     }
     signup() {
         return;
@@ -112,9 +120,10 @@ __decorate([
     (0, common_1.Redirect)("/"),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)("google")),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
 ], AppController.prototype, "googleAuthRedirect", null);
 __decorate([
     (0, common_1.Get)("/signup"),

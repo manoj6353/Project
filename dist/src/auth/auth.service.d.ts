@@ -6,6 +6,7 @@ export declare class AuthService {
     login(loginDetails: LoginDto): Promise<{
         token: string;
         userData: {
+            id: number;
             firstName: string;
             lastName: string;
             email: string;
@@ -14,7 +15,6 @@ export declare class AuthService {
                 id: number;
                 role: import(".prisma/client").Role;
             };
-            id: number;
             roleId: number;
         };
         userRole: number;

@@ -11,21 +11,23 @@ import {
   UseGuards,
   Req,
 } from "@nestjs/common";
+import { Request } from "express";
+import { AuthGuard } from "../authguard/jwt-auth-guard";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { Request } from "express";
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @Redirect("login")
+  @Redirect("/")
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
   @Get("/users")
+  @UseGuards(AuthGuard)
   async findAll(@Req() req: Request) {
     const { query } = req;
     const { data, draw, start, recordsFiltered, recordsTotal } =
@@ -35,17 +37,20 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   @Render("user")
   root() {
     return;
   }
 
   @Post("/login")
+  @UseGuards(AuthGuard)
   login(@Body() createUserDto) {
     return this.userService.login(createUserDto);
   }
 
   @Get(":id")
+  @UseGuards(AuthGuard)
   async findOne(@Param("id") id: string) {
     const users = await this.userService.findOne(+id);
     return { users };
@@ -58,6 +63,7 @@ export class UserController {
   }
 
   @Post("/update")
+  @UseGuards(AuthGuard)
   @Redirect("/admin")
   async update(@Body() updateUserDto: UpdateUserDto) {
     const data = await this.userService.update(updateUserDto);
@@ -65,6 +71,7 @@ export class UserController {
   }
 
   @Delete(":id")
+  @UseGuards(AuthGuard)
   async remove(@Param("id") id: string) {
     const record = await this.userService.remove(+id);
     return { record };

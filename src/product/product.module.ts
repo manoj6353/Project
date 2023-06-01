@@ -1,7 +1,8 @@
 import { Module } from "@nestjs/common";
+import { MulterModule } from "@nestjs/platform-express";
+import { JwtService } from "@nestjs/jwt";
 import { ProductService } from "./product.service";
 import { ProductController } from "./product.controller";
-import { MulterModule } from "@nestjs/platform-express";
 @Module({
   imports: [
     MulterModule.register({
@@ -9,7 +10,7 @@ import { MulterModule } from "@nestjs/platform-express";
     }),
   ],
   controllers: [ProductController],
-  providers: [ProductService],
+  providers: [ProductService, JwtService],
   exports: [ProductService],
 })
 export class ProductModule {}

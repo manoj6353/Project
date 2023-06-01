@@ -9,15 +9,29 @@ const prisma = new PrismaClient();
 export class UserService {
   async create(createUserDto) {
     try {
-      const { password, age, ...users } = createUserDto;
-      const userage = parseInt(age);
-
+      const firstName = createUserDto.firstName || createUserDto.name.givenName;
+      const lastName = createUserDto.lastName || createUserDto.name.familyName;
+      const age = +createUserDto.age || "";
+      const contact = createUserDto.contact || "";
+      const email = createUserDto.email || createUserDto.emails[0].value;
+      let password;
+      if (createUserDto.password) {
+        const passwords = createUserDto.password;
+        password = bcrypt.hashSync(passwords, 11);
+      } else {
+        password = "";
+      }
+      const gender = createUserDto.gender || "";
       const data = await prisma.users.create({
         data: {
-          ...users,
-          age: userage,
-          password: bcrypt.hashSync(password, 11) || "",
-          roleId: 1,
+          firstName: firstName,
+          lastName: lastName,
+          contact: contact,
+          email: email,
+          password: password,
+          gender: gender,
+          age: +age,
+          roleId: 2,
         },
       });
       return data;
@@ -109,7 +123,7 @@ export class UserService {
         },
         where: {
           deletedAt: null,
-          roleId: 2,
+          roleId: 1,
           OR: [
             {
               firstName: {
@@ -192,7 +206,7 @@ export class UserService {
       const count = await prisma.users.count({
         where: {
           deletedAt: null,
-          roleId: 1,
+          roleId: 2,
           OR: [
             {
               firstName: {
@@ -241,7 +255,7 @@ export class UserService {
         },
         where: {
           deletedAt: null,
-          roleId: 1,
+          roleId: 2,
           OR: [
             {
               firstName: {
@@ -335,10 +349,16 @@ export class UserService {
     });
   }
 
-  findUnique(mail: string) {
+  findUnique(mail: any) {
     try {
+      let email;
+      if (mail.emails) {
+        email = mail.emails[0].value;
+      } else {
+        email = mail;
+      }
       return prisma.users.findUnique({
-        where: { email: mail },
+        where: { email: email },
         select: { email: true },
       });
     } catch (err) {

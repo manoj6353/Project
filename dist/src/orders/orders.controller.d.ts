@@ -1,6 +1,6 @@
+import { Request } from "express";
 import { OrdersService } from "./orders.service";
 import { UpdateOrderDto } from "./dto/update-order.dto";
-import { Request } from "express";
 export declare class OrdersController {
     private readonly ordersService;
     constructor(ordersService: OrdersService);

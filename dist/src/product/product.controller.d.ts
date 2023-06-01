@@ -1,8 +1,8 @@
 /// <reference types="multer" />
+import { Request } from "express";
 import { ProductService } from "./product.service";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
-import { Request } from "express";
 export declare class ProductController {
     private readonly productService;
     constructor(productService: ProductService);
@@ -34,13 +34,13 @@ export declare class ProductController {
     }>;
     category(): Promise<{
         data: {
-            createdAt: Date;
             id: number;
-            productName: string;
             image: string;
+            productName: string;
             quantity: string;
             price: string;
             productdetails: string;
+            createdAt: Date;
             subcategories: {
                 subCategoryName: string;
             };
@@ -55,8 +55,8 @@ export declare class ProductController {
     findsearch(productName: string): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").products[]>;
     findOne(id: string): import(".prisma/client").Prisma.Prisma__productsClient<{
         id: number;
-        productName: string;
         image: string;
+        productName: string;
         quantity: string;
         price: string;
         productdetails: string;
