@@ -32,6 +32,6 @@ export declare class AppController {
     logout(req: Request, res: Response): Promise<void>;
     root(req: Request, res: Response): Promise<void>;
     googleRegister(): Promise<void>;
-    googleAuthRedirect(req: Request): void;
+    googleAuthRedirect(req: Request): Promise<import(".prisma/client").users>;
     signup(): void;
 }

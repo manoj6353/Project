@@ -78,7 +78,7 @@ export class AppController {
   googleAuthRedirect(@Req() req: Request) {
     console.log(req.user);
 
-    // return this.userService.create(req);
+    return this.userService.create(req);
   }
 
   @Get("/signup")
