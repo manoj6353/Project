@@ -39,6 +39,11 @@ let AddtocartController = class AddtocartController {
     update(id, updateAddtocartDto) {
         return this.addtocartService.update(+id, updateAddtocartDto);
     }
+    async updates(req, id) {
+        const userId = req.cookies.data.id;
+        const data = await this.addtocartService.updates(+id, userId);
+        return { data };
+    }
     async remove(id) {
         const data = await this.addtocartService.remove(+id);
         return { data };
@@ -80,6 +85,15 @@ __decorate([
     __metadata("design:paramtypes", [String, update_addtocart_dto_1.UpdateAddtocartDto]),
     __metadata("design:returntype", void 0)
 ], AddtocartController.prototype, "update", null);
+__decorate([
+    (0, common_1.Get)("/addtocarts/:id"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], AddtocartController.prototype, "updates", null);
 __decorate([
     (0, common_1.Delete)(":id"),
     (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),

@@ -60,6 +60,14 @@ export class AddtocartController {
     return this.addtocartService.update(+id, updateAddtocartDto);
   }
 
+  @Get("/addtocarts/:id")
+  @UseGuards(AuthGuard)
+  async updates(@Req() req: Request, @Param("id") id: string) {
+    const userId = req.cookies.data.id;
+    const data = await this.addtocartService.updates(+id, userId);
+    return { data };
+  }
+
   @Delete(":id")
   @UseGuards(AuthGuard)
   async remove(@Param("id") id: string) {

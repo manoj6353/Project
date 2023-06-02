@@ -209,15 +209,17 @@ async function editProduct(id) {
           editproducts += `<option id="${d.id}" value="${d.id}" selected>
                       ${d.categoryName}
                     </option>`;
+        } else {
+          editproducts += `<option id="${d.id}" value="${d.id}">
+                        ${d.categoryName}
+                      </option>`;
         }
-        editproducts += `<option id="${d.id}" value="${d.id}">
-                      ${d.categoryName}
-                    </option>`;
       });
       editproducts += `</select>
                     </div>
                   <div class="form-outline mb-4">
-                  <label class="form-label" for="subCategoryName"
+
+      <label class="form-label" for="subCategoryName"
                     >Sub-Category Name</label
                   >
                   <select
@@ -226,7 +228,18 @@ async function editProduct(id) {
                     name="subCategoryId"
                     required
                     oninput="productvalidate()"
-                  ></select>
+                  >`;
+      const categoryId = ans.productCategory[0].categoryId;
+      const results = await fetch("/product/subcategory/" + categoryId);
+      const { categories } = await results.json();
+      categories.forEach((d) => {
+        if (d.id == ans.categoryId) {
+          editproducts += `<option value='${d.id}' selected>${d.subCategoryName}</option>`;
+        } else {
+          editproducts += `<option value='${d.id}'>${d.subCategoryName}</option>`;
+        }
+      });
+      editproducts += `</select>
                   <span id="subcategoryerror"></span>
                 </div>
                 <div class="form-outline mb-4">

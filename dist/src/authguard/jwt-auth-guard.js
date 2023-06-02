@@ -51,6 +51,8 @@ let AuthGuard = class AuthGuard {
                 "/admin",
                 "/admin/adminuser",
                 "/admin/:id",
+                "/category/add",
+                "/subcategory/update",
             ];
             if (array.includes(request.route.path) &&
                 (payload.role == 2 || payload.role == 1)) {

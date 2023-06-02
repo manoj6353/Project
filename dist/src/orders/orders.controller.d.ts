@@ -8,15 +8,15 @@ export declare class OrdersController {
     }>;
     findAll(req: Request): Promise<{
         data: {
-            quantity: string;
-            id: number;
-            price: string;
-            totalprice: number;
             createdAt: Date;
+            id: number;
+            quantity: string;
+            price: string;
             products: {
                 productName: string;
                 image: string;
             };
+            totalprice: number;
         }[];
     }>;
 }

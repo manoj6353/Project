@@ -6,6 +6,7 @@ import * as cookieParser from "cookie-parser";
 import { response } from "express";
 import { join } from "path";
 import { AppModule } from "./app.module";
+import { NotFoundExceptionFilter } from "./error.404";
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
@@ -24,6 +25,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);
   app.use(cookieParser());
+  app.useGlobalFilters(new NotFoundExceptionFilter());
   await app.listen(4000);
 }
 bootstrap();

@@ -16,7 +16,7 @@ let AddtocartService = class AddtocartService {
             data: {
                 productId: productId,
                 userId: userId,
-                quantity: "1",
+                quantity: 1,
             },
         });
     }
@@ -57,7 +57,25 @@ let AddtocartService = class AddtocartService {
         return await prisma.addtocarts.update({
             where: { id: id },
             data: {
-                quantity: updateAddtocartDto.quantity,
+                quantity: +updateAddtocartDto.quantity,
+            },
+        });
+    }
+    async updates(id, userId) {
+        const { quantity } = await prisma.addtocarts.findFirst({
+            where: {
+                userId: userId,
+                productId: id,
+            },
+            select: {
+                quantity: true,
+            },
+        });
+        const Quantity = quantity + 1;
+        return await prisma.addtocarts.updateMany({
+            where: { productId: id, userId: userId },
+            data: {
+                quantity: Quantity,
             },
         });
     }

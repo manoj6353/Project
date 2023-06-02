@@ -12,8 +12,7 @@ export declare class AddtocartController {
     }>;
     findAll(req: Request): Promise<{
         data: {
-            productId: number;
-            quantity: string;
+            quantity: number;
             users: {
                 firstName: string;
             };
@@ -24,9 +23,13 @@ export declare class AddtocartController {
             };
             id: number;
             userId: number;
+            productId: number;
         }[];
     }>;
     update(id: string, updateAddtocartDto: UpdateAddtocartDto): Promise<import(".prisma/client").addtocarts>;
+    updates(req: Request, id: string): Promise<{
+        data: import(".prisma/client").Prisma.BatchPayload;
+    }>;
     remove(id: string): Promise<{
         data: import(".prisma/client").addtocarts;
     }>;

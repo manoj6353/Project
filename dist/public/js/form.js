@@ -43,9 +43,6 @@ async function basicvalidation() {
         lasterror.innerHTML = "Please enter a valid last name";
       }
     }
-    const mail = email.value;
-    const result = await fetch(`/user/email/${mail}`);
-    const { verifymail } = await result.json();
     if (email.value != "") {
       if (email.value.match(emailPattern)) {
         email.classList.remove("error");
@@ -59,6 +56,9 @@ async function basicvalidation() {
       }
     }
     if (email.value != "") {
+      const mail = email.value;
+      const result = await fetch(`/user/email/${mail}`);
+      const { verifymail } = await result.json();
       if (verifymail == null) {
         email.classList.remove("error");
         emailverifyerror.innerHTML = "";

@@ -6,6 +6,7 @@ const swagger_1 = require("@nestjs/swagger");
 const cookieParser = require("cookie-parser");
 const path_1 = require("path");
 const app_module_1 = require("./app.module");
+const error_404_1 = require("./error.404");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule, {
         cors: true,
@@ -23,6 +24,7 @@ async function bootstrap() {
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup("api", app, document);
     app.use(cookieParser());
+    app.useGlobalFilters(new error_404_1.NotFoundExceptionFilter());
     await app.listen(4000);
 }
 bootstrap();

@@ -6,25 +6,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EntityNotFoundExceptionFilter = void 0;
+exports.NotFoundExceptionFilter = void 0;
 const common_1 = require("@nestjs/common");
-const EntityNotFoundError_1 = require("typeorm/error/EntityNotFoundError");
-let EntityNotFoundExceptionFilter = class EntityNotFoundExceptionFilter {
-    catch(exception, host) {
+let NotFoundExceptionFilter = class NotFoundExceptionFilter {
+    catch(_exception, host) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
-        console.log("dfdfdfgdfgdfgdfgdf", response.statusCode, exception);
-        return response.status(404).json({
-            message: {
-                statusCode: 500,
-                error: "Not Found",
-                message: exception.message,
-            },
-        });
+        response.render("./404.ejs", { root: "." });
     }
 };
-EntityNotFoundExceptionFilter = __decorate([
-    (0, common_1.Catch)(EntityNotFoundError_1.EntityNotFoundError, Error)
-], EntityNotFoundExceptionFilter);
-exports.EntityNotFoundExceptionFilter = EntityNotFoundExceptionFilter;
-//# sourceMappingURL=404.js.map
+NotFoundExceptionFilter = __decorate([
+    (0, common_1.Catch)(common_1.NotFoundException)
+], NotFoundExceptionFilter);
+exports.NotFoundExceptionFilter = NotFoundExceptionFilter;
+//# sourceMappingURL=error.404.js.map

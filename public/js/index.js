@@ -3,7 +3,11 @@ async function addtocart(id) {
   const fetchCart = await fetch(`/addtocart/getcart?productId=${productId}`);
   const { data } = await fetchCart.json();
   if (data.length > 0) {
-    alert("product already exists");
+    const result = await fetch(`/addtocart/addtocarts/${productId}`);
+    const { data } = await result.json();
+    if (data) {
+      alert("product added successfully");
+    }
   } else {
     const result = await fetch(`/addtocart`, {
       method: "POST",

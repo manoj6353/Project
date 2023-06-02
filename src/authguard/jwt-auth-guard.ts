@@ -45,6 +45,8 @@ export class AuthGuard implements CanActivate {
         "/admin",
         "/admin/adminuser",
         "/admin/:id",
+        "/category/add",
+        "/subcategory/update",
       ];
       if (
         array.includes(request.route.path) &&
