@@ -13,7 +13,6 @@ const auth_controller_1 = require("./auth.controller");
 const passport_1 = require("@nestjs/passport");
 const jwt_1 = require("@nestjs/jwt");
 const user_module_1 = require("../user/user.module");
-const jwt_strategy_1 = require("./jwt.strategy");
 const google_strategy_1 = require("./google.strategy");
 exports.jwtSecret = "zjP9h6ZI5LoSKCRj";
 let AuthModule = class AuthModule {
@@ -29,7 +28,7 @@ AuthModule = __decorate([
             user_module_1.UserModule,
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, jwt_strategy_1.JwtStrategy, google_strategy_1.GoogleStrategy],
+        providers: [auth_service_1.AuthService, google_strategy_1.GoogleStrategy],
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;

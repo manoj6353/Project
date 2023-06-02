@@ -10,7 +10,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
         "1005530123068-c03mao6p8t1o6o4o3ip7olea02nr92uj.apps.googleusercontent.com",
       clientSecret: "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",
       // callbackURL: 'http://localhost:3000/auth/google/callback',
-      callbackURL: "http://localhost:4000/google/login",
+      callbackURL: "https://fed3-103-215-158-90.ngrok-free.app/google/login",
       scope: ["email", "profile"],
     });
   }

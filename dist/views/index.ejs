@@ -35,8 +35,8 @@
       <div class="container d-flex">
         <div class="row col-3 flex-column" id="rows">
           <% data.forEach(d=> { %>
-          <div class="col-10 h-100">
-            <div class="card h-100">
+          <div class="col-10 h-75">
+            <div class="card h-75">
               <div class="h-100 d-flex align-items-center">
                 <img
                   src="/images/<%=d.image%>"
@@ -49,6 +49,7 @@
                 <div class="card-body">
                   <h5 class="card-title"><%=d.productName%></h5>
                   <p>₹ <%=d.price%></p>
+                  <p><%=d.productdetails%></p>
                   <a
                     onclick="addtocart(`<%=d.id%>`)"
                     class="btn btn-primary btn-md btn-block"

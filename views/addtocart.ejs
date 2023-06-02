@@ -26,57 +26,57 @@
   <body onload="tap()">
     <%- include('header'); -%>
     <div class="container">
-      <div class="content">
-        <div class="container d-flex">
-          <div class="row col-3 flex-column" id="rows">
-            <% data.forEach(d=> { %>
-            <div class="col-10 h-100">
-              <div class="card h-100">
-                <div class="h-100 d-flex align-items-center">
-                  <img
-                    src="/images/<%=d.products.image%>"
-                    class="card-img mx-auto"
-                    width="200px"
-                    height="100px"
+      <!-- <div class="content"> -->
+      <div class="container d-flex" style="height: 300px">
+        <div class="row col-3 flex-column" id="rows">
+          <% data.forEach(d=> { %>
+          <div class="col-10" style="height: 120%">
+            <div class="card h-75">
+              <div class="h-100 d-flex align-items-center">
+                <img
+                  src="/images/<%=d.products.image%>"
+                  class="card-img mx-auto"
+                  width="200px"
+                  height="100px"
+                />
+              </div>
+              <div class="card-body" style="width: 15rem">
+                <div class="card-title">
+                  <h5 class="card-title productId" id="<%=d.productId%>">
+                    <%=d.products.productName%>
+                  </h5>
+                </div>
+                <div class="quantities">
+                  Quantity
+                  <input
+                    type="number"
+                    style="width: 4rem"
+                    value="<%=d.quantity%>"
+                    minlength="1"
+                    class="quantity"
+                    name="quantity"
+                    id="quantity"
+                    onchange="total(this,'<%=d.id%>')"
                   />
                 </div>
-                <div class="card-body" style="width: 15rem">
-                  <div class="card-title">
-                    <h5 class="card-title productId" id="<%=d.productId%>">
-                      <%=d.products.productName%>
-                    </h5>
-                  </div>
-                  <div class="quantities">
-                    Quantity
-                    <input
-                      type="number"
-                      style="width: 4rem"
-                      value="<%=d.quantity%>"
-                      minlength="1"
-                      class="quantity"
-                      name="quantity"
-                      id="quantity"
-                      onchange="total(this,'<%=d.id%>')"
-                    />
-                  </div>
-                  <div class="d-flex">
-                    Price:
-                    <p class="price"><%=d.products.price%></p>
-                  </div>
-                  <div class="">
-                    <a
-                      onclick="remove('<%=d.id%>')"
-                      class="btn btn-primary btn-md btn-block delete"
-                      >Delete</a
-                    >
-                  </div>
+                <div class="d-flex">
+                  Price:
+                  <p class="price"><%=d.products.price%></p>
+                </div>
+                <div class="">
+                  <a
+                    onclick="remove('<%=d.id%>')"
+                    class="btn btn-primary btn-md btn-block delete"
+                    >Delete</a
+                  >
                 </div>
               </div>
             </div>
-            <% }); %>
           </div>
+          <% }); %>
         </div>
       </div>
+      <!-- </div> -->
       <div class="address" id="address"></div>
       <div class="Checkout">
         <p>Total price is</p>

@@ -4,7 +4,6 @@ import { AuthController } from "./auth.controller";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 import { UserModule } from "../user/user.module";
-import { JwtStrategy } from "./jwt.strategy";
 import { GoogleStrategy } from "./google.strategy";
 export const jwtSecret = "zjP9h6ZI5LoSKCRj";
 
@@ -18,6 +17,6 @@ export const jwtSecret = "zjP9h6ZI5LoSKCRj";
     UserModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, GoogleStrategy],
+  providers: [AuthService, GoogleStrategy],
 })
 export class AuthModule {}

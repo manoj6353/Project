@@ -283,6 +283,7 @@ let ProductService = class ProductService {
         try {
             return prisma.products.findMany({
                 where: {
+                    deletedAt: null,
                     productName: {
                         contains: productName,
                     },
@@ -299,7 +300,22 @@ let ProductService = class ProductService {
             const oldCategoryid = parseInt(updateProductDto.oldCategoryId);
             const categoryid = parseInt(updateProductDto.categoryId);
             const subCategoryid = parseInt(updateProductDto.subCategoryId);
-            await prisma.productCategory.deleteMany({
+            const images = await prisma.products.findFirst({
+                where: {
+                    id: productId,
+                },
+                select: {
+                    image: true,
+                },
+            });
+            let image;
+            if (file == undefined) {
+                image = images.image;
+            }
+            else {
+                image = file.filename;
+            }
+            const data = await prisma.productCategory.deleteMany({
                 where: { categoryId: oldCategoryid, productId: productId },
             });
             return prisma.products.update({
@@ -310,7 +326,7 @@ let ProductService = class ProductService {
                     quantity: updateProductDto.quantity,
                     productdetails: updateProductDto.productdetails,
                     subCategoryId: subCategoryid,
-                    image: file.filename,
+                    image: image,
                     productCategory: {
                         create: {
                             categoryId: categoryid,
@@ -323,10 +339,13 @@ let ProductService = class ProductService {
             console.log(err);
         }
     }
-    remove(id) {
+    async remove(id) {
         try {
-            return prisma.products.delete({
+            return await prisma.products.update({
                 where: { id: id },
+                data: {
+                    deletedAt: new Date(),
+                },
             });
         }
         catch (err) {

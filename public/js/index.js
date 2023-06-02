@@ -32,8 +32,8 @@ async function search(search) {
     searchrow.classList.remove("active");
     for (let d of data) {
       searchrow.innerHTML += `
-      <div class="col-10 h-100">
-        <div class="card h-100">
+      <div class="col-10" style="height: 120%">
+        <div class="card h-75">
           <div class="h-100 d-flex align-items-center">
             <img
               src="/images/${d.image}"
@@ -46,6 +46,7 @@ async function search(search) {
                 <div class="card-body">
                   <h5 class="card-title">${d.productName}</h5>
                   <p>₹ ${d.price}</p>
+                  <p>${d.productdetails}</p>
                   <a
                     onclick="addtocart(${d.id})"
                     class="btn btn-primary btn-md btn-block"
@@ -81,10 +82,14 @@ async function login() {
       body: JSON.stringify({ email, password }),
     });
     const data = await results.json();
-    console.log(data);
     if (data.status != 200) {
-      error.classList.add("error");
-      error.innerHTML = "Please check your email and password";
+      if (data.message == "password should not be empty") {
+        error.classList.add("error");
+        error.innerHTML = "Password should not be empty";
+      } else {
+        error.classList.add("error");
+        error.innerHTML = "Please check your email and password";
+      }
     } else if (data.data.token && data.status == 200) {
       if (data.data.userRole == 3) {
         window.location.href = "/admin";
@@ -174,7 +179,6 @@ async function order() {
       },${d.pinCode} <a class="btn btn-info" href="/addresses/address/${
         d.id
       }">Edit</a>&nbsp
-      <a class="btn btn-danger" onclick="addressdelete(${d.id})">Delete</a>
       <a class="btn btn-secondary " onclick="add()">Add new address</a>
       </span><br><br></div>`;
     });
