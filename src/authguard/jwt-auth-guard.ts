@@ -22,20 +22,29 @@ export class AuthGuard implements CanActivate {
       });
 
       const array = [
+        "/category/categories",
+        "/category",
+        "/category/fetchcategory/:category",
+        "/category/trash",
+        "/category/:id",
+        "/product/add",
+        "/product/subcategory/:id",
+        "/product/products",
+        "/product",
+        "/product/category",
+        "/product/search/:productName",
+        "/product/:id",
+        "/subcategory/add",
+        "/subcategory/subcategories",
+        "/subcategory",
+        "/subcategory/:id",
+        "/user/users",
+        "/user",
+        "/user/:id",
+        "/user/email/:mail",
         "/admin",
         "/admin/adminuser",
-        "/category",
-        "/category/fetchcategory",
-        "/category/categories",
-        "/subcategory",
-        "/subcategory/subcategories",
-        "/subcategory/add",
-        "/product",
-        "/product/products",
-        "/product/subcategory/",
-        "/user",
-        "/user/users",
-        "/user/email/",
+        "/admin/:id",
       ];
       if (
         array.includes(request.route.path) &&
@@ -43,6 +52,8 @@ export class AuthGuard implements CanActivate {
       ) {
         response.redirect("/home");
         // throw new UnauthorizedException();
+      } else if (payload.role == 3 && !array.includes(request.route.path)) {
+        response.redirect("/admin");
       }
     } catch {
       throw new UnauthorizedException();

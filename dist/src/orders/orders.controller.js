@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrdersController = void 0;
 const common_1 = require("@nestjs/common");
 const orders_service_1 = require("./orders.service");
-const update_order_dto_1 = require("./dto/update-order.dto");
 const jwt_auth_guard_1 = require("../authguard/jwt-auth-guard");
 let OrdersController = class OrdersController {
     constructor(ordersService) {
@@ -30,15 +29,6 @@ let OrdersController = class OrdersController {
         const id = req.cookies.data.id;
         const data = await this.ordersService.findAll(+id);
         return { data };
-    }
-    findOne(id) {
-        return this.ordersService.findOne(+id);
-    }
-    update(id, updateOrderDto) {
-        return this.ordersService.update(+id, updateOrderDto);
-    }
-    remove(id) {
-        return this.ordersService.remove(+id);
     }
 };
 __decorate([
@@ -59,31 +49,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], OrdersController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)(":id"),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
-    __param(0, (0, common_1.Param)("id")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], OrdersController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(":id"),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
-    __param(0, (0, common_1.Param)("id")),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_order_dto_1.UpdateOrderDto]),
-    __metadata("design:returntype", void 0)
-], OrdersController.prototype, "update", null);
-__decorate([
-    (0, common_1.Delete)(":id"),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
-    __param(0, (0, common_1.Param)("id")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], OrdersController.prototype, "remove", null);
 OrdersController = __decorate([
     (0, common_1.Controller)("orders"),
     __metadata("design:paramtypes", [orders_service_1.OrdersService])

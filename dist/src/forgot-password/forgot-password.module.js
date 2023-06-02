@@ -15,7 +15,7 @@ let ForgotPasswordModule = class ForgotPasswordModule {
 ForgotPasswordModule = __decorate([
     (0, common_1.Module)({
         controllers: [forgot_password_controller_1.ForgotPasswordController],
-        providers: [forgot_password_service_1.ForgotPasswordService]
+        providers: [forgot_password_service_1.ForgotPasswordService],
     })
 ], ForgotPasswordModule);
 exports.ForgotPasswordModule = ForgotPasswordModule;

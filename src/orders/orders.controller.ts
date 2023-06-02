@@ -36,21 +36,21 @@ export class OrdersController {
     return { data };
   }
 
-  @Get(":id")
-  @UseGuards(AuthGuard)
-  findOne(@Param("id") id: string) {
-    return this.ordersService.findOne(+id);
-  }
+  // @Get(":id")
+  // @UseGuards(AuthGuard)
+  // findOne(@Param("id") id: string) {
+  //   return this.ordersService.findOne(+id);
+  // }
 
-  @Patch(":id")
-  @UseGuards(AuthGuard)
-  update(@Param("id") id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.update(+id, updateOrderDto);
-  }
+  // @Patch(":id")
+  // @UseGuards(AuthGuard)
+  // update(@Param("id") id: string, @Body() updateOrderDto: UpdateOrderDto) {
+  //   return this.ordersService.update(+id, updateOrderDto);
+  // }
 
-  @Delete(":id")
-  @UseGuards(AuthGuard)
-  remove(@Param("id") id: string) {
-    return this.ordersService.remove(+id);
-  }
+  // @Delete(":id")
+  // @UseGuards(AuthGuard)
+  // remove(@Param("id") id: string) {
+  //   return this.ordersService.remove(+id);
+  // }
 }

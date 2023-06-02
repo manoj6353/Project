@@ -12,24 +12,19 @@ export declare class AddtocartController {
     }>;
     findAll(req: Request): Promise<{
         data: {
+            productId: number;
+            quantity: string;
             users: {
                 firstName: string;
             };
-            id: number;
-            userId: number;
-            quantity: string;
             products: {
                 productName: string;
-                image: string;
                 price: string;
+                image: string;
             };
-            productId: number;
+            id: number;
+            userId: number;
         }[];
-    }>;
-    findOne(id: string): Promise<{
-        data: (import(".prisma/client").addtocarts & {
-            products: import(".prisma/client").products;
-        })[];
     }>;
     update(id: string, updateAddtocartDto: UpdateAddtocartDto): Promise<import(".prisma/client").addtocarts>;
     remove(id: string): Promise<{

@@ -28,24 +28,36 @@ let AuthGuard = class AuthGuard {
                 secret: process.env.JWT_SECRET,
             });
             const array = [
+                "/category/categories",
+                "/category",
+                "/category/fetchcategory/:category",
+                "/category/trash",
+                "/category/:id",
+                "/product/add",
+                "/product/subcategory/:id",
+                "/product/products",
+                "/product",
+                "/product/category",
+                "/product/search/:productName",
+                "/product/:id",
+                "/subcategory/add",
+                "/subcategory/subcategories",
+                "/subcategory",
+                "/subcategory/:id",
+                "/user/users",
+                "/user",
+                "/user/:id",
+                "/user/email/:mail",
                 "/admin",
                 "/admin/adminuser",
-                "/category",
-                "/category/fetchcategory",
-                "/category/categories",
-                "/subcategory",
-                "/subcategory/subcategories",
-                "/subcategory/add",
-                "/product",
-                "/product/products",
-                "/product/subcategory/",
-                "/user",
-                "/user/users",
-                "/user/email/",
+                "/admin/:id",
             ];
             if (array.includes(request.route.path) &&
                 (payload.role == 2 || payload.role == 1)) {
                 response.redirect("/home");
+            }
+            else if (payload.role == 3 && !array.includes(request.route.path)) {
+                response.redirect("/admin");
             }
         }
         catch (_a) {

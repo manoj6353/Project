@@ -47,14 +47,14 @@ export class ForgotPasswordService {
     const userId = user.id;
     this.mailerService.sendMail({
       to: passwordDto.email,
-      from: "manoj.bajiya.2023@gmail.com",
+      from: process.env.senderEmail,
       subject: "Forgot Password Change",
       text: "Ecommerce",
       html: `<b> ${link} <b>`,
     });
 
     res.send(
-      `check you mail <a href='http://localhost:4000/forgotpassword/forgotpasswordupdate?id=${userId}'>Change Password</a>`
+      `check you mail <a href='/forgotpassword/forgotpasswordupdate?id=${userId}'>Change Password</a>`
     );
   }
 

@@ -21,8 +21,8 @@ import { ForgotPasswordModule } from "./forgot-password/forgot-password.module";
         port: 465,
         secure: true,
         auth: {
-          user: "manoj.bajiya.2023@gmail.com",
-          pass: "iylmlwplnjjbuifw",
+          user: process.env.senderEmail,
+          pass: process.env.senderPassword,
         },
       },
     }),

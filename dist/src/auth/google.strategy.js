@@ -16,9 +16,9 @@ const common_1 = require("@nestjs/common");
 let GoogleStrategy = class GoogleStrategy extends (0, passport_1.PassportStrategy)(passport_google_oauth20_1.Strategy, "google") {
     constructor() {
         super({
-            clientID: "1005530123068-c03mao6p8t1o6o4o3ip7olea02nr92uj.apps.googleusercontent.com",
-            clientSecret: "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",
-            callbackURL: "https://fed3-103-215-158-90.ngrok-free.app/google/login",
+            clientID: process.env.googleClientId,
+            clientSecret: process.env.googleClientSecret,
+            callbackURL: process.env.googlecallbackURL,
             scope: ["email", "profile"],
         });
     }

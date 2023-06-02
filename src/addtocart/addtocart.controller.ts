@@ -44,12 +44,12 @@ export class AddtocartController {
     return { data };
   }
 
-  @Get(":id")
-  @UseGuards(AuthGuard)
-  async findOne(@Param("id") id: string) {
-    const data = await this.addtocartService.findOne(+id);
-    return { data };
-  }
+  // @Get(":id")
+  // @UseGuards(AuthGuard)
+  // async findOne(@Param("id") id: string) {
+  //   const data = await this.addtocartService.findOne(+id);
+  //   return { data };
+  // }
 
   @Patch(":id")
   @UseGuards(AuthGuard)
