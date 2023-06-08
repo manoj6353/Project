@@ -54,11 +54,11 @@ let AuthGuard = class AuthGuard {
                 "/category/add",
                 "/subcategory/update",
             ];
-            if (array.includes(request.route.path) &&
-                (payload.role == 2 || payload.role == 1)) {
+            if (array.includes(request.route.path) && payload.role == 2) {
                 response.redirect("/home");
             }
-            else if (payload.role == 3 && !array.includes(request.route.path)) {
+            else if ((payload.role == 3 || payload.role == 1) &&
+                !array.includes(request.route.path)) {
                 response.redirect("/admin");
             }
         }

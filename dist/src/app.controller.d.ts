@@ -14,12 +14,13 @@ export declare class AppController {
     getHello(): any;
     findAll(): Promise<{
         data: {
+            id: number;
+            createdAt: Date;
             productName: string;
             image: string;
             quantity: string;
             price: string;
             productdetails: string;
-            createdAt: Date;
             subcategories: {
                 subCategoryName: string;
             };
@@ -29,17 +30,17 @@ export declare class AppController {
                 };
                 categoryId: number;
             }[];
-            id: number;
         }[];
     }>;
     sortAll(req: Request): Promise<{
         data: {
+            id: number;
+            createdAt: Date;
             productName: string;
             image: string;
             quantity: string;
             price: string;
             productdetails: string;
-            createdAt: Date;
             subcategories: {
                 subCategoryName: string;
             };
@@ -49,7 +50,6 @@ export declare class AppController {
                 };
                 categoryId: number;
             }[];
-            id: number;
         }[];
     }>;
     roots(): void;

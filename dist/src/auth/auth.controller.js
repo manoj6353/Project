@@ -39,7 +39,7 @@ let AuthController = class AuthController {
             });
         }
         else {
-            res.status(common_1.HttpStatus.BAD_REQUEST).json({
+            return res.status(common_1.HttpStatus.BAD_REQUEST).json({
                 status: common_1.HttpStatus.BAD_REQUEST,
                 data: null,
                 message: `Incorrect Credentials`,

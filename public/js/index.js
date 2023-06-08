@@ -61,7 +61,7 @@ async function search(search) {
   }
 }
 
-async function login() {
+async function login(e) {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   const form = document.getElementById("loginForm");
@@ -79,6 +79,7 @@ async function login() {
       body: JSON.stringify({ email, password }),
     });
     const data = await results.json();
+    console.log(data);
     if (data.status != 200) {
       if (data.message == "password should not be empty") {
         error.classList.add("error");
@@ -88,13 +89,10 @@ async function login() {
         error.innerHTML = "Please check your email and password";
       }
     } else if (data.data.token && data.status == 200) {
-      if (data.data.userRole == 3) {
-        window.location.href = "/admin";
-      } else {
-        window.location.href = "/home";
-      }
+      window.location.href = "/home";
     }
   }
+  e.preventDefault();
 }
 
 async function remove(id) {

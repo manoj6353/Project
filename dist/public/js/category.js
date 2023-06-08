@@ -2,7 +2,6 @@ async function editCategory(id) {
   try {
     const result = await fetch(`/category/${id}`);
     const { data } = await result.json();
-    console.log(data);
     const main = document.getElementById("main");
 
     main.innerHTML = `<section class="bg-image mt-5">
@@ -57,15 +56,15 @@ async function editCategory(id) {
                           Back
                         </a>
                       </div>
-                      <div id="submit">
-                        <a
+                      
+                        <button
                           class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
-                          id="prevBtn"
+                          id="submitform"
                           onclick="nextPrev()"
                         >
                           Submit
-                        </a>
-                      </div>
+                        </button>
+                      
                     </div>
                   </div>
                 </form>
@@ -130,6 +129,8 @@ async function deletetrashCategory(id) {
 }
 
 async function verifycategory() {
+  const submitForm = document.getElementById("submitform");
+  submitForm.disabled = true;
   const category = document.getElementById("categoryName");
   const categories = category.value.trim();
   const verifycategory = await fetch(`/category/fetchcategory/${categories}`);
@@ -153,6 +154,7 @@ async function verifycategory() {
     categoryerror.classList.add("error");
   }
   if (c == 1) {
+    submitForm.disabled = false;
     return true;
   } else {
     return false;

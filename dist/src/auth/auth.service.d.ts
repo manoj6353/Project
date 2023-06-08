@@ -19,6 +19,12 @@ export declare class AuthService {
             };
         };
         userRole: number;
+        message?: undefined;
+    } | {
+        message: string;
+        token?: undefined;
+        userData?: undefined;
+        userRole?: undefined;
     }>;
     genrateCookie(token: any, req: any, res: any): Promise<void>;
 }

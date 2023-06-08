@@ -76,9 +76,9 @@ export class AuthService {
             userRole: findUser.roles.id,
           };
         } else {
-          throw new UnauthorizedException(
-            "Please check your email and password"
-          );
+          return {
+            message: "please check your username and password",
+          };
         }
       }
     } catch (error) {

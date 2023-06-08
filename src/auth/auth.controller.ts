@@ -39,7 +39,6 @@ export class AuthController {
     @Body() logindto: LoginDto
   ): Promise<any> {
     const result = await this.authService.login(logindto);
-
     if (result.token) {
       res.cookie("auth_token", result.token, { httpOnly: true });
       const payload: any = await this.jwtService.verifyAsync(result.token, {
@@ -52,7 +51,7 @@ export class AuthController {
         message: `Login Successfull`,
       });
     } else {
-      res.status(HttpStatus.BAD_REQUEST).json({
+      return res.status(HttpStatus.BAD_REQUEST).json({
         status: HttpStatus.BAD_REQUEST,
         data: null,
         message: `Incorrect Credentials`,

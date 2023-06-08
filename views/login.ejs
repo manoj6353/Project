@@ -27,7 +27,12 @@
               <div class="card" style="border-radius: 15px">
                 <div class="card-body p-5">
                   <h2 class="text-center mb-2">Login</h2>
-                  <form id="loginForm">
+                  <form
+                    id="loginForm"
+                    action="/auth/login"
+                    method="POST"
+                    onsubmit="return login(event)"
+                  >
                     <hr />
                     <div class="tab">
                       <div class="form-outline mb-4">
@@ -59,15 +64,12 @@
                         class="d-flex justify-content-center gap"
                       >
                         <div style="float: right">
-                          <div id="submit">
-                            <a
-                              class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
-                              id="prevBtn"
-                              onclick="login()"
-                            >
-                              Login
-                            </a>
-                          </div>
+                          <button
+                            class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                            id="loginsubmit"
+                          >
+                            Login
+                          </button>
                           <div class="login btn btn-link btn-light">
                             <a style="color: blue" href="/signup">Sign Up</a>
                           </div>
@@ -82,7 +84,7 @@
                             class="social-icons btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
                           >
                             <a href="/google"
-                              ><h5>Sign up using Google</h5>
+                              >Sign up using Google
                               <i class="icon-social-google" title="Google"></i
                             ></a>
                           </div>
