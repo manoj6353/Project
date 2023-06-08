@@ -34,13 +34,12 @@ export declare class ProductController {
     }>;
     category(): Promise<{
         data: {
-            createdAt: Date;
-            id: number;
             productName: string;
             image: string;
             quantity: string;
             price: string;
             productdetails: string;
+            createdAt: Date;
             subcategories: {
                 subCategoryName: string;
             };
@@ -50,11 +49,11 @@ export declare class ProductController {
                 };
                 categoryId: number;
             }[];
+            id: number;
         }[];
     }>;
     findsearch(productName: string): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").products[]>;
     findOne(id: string): import(".prisma/client").Prisma.Prisma__productsClient<{
-        id: number;
         productName: string;
         image: string;
         quantity: string;
@@ -69,6 +68,7 @@ export declare class ProductController {
             };
             categoryId: number;
         }[];
+        id: number;
         subCategoryId: number;
     }, never>;
     update(updateProductDto: UpdateProductDto, file: Express.Multer.File): Promise<import(".prisma/client").products>;

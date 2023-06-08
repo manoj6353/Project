@@ -116,15 +116,6 @@ async function addProduct() {
                       style="float: right"
                       class="d-flex justify-content-center gap"
                     >
-                      <div id="submit">
-                        <a
-                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
-                          id="prevBtn"
-                          onclick="nextPrev()"
-                        >
-                          Submit
-                        </a>
-                      </div>
                       <div id="back">
                         <a
                           class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
@@ -132,6 +123,15 @@ async function addProduct() {
                           class="button"
                         >
                           Back
+                        </a>
+                      </div>
+                      <div id="submit">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          id="prevBtn"
+                          onclick="nextPrev()"
+                        >
+                          Submit
                         </a>
                       </div>
                     </div>
@@ -322,15 +322,6 @@ async function editProduct(id) {
                       style="float: right"
                       class="d-flex justify-content-center gap"
                     >
-                      <div id="submit">
-                        <a
-                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
-                          id="prevBtn"
-                          onclick="nextPrev()"
-                        >
-                          Submit
-                        </a>
-                      </div>
                       <div id="back">
                         <a
                           class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
@@ -338,6 +329,15 @@ async function editProduct(id) {
                           class="button"
                         >
                           Back
+                        </a>
+                      </div>
+                      <div id="submit">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          id="prevBtn"
+                          onclick="nextPrev()"
+                        >
+                          Submit
                         </a>
                       </div>
                     </div>

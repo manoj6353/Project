@@ -19,7 +19,6 @@ async function addUser() {
           <div class="col-12 col-md-9 col-lg-7 col-xl-6">
             <div class="card" style="border-radius: 15px">
               <div class="card-body p-5">
-                <h2 class="text-center mb-2">Register Your self</h2>
                 <form action="/admin" method="POST" id="regForm">
                   <hr />
                   <div class="tab">
@@ -169,22 +168,20 @@ async function addUser() {
                       class="d-flex justify-content-center gap"
                     >
                       <div style="float: right" class="d-flex justify-content-center gap">
+                        
+                        <div id="back">
+                          <a class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body" href="/admin" class="button"> Back </a> 
+                        </div>
                         <div id="submit">
                           <a
                             class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
                             id="prevBtn"
                             onclick="nextPrev()"
                           >
-                            Sign Up
+                            Register
                           </a>
                         </div>
-                        <div id="back">
-                          <a class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body" href="/admin" class="button"> Back </a> 
                         </div>
-                        </div>
-                        </div>
-                        <div class="login btn btn-link btn-light">
-                          <a style="color: blue" href="/login">Sign in</a>
                         </div>
                   </div>
                 </form>
@@ -334,6 +331,9 @@ async function editUser(id) {
                       class="d-flex justify-content-center gap"
                     >
                       <div style="float: right" class="d-flex justify-content-center gap">
+                        <div id="back">
+                          <a class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body" href="/admin" class="button"> Back </a> 
+                        </div>
                         <div id="submit">
                           <a
                             class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
@@ -342,9 +342,6 @@ async function editUser(id) {
                           >
                             Update
                           </a>
-                        </div>
-                        <div id="back">
-                          <a class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body" href="/admin" class="button"> Back </a> 
                         </div>
                         </div>
                         </div>

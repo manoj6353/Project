@@ -14,14 +14,17 @@ export class UserService {
       const age = +createUserDto.age || "";
       const contact = createUserDto.contact || "";
       const email = createUserDto.email || createUserDto.emails[0].value;
+      const gender = createUserDto.gender || "";
       let password;
+      let provider;
       if (createUserDto.password) {
         const passwords = createUserDto.password;
         password = bcrypt.hashSync(passwords, 11);
+        provider = "register";
       } else {
         password = "";
+        provider = "google";
       }
-      const gender = createUserDto.gender || "";
       const data = await prisma.users.create({
         data: {
           firstName: firstName,
@@ -30,11 +33,12 @@ export class UserService {
           email: email,
           password: password,
           gender: gender,
+          provider: provider,
           age: +age,
           roleId: 2,
         },
       });
-      return data;
+      return { data };
     } catch (err) {
       console.log(err);
     }

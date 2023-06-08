@@ -267,3 +267,48 @@ async function forgotpassword() {
     password.disabled = false;
   }
 }
+
+async function sorting() {
+  const sort = document.getElementById("sortByPrice");
+  const result = await fetch(`/home/data?sort=${sort.value}`);
+  const { data } = await result.json();
+  const content = document.getElementById("content");
+  let contents = "";
+  contents += `<select id="sortByPrice" onchange="sorting()">
+  <option>Sort By</option>`;
+  if (sort.value == "asc") {
+    contents += `<option value="asc" selected>low to high</option>`;
+    contents += `<option value="desc">high to low</option>`;
+  } else if (sort.value == "desc") {
+    contents += `<option value="desc" selected>high to low</option>`;
+    contents += `<option value="asc">low to high</option>`;
+  }
+  contents += `</select>
+<div class="container d-flex products">
+  <div class="row" id="rows">`;
+  data.forEach((d) => {
+    contents += `<div class="mb-5" style="width: 25%">
+      <div class="card h-100 p-2">
+        <div class="h-100 d-flex align-items-center">
+          <img src="/images/${d.image}" class="card-img mx-auto" />
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">${d.productName}</h5>
+          <p>₹ ${d.price}</p>
+          <p>${d.productdetails}</p>
+          <a
+            onclick="addtocart('${d.id}')"
+            class="btn btn-primary btn-md btn-block"
+          >
+            Add to Cart
+          </a>
+        </div>
+      </div>
+    </div>`;
+  });
+  contents += `</div>
+  <div class="row col-3 flex-column search" id="search"></div>
+</div>
+</div>`;
+  content.innerHTML = contents;
+}

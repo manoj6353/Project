@@ -5,7 +5,9 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
-    create(createUserDto: CreateUserDto): Promise<import(".prisma/client").users>;
+    create(createUserDto: CreateUserDto): Promise<{
+        data: import(".prisma/client").users;
+    }>;
     findAll(req: Request): Promise<{
         data: any[];
         draw: any;

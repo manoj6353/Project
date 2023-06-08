@@ -13,8 +13,8 @@ export declare class SubcategoryService {
     }>;
     findOne(id: number): Promise<{
         id: number;
-        categoryId: number;
         subCategoryName: string;
+        categoryId: number;
     }>;
     update(updateSubcategoryDto: any): import(".prisma/client").Prisma.Prisma__subcategoriesClient<import(".prisma/client").subcategories, never>;
     remove(id: number): Promise<import(".prisma/client").subcategories>;

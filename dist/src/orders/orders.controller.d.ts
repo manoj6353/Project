@@ -12,11 +12,11 @@ export declare class OrdersController {
             id: number;
             quantity: string;
             price: string;
+            totalprice: number;
             products: {
                 productName: string;
                 image: string;
             };
-            totalprice: number;
         }[];
     }>;
 }

@@ -31,6 +31,7 @@ export class AuthGuard implements CanActivate {
         "/product/subcategory/:id",
         "/product/products",
         "/product",
+        "/product/update",
         "/product/category",
         "/product/search/:productName",
         "/product/:id",

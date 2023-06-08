@@ -37,6 +37,7 @@ let AuthGuard = class AuthGuard {
                 "/product/subcategory/:id",
                 "/product/products",
                 "/product",
+                "/product/update",
                 "/product/category",
                 "/product/search/:productName",
                 "/product/:id",

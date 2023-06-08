@@ -66,9 +66,12 @@ let ProductService = class ProductService {
             console.log(err);
         }
     }
-    async findAll() {
+    async findAll(prices = "asc", price = "price") {
         try {
             return prisma.products.findMany({
+                orderBy: {
+                    [price]: prices,
+                },
                 select: {
                     id: true,
                     productName: true,
@@ -109,44 +112,65 @@ let ProductService = class ProductService {
             const columnSort = query.order[0]["dir"];
             const start = parseInt(query.start);
             const length = parseInt(query.length);
+            const wherequery = {
+                deletedAt: null,
+                OR: [
+                    {
+                        productName: {
+                            contains: search.value,
+                        },
+                    },
+                    {
+                        price: {
+                            contains: search.value,
+                        },
+                    },
+                    {
+                        quantity: {
+                            contains: search.value,
+                        },
+                    },
+                    {
+                        productdetails: {
+                            contains: search.value,
+                        },
+                    },
+                    {
+                        subcategories: {
+                            subCategoryName: {
+                                contains: search.value,
+                            },
+                        },
+                    },
+                ],
+            };
             const count = await prisma.products.count({
-                where: {
-                    deletedAt: null,
-                    OR: [
-                        {
-                            productName: {
-                                contains: search.value,
-                            },
-                        },
-                        {
-                            price: {
-                                contains: search.value,
-                            },
-                        },
-                        {
-                            quantity: {
-                                contains: search.value,
-                            },
-                        },
-                        {
-                            productdetails: {
-                                contains: search.value,
-                            },
-                        },
-                        {
-                            subcategories: {
-                                subCategoryName: {
-                                    contains: search.value,
-                                },
-                            },
-                        },
-                    ],
-                },
+                where: wherequery,
             });
+            const products = [
+                "id",
+                "productName",
+                "price",
+                "quantity",
+                " productdetails",
+                "createdAt",
+            ];
+            const subcategory = ["subCategoryName"];
+            const category = ["categoryName"];
+            let tableName;
+            if (products.indexOf(columnName) >= 0) {
+                tableName = { [columnName]: columnSort };
+            }
+            else if (subcategory.indexOf(columnName) >= 0) {
+                tableName = { subcategories: { [columnName]: columnSort } };
+            }
+            else if (category.indexOf(columnName) >= 0) {
+                tableName = { subcategories: { subCategoryName: columnSort } };
+            }
             const row = await prisma.products.findMany({
                 skip: start,
                 take: length,
-                orderBy: { subcategories: { subCategoryName: columnSort } },
+                orderBy: tableName,
                 select: {
                     id: true,
                     productName: true,
@@ -171,38 +195,7 @@ let ProductService = class ProductService {
                         },
                     },
                 },
-                where: {
-                    deletedAt: null,
-                    OR: [
-                        {
-                            productName: {
-                                contains: search.value,
-                            },
-                        },
-                        {
-                            price: {
-                                contains: search.value,
-                            },
-                        },
-                        {
-                            quantity: {
-                                contains: search.value,
-                            },
-                        },
-                        {
-                            productdetails: {
-                                contains: search.value,
-                            },
-                        },
-                        {
-                            subcategories: {
-                                subCategoryName: {
-                                    contains: search.value,
-                                },
-                            },
-                        },
-                    ],
-                },
+                where: wherequery,
             });
             const payload = { data: [] };
             for (const data of row) {
@@ -315,25 +308,28 @@ let ProductService = class ProductService {
             else {
                 image = file.filename;
             }
-            const data = await prisma.productCategory.deleteMany({
-                where: { categoryId: oldCategoryid, productId: productId },
-            });
-            return prisma.products.update({
-                where: { id: productId },
-                data: {
-                    productName: updateProductDto.productName,
-                    price: updateProductDto.price,
-                    quantity: updateProductDto.quantity,
-                    productdetails: updateProductDto.productdetails,
-                    subCategoryId: subCategoryid,
-                    image: image,
-                    productCategory: {
-                        create: {
-                            categoryId: categoryid,
+            const [deletes, data] = await prisma.$transaction([
+                prisma.productCategory.deleteMany({
+                    where: { categoryId: oldCategoryid, productId: productId },
+                }),
+                prisma.products.update({
+                    where: { id: productId },
+                    data: {
+                        productName: updateProductDto.productName,
+                        price: updateProductDto.price,
+                        quantity: updateProductDto.quantity,
+                        productdetails: updateProductDto.productdetails,
+                        subCategoryId: subCategoryid,
+                        image: image,
+                        productCategory: {
+                            create: {
+                                categoryId: categoryid,
+                            },
                         },
                     },
-                },
-            });
+                }),
+            ]);
+            return data;
         }
         catch (err) {
             console.log(err);

@@ -29,7 +29,7 @@ export class AuthController {
   ) {}
 
   @Post("/login")
-  @Redirect("/home")
+  @Redirect("/")
   @ApiOkResponse({ type: AuthEntity })
   async login(
     @Req()
@@ -39,12 +39,12 @@ export class AuthController {
     @Body() logindto: LoginDto
   ): Promise<any> {
     const result = await this.authService.login(logindto);
+
     if (result.token) {
       res.cookie("auth_token", result.token, { httpOnly: true });
       const payload: any = await this.jwtService.verifyAsync(result.token, {
         secret: process.env.JWT_SECRET,
       });
-
       res.cookie("data", payload, { httpOnly: true });
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,

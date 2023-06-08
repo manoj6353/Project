@@ -49,7 +49,7 @@ let AuthController = class AuthController {
 };
 __decorate([
     (0, common_1.Post)("/login"),
-    (0, common_1.Redirect)("/home"),
+    (0, common_1.Redirect)("/"),
     (0, swagger_1.ApiOkResponse)({ type: auth_entity_1.AuthEntity }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),

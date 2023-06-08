@@ -48,15 +48,6 @@ async function editCategory(id) {
                       style="float: right"
                       class="d-flex justify-content-center gap"
                     >
-                      <div id="submit">
-                        <a
-                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
-                          id="prevBtn"
-                          onclick="nextPrev()"
-                        >
-                          Submit
-                        </a>
-                      </div>
                       <div id="back">
                         <a
                           class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
@@ -64,6 +55,15 @@ async function editCategory(id) {
                           class="button"
                         >
                           Back
+                        </a>
+                      </div>
+                      <div id="submit">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          id="prevBtn"
+                          onclick="nextPrev()"
+                        >
+                          Submit
                         </a>
                       </div>
                     </div>
@@ -131,7 +131,7 @@ async function deletetrashCategory(id) {
 
 async function verifycategory() {
   const category = document.getElementById("categoryName");
-  const categories = category.value;
+  const categories = category.value.trim();
   const verifycategory = await fetch(`/category/fetchcategory/${categories}`);
   const { data } = await verifycategory.json();
   let categoryerror = document.getElementById("categoryerror");
@@ -147,6 +147,10 @@ async function verifycategory() {
       categoryerror.innerHTML = "Category already exists";
       categoryerror.classList.add("error");
     }
+  } else {
+    category.classList.add("error");
+    categoryerror.innerHTML = "Enter category";
+    categoryerror.classList.add("error");
   }
   if (c == 1) {
     return true;
@@ -183,7 +187,7 @@ async function addCategory() {
           <div class="col-12 col-md-9 col-lg-7 col-xl-6">
             <div class="card" style="border-radius: 15px">
               <div class="card-body p-5">
-                <form action="/category" method="POST" id="regForm">
+                <form action="/category" method="POST" id="regForm" onsubmit="return nextPrev()">
                   <div class="tab">
                     <div class="form-outline mb-4">
                       <label class="form-label" for="Category"
@@ -210,15 +214,6 @@ async function addCategory() {
                       style="float: right"
                       class="d-flex justify-content-center gap"
                     >
-                      <div id="submit">
-                        <a
-                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
-                          id="prevBtn"
-                          onclick="nextPrev()"
-                        >
-                          Submit
-                        </a>
-                      </div>
                       <div id="back">
                         <a
                           class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
@@ -226,6 +221,15 @@ async function addCategory() {
                           class="button"
                         >
                           Back
+                        </a>
+                      </div>
+                      <div id="submit">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          id="prevBtn"
+                          onclick="nextPrev()"
+                        >
+                          Submit
                         </a>
                       </div>
                     </div>

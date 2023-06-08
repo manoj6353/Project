@@ -26,6 +26,7 @@ export class CreateUserDto {
   roleId: number;
   @IsString()
   password: string;
+  provider: string;
   @IsString()
   @IsNotEmpty()
   gender: string;

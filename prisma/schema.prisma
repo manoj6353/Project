@@ -160,6 +160,7 @@ model users {
   email     String
   password  String
   gender    String
+  provider  String    @default("register")
   roles     roles     @relation(fields: [roleId], references: [id])
   roleId    Int
   createdAt DateTime  @default(now())

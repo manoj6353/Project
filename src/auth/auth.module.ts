@@ -18,5 +18,6 @@ export const jwtSecret = "zjP9h6ZI5LoSKCRj";
   ],
   controllers: [AuthController],
   providers: [AuthService, GoogleStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}

@@ -6,6 +6,7 @@ export declare class CreateUserDto {
     email: string;
     roleId: number;
     password: string;
+    provider: string;
     gender: string;
     createdAt: Date;
     updatedAt: Date;

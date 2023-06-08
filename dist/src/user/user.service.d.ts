@@ -1,5 +1,7 @@
 export declare class UserService {
-    create(createUserDto: any): Promise<import(".prisma/client").users>;
+    create(createUserDto: any): Promise<{
+        data: import(".prisma/client").users;
+    }>;
     createadmin(createUserDto: any): Promise<import(".prisma/client").users>;
     findadminuser(query: any): Promise<{
         draw: any;

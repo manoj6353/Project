@@ -1,26 +1,30 @@
 import {
   Controller,
   Get,
+  HttpStatus,
   Redirect,
   Render,
   Req,
   Res,
   UseGuards,
 } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import { AuthGuard as GoogleAuthGuard } from "@nestjs/passport";
 import { Request, Response } from "express";
-import * as transporter from "mail.config";
 import { AppService } from "./app.service";
 import { ProductService } from "./product/product.service";
 import { AuthGuard } from "./authguard/jwt-auth-guard";
 import { UserService } from "./user/user.service";
-import { CreateUserDto } from "./user/dto/create-user.dto";
+import { AuthService } from "./auth/auth.service";
+import { request } from "http";
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly productService: ProductService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+    private jwtService: JwtService
   ) {}
 
   getHello(): any {
@@ -32,6 +36,14 @@ export class AppController {
   @Render("index")
   async findAll() {
     const data = await this.productService.findAll();
+    return { data };
+  }
+
+  @Get("/home/data")
+  @UseGuards(AuthGuard)
+  async sortAll(@Req() req: Request) {
+    const price = req.query.sort;
+    const data = await this.productService.findAll(`${price}`);
     return { data };
   }
 
@@ -59,7 +71,6 @@ export class AppController {
         } else {
           res.redirect("/admin");
         }
-        console.log("in if");
       }
     } catch (err) {
       console.log(err);
@@ -73,25 +84,54 @@ export class AppController {
   }
 
   @Get("/google/login")
-  @Redirect("/")
+  @Redirect("/home")
   @UseGuards(GoogleAuthGuard("google"))
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const emails = await this.userService.findUnique(req.user);
-    console.log(emails);
     if (emails != null) {
-      console.log("in login");
+      const email = emails.email;
+      const password = "";
+      const login = { email, password };
+      const result = await this.authService.login(login);
+      if (result.token) {
+        res.cookie("auth_token", result.token, { httpOnly: true });
+        const payload: any = await this.jwtService.verifyAsync(result.token, {
+          secret: process.env.JWT_SECRET,
+        });
 
-      res.send("You are already logged in please login <a href='/'>Login</a>");
+        res.cookie("data", payload, { httpOnly: true });
+      }
     } else {
-      console.log("in create");
+      const { data } = await this.userService.create(req.user);
+      const email = data.email;
+      const password = "";
+      const login = { email, password };
+      const result = await this.authService.login(login);
+      if (result.token) {
+        res.cookie("auth_token", result.token, { httpOnly: true });
+        const payload: any = await this.jwtService.verifyAsync(result.token, {
+          secret: process.env.JWT_SECRET,
+        });
 
-      return this.userService.create(req.user);
+        res.cookie("data", payload, { httpOnly: true });
+      }
     }
   }
 
   @Get("/signup")
   @Render("registration")
-  signup() {
-    return;
+  signup(@Req() req: Request, @Res() res: Response) {
+    try {
+      if (req.cookies.auth_token) {
+        if (req.cookies.data.role == 2 || req.cookies.data.role == 1) {
+          console.log("in role");
+          res.redirect("/home");
+        } else {
+          res.redirect("/admin");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

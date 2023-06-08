@@ -53,15 +53,6 @@ async function addsubCategory() {
                       style="float: right"
                       class="d-flex justify-content-center gap"
                     >
-                      <div id="submit">
-                        <a
-                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
-                          id="prevBtn"
-                          onclick="nextPrev()"
-                        >
-                          Submit
-                        </a>
-                      </div>
                       <div id="back">
                         <a
                           class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
@@ -69,6 +60,15 @@ async function addsubCategory() {
                           class="button"
                         >
                           Back
+                        </a>
+                      </div>
+                      <div id="submit">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          id="prevBtn"
+                          onclick="nextPrev()"
+                        >
+                          Submit
                         </a>
                       </div>
                     </div>
@@ -169,15 +169,6 @@ async function editsubCategory(id) {
                       style="float: right"
                       class="d-flex justify-content-center gap"
                     >
-                      <div id="submit">
-                        <a
-                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
-                          id="prevBtn"
-                          onclick="nextPrev()"
-                        >
-                          Submit
-                        </a>
-                      </div>
                       <div id="back">
                         <a
                           class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
@@ -185,6 +176,15 @@ async function editsubCategory(id) {
                           class="button"
                         >
                           Back
+                        </a>
+                      </div>
+                      <div id="submit">
+                        <a
+                          class="btn btn-success btn-block btn-lg w-100 gradient-custom-4 text-body"
+                          id="prevBtn"
+                          onclick="nextPrev()"
+                        >
+                          Submit
                         </a>
                       </div>
                     </div>

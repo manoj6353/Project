@@ -27,6 +27,7 @@ export class AuthService {
           email: true,
           password: true,
           roleId: true,
+          provider: true,
           roles: {
             select: {
               id: true,
@@ -39,6 +40,22 @@ export class AuthService {
       if (findUser == null) {
         throw new NotFoundException(`Please check your email and password`);
       } else {
+        console.log(findUser.password == "" && loginDetails.password == "");
+        if (findUser.password == "" && findUser.provider == "google") {
+          const payload = {
+            id: findUser.id,
+            role: findUser.roles.id,
+          };
+          return {
+            token: await this.jwtService.sign(payload, {
+              expiresIn: "30d",
+              algorithm: "HS256",
+              secret: process.env.JWT_SECRET,
+            }),
+            userData: findUser,
+            userRole: findUser.roles.id,
+          };
+        }
         const compare = await bcrypt.compare(
           loginDetails.password,
           findUser.password

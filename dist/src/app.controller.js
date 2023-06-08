@@ -14,22 +14,31 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
+const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
 const app_service_1 = require("./app.service");
 const product_service_1 = require("./product/product.service");
 const jwt_auth_guard_1 = require("./authguard/jwt-auth-guard");
 const user_service_1 = require("./user/user.service");
+const auth_service_1 = require("./auth/auth.service");
 let AppController = class AppController {
-    constructor(appService, productService, userService) {
+    constructor(appService, productService, userService, authService, jwtService) {
         this.appService = appService;
         this.productService = productService;
         this.userService = userService;
+        this.authService = authService;
+        this.jwtService = jwtService;
     }
     getHello() {
         throw new Error("Method not implemented.");
     }
     async findAll() {
         const data = await this.productService.findAll();
+        return { data };
+    }
+    async sortAll(req) {
+        const price = req.query.sort;
+        const data = await this.productService.findAll(`${price}`);
         return { data };
     }
     roots() {
@@ -50,7 +59,6 @@ let AppController = class AppController {
                 else {
                     res.redirect("/admin");
                 }
-                console.log("in if");
             }
         }
         catch (err) {
@@ -62,18 +70,49 @@ let AppController = class AppController {
     }
     async googleAuthRedirect(req, res) {
         const emails = await this.userService.findUnique(req.user);
-        console.log(emails);
         if (emails != null) {
-            console.log("in login");
-            res.send("You are already logged in please login <a href='/'>Login</a>");
+            const email = emails.email;
+            const password = "";
+            const login = { email, password };
+            const result = await this.authService.login(login);
+            if (result.token) {
+                res.cookie("auth_token", result.token, { httpOnly: true });
+                const payload = await this.jwtService.verifyAsync(result.token, {
+                    secret: process.env.JWT_SECRET,
+                });
+                res.cookie("data", payload, { httpOnly: true });
+            }
         }
         else {
-            console.log("in create");
-            return this.userService.create(req.user);
+            const { data } = await this.userService.create(req.user);
+            const email = data.email;
+            const password = "";
+            const login = { email, password };
+            const result = await this.authService.login(login);
+            if (result.token) {
+                res.cookie("auth_token", result.token, { httpOnly: true });
+                const payload = await this.jwtService.verifyAsync(result.token, {
+                    secret: process.env.JWT_SECRET,
+                });
+                res.cookie("data", payload, { httpOnly: true });
+            }
         }
     }
-    signup() {
-        return;
+    signup(req, res) {
+        try {
+            if (req.cookies.auth_token) {
+                if (req.cookies.data.role == 2 || req.cookies.data.role == 1) {
+                    console.log("in role");
+                    res.redirect("/home");
+                }
+                else {
+                    res.redirect("/admin");
+                }
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 };
 __decorate([
@@ -84,6 +123,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AppController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)("/home/data"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "sortAll", null);
 __decorate([
     (0, common_1.Get)("/forgotpassword"),
     (0, common_1.Render)("forgotpassword"),
@@ -117,7 +164,7 @@ __decorate([
 ], AppController.prototype, "googleRegister", null);
 __decorate([
     (0, common_1.Get)("/google/login"),
-    (0, common_1.Redirect)("/"),
+    (0, common_1.Redirect)("/home"),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)("google")),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
@@ -128,15 +175,19 @@ __decorate([
 __decorate([
     (0, common_1.Get)("/signup"),
     (0, common_1.Render)("registration"),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "signup", null);
 AppController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [app_service_1.AppService,
         product_service_1.ProductService,
-        user_service_1.UserService])
+        user_service_1.UserService,
+        auth_service_1.AuthService,
+        jwt_1.JwtService])
 ], AppController);
 exports.AppController = AppController;
 //# sourceMappingURL=app.controller.js.map
