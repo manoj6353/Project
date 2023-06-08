@@ -28,29 +28,24 @@ async function search(search) {
   let rows = document.getElementById("rows");
   let searchrow = document.getElementById("search");
   searchrow.innerHTML = "";
-  const result = await fetch(`/product/search/` + productName);
-  const data = await result.json();
-
-  if (data.length > 0) {
+  if (productName !== "") {
+    const result = await fetch(`/product/search/` + productName);
+    const { data } = await result.json();
     rows.classList.add("active");
     searchrow.classList.remove("active");
     for (let d of data) {
       searchrow.innerHTML += `
-      <div class="col-10" style="height: 120%">
-        <div class="card h-75">
-          <div class="h-100 d-flex align-items-center">
-            <img
-              src="/images/${d.image}"
-              class="card-img mx-auto"
-              width="200px"
-              height="100px"
-            />
-          </div>
-          <div class="card-body">
-                <div class="card-body">
-                  <h5 class="card-title">${d.productName}</h5>
+        <div class="section4-column">
+                <div class="cols">
+                  <img
+                    src="/images/${d.image}"
+                    class="card-img mx-auto"
+                    width="10%"
+                    height="40%"
+                  />
+                  <h2>${d.productName}</h2>
                   <p>₹ ${d.price}</p>
-                  <p>${d.productdetails}</p>
+                  <p class="details">${d.productdetails}</p>
                   <a
                     onclick="addtocart(${d.id})"
                     class="btn btn-primary btn-md btn-block"
@@ -58,9 +53,7 @@ async function search(search) {
                     Add to Cart
                   </a>
                 </div>
-              </div>
-        </div>
-      </div>`;
+              </div>`;
     }
   } else {
     rows.classList.remove("active");
@@ -284,31 +277,34 @@ async function sorting() {
     contents += `<option value="asc">low to high</option>`;
   }
   contents += `</select>
-<div class="container d-flex products">
-  <div class="row" id="rows">`;
+  <section class="section4">
+  <div class="container">
+    <div class="df dfw section4-gap">`;
   data.forEach((d) => {
-    contents += `<div class="mb-5" style="width: 25%">
-      <div class="card h-100 p-2">
-        <div class="h-100 d-flex align-items-center">
-          <img src="/images/${d.image}" class="card-img mx-auto" />
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">${d.productName}</h5>
-          <p>₹ ${d.price}</p>
-          <p>${d.productdetails}</p>
-          <a
-            onclick="addtocart('${d.id}')"
-            class="btn btn-primary btn-md btn-block"
-          >
-            Add to Cart
-          </a>
-        </div>
-      </div>
-    </div>`;
+    contents += `<div class="section4-column">
+    <div class="cols">
+      <img
+        src="/images/${d.image}"
+        class="card-img mx-auto"
+        width="10%"
+        height="40%"
+      />
+      <h2>${d.productName}</h2>
+      <p>₹ ${d.price}</p>
+      <p class="details">${d.productdetails}</p>
+      <a
+        onclick="addtocart(${d.id})"
+        class="btn btn-primary btn-md btn-block"
+      >
+        Add to Cart
+      </a>
+    </div>
+  </div>`;
   });
   contents += `</div>
   <div class="row col-3 flex-column search" id="search"></div>
 </div>
+</section>
 </div>`;
   content.innerHTML = contents;
 }

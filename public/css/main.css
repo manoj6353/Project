@@ -14,3 +14,79 @@ table {
 tbody tr:nth-child(odd) {
   background: rgb(234, 229, 229);
 }
+.section4 {
+  margin-top: 2rem;
+}
+.section4-column {
+  width: calc(100% / 3);
+}
+
+.cols .details:hover {
+  height: 100px;
+  white-space: normal;
+  text-align: left;
+  width: 240px;
+}
+
+.cols .details {
+  height: 40px;
+  width: 140px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  margin: 0 5px 0 5px;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cols {
+  height: 410px;
+  margin-top: 10px;
+  padding: 40px 40px;
+  border: 1px solid grey;
+  border-radius: 18px;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -16px;
+}
+.section4-column {
+  padding: 0 16px;
+}
+.icons {
+  border: 1px solid grey;
+  border-radius: 0.8rem;
+  padding: 10px;
+}
+.cols a {
+  font-size: 20px;
+  text-decoration: none;
+}
+.cols p {
+  color: grey;
+}
+.df {
+  display: flex;
+}
+.jcb {
+  justify-content: space-between;
+}
+.fdc {
+  flex-direction: column;
+}
+.aic {
+  align-items: center;
+}
+.dfw {
+  flex-wrap: wrap;
+}
+.jcc {
+  justify-content: center;
+}
+ul {
+  list-style-type: none;
+}

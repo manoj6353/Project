@@ -49,8 +49,9 @@ let ProductController = class ProductController {
         const data = await this.productService.findAll();
         return { data };
     }
-    findsearch(productName) {
-        return this.productService.findsearch(productName);
+    async findsearch(productName) {
+        const data = await this.productService.findsearch(productName);
+        return { data };
     }
     findOne(id) {
         return this.productService.findOne(+id);
@@ -126,7 +127,7 @@ __decorate([
     __param(0, (0, common_1.Param)("productName")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ProductController.prototype, "findsearch", null);
 __decorate([
     (0, common_1.Get)(":id"),

@@ -89,8 +89,9 @@ export class ProductController {
 
   @Get("search/:productName")
   @UseGuards(AuthGuard)
-  findsearch(@Param("productName") productName: string) {
-    return this.productService.findsearch(productName);
+  async findsearch(@Param("productName") productName: string) {
+    const data = await this.productService.findsearch(productName);
+    return { data };
   }
 
   @Get(":id")
